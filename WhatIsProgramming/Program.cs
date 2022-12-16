@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 
 namespace WhatIsProgramming
 {
@@ -138,12 +139,209 @@ namespace WhatIsProgramming
              */
             Console.WriteLine("Hello, World!");
             Console.WriteLine("Hello, World!");
-            Console.WriteLine("Hello, World!");
 
             Console.Write("Hello, \t\t\tWorld! \n"); //\n : 줄바꿈 \t : Tab
             Console.WriteLine("Hello, World!");
+            /*
+             * 문자열 보간법
+             * 문자열 보간법(String interpolation) 또는 문자열 템플릿(String template)이라고도 한다.
+             * 문자열을 묶어서 처리하기 위한 기능이다. 기존에는 Sting.Format() 메서드를 주로 사용했었는데,
+             * c# 6.0 버전부터 $"{}" 형태로 간결하게 제공하고 있다.
+             * 
+             */
+            Console.WriteLine("{0}, {1}", "Hello", "World!");
+            string hello = "hello";
+            string world = "world";
+            Console.WriteLine($"{hello}, {world}");
 
+            const int THREE_NUMBER = 3;
+            const string ODD_WORD = "홀수";
+            Console.WriteLine($"{THREE_NUMBER}은(는) {ODD_WORD}입니다.");
+
+            string stringFormat = string.Format("{0}은(는) {1}입니다.", THREE_NUMBER, ODD_WORD);
+            Console.WriteLine(stringFormat);
+
+            string stringPlus = THREE_NUMBER + "은(는)" + ODD_WORD + "입니다.";
+            Console.WriteLine(stringPlus);
+            //이렇게 문자열을 + 연산하면 특히 느리다.
+
+            string a = "김광성";
+            string b = "(게임콘텐츠제작) 모바일 게임 개발자 양성과정C";
+            string c = "(전공)게임 프로그래밍 기초 기술";
+            Console.WriteLine($"나의 이름은 : {a}\n과정명 : {b}\n학습교과 : {c}");
+
+            /*
+             * 변수
+             * 프로그램에서 값을 다루려면 데이터를 메모리에 잠시 보관해 놓고 사용할 수 있는 임시 저장공간이 필요하다.
+             * 이때 변수를 사용한다. 변수를 사용하는 순서는 선언(메모리에 공간을 확보)하고 정의(대입, 할당)하여
+             * 사용하는 것이다. 변수는 데이터 형식, 변수의 이름, 대입한 값으로 이루어져 있다.
+             * 
+             * 변수 선언: 메모리에 데이터를 저장할 공간을 확보하는 것이다.
+             * 변수 정의: 확보한 공간에 값을 저장하는 것이다.
+             * 변수 초기화: 변수를 선언한 직후, 초기값으로 정의하는 것이다. 초기화는 변수의 초기값을 명확하게 정의하여
+             *             원치 않는 논리적인 오류를 방지하는 역할을 한다.
+             */
+            int number;  //변수 선언
+            number = 100;  //변수 정의
+            
+            int number2 = 1; //초기화 (선언한 직후 바로 정의한것 한줄에 작성)
+            Console.WriteLine("int는 얼마 만큼의 메모리를 할당하나요? -> {0}byte", sizeof(int));
+
+            /*
+             * bit: 0 또는 1을 표현할 수 있는 최소 단위
+             * [0][0]
+             * [0][1]
+             * [1][0]
+             * [1][1]
+             * 
+             * byte : 숫자를 세는 단위. 8bit = 1byte
+             * int = 4byte
+             * 
+             * 변수 사용할 때 주의사항(규칙)
+             * 변수의 이름을 지을 때는 다음 규칙을 지켜야 한다.
+             * 변수의 첫 글자는 반드시 문자로 지정한다. 숫자는 변수의 이름의 첫 글자로 사용할 수 없다.
+             * 길이는 255자 이하로 하고 공백을 포함할 수 없다.
+             * 영문자와 숫자, 언더스코어(_) 조합으로 사용하며, 기타 특수 기호는 사용할 수 없다.
+             * c#에서 사용하는 키워드는 사용할 수 없다.
+             * 변수는 대, 소문자를 구분하고, 일반적으로 소문자로 시작한다.
+             * 변수는 타인이 보더라도 이해할 수 있는 이름으로 사용한다.
+             * 
+             * 데이터 형식
+             * 변수에 저장할 수 있는 데이터의 종류를 자료형(Data type)이라고 한다.
+             * int, string, bool, double, object 등 c#에서 기본적으로 제공하는 데이터 형식을
+             * 기본 형식(Primitive type)이라고 한다.
+             * 
+             * int: 정수형 데이터 타입 (음수, 양수, 0)
+             * float : 살수형 데이터 타입 (부동소수점 형탸 ex 3.14)
+             * bool : 논리값을 가지는 데이터 타입 (참, 거짖)
+             * char : 한 문자를 가지는 데이터 타입 (;A;)
+             * string : 문자열을 가지는 데이터 타입 ("hello")
+             * object : c$에서 모든 자료형의 부모형 데이터 타입 (모든 데이터를 저장 가능)
+             *
+             *
+             *상수와 리터럴
+             *
+             *상수
+             *변수를 선언할 때 앞에 const 키워드를 붙이면 상수(Constant)가 된다. 한 번 상수로 선언된 변수는
+             *다시 값을 바꿀 수 없고, 반드시 선언과 동시에 초기화해야 한다. 이러한 const 키워드를 붙인 변수를
+             *상수 또는 지역(Local) 상수라고 한다. 상수는 주로 대문자로 표현한다.
+             *
+             *리터럴
+             *변수에 저장하기 위해 직접 대입하는 값 자체를 리터럴(Literal)이라고 한다.
+             *정수형 리터럴: 숫자 그대로 표현한다.   ex) 1234
+             *실수형 리터럴: 대문자 F 또는 소문자 f를 접미사로 붙여 표현한다.     ex)3.14f or 3.14F
+             *문자형 리터럴: 작은 따옴표로 묶어서 표현한다.      ex)'A'
+             *문자열 리터럴: 큰 따옴표로 묶어서 표현한다.        ex)"Hello"
+             *
+             *숫자 구분자 사용
+             *c#7.0 버전부터는 언더스코어(_) 문자를 사용하는 숫자 구분자(Digit separator)를 제공한다.
+             *숫자 형식을 표현할 때 언더스코어 문자는 무시한다. 이를 이용하면 긴 숫자를 표시할 때
+             *가독성을 높일 수 있다.
+             */
+            //int nuber = 0;
+            //Console.WriteLine(nuber);
+            //nuber = 1;
+            //Console.WriteLine(nuber);
+            //const int CONST_FIVE = 5; //CONST_FIVE = 10;< 오류
+            //const float PI = 3.14F;
+
+            int bignuber = 110_000 - 1000; //(_)를 사용해도 값이 변하지않음
+            Console.WriteLine("bignuber - 1000의 값이 변하지 않을까?{0}", bignuber);
+
+            bool boolType;
+            boolType = true;
+            boolType = false;
+
+            int d = 15;
+            const float PI = 3.14F;
+            Console.WriteLine("원의 넓이는{0}", d*d * PI);
+
+            /*
+             * null 키워드
+             * c#에서 null 키워드는 '아무것도 없는 값'을 의미한다.
+             * 
+             * null 가능 형식(unllable)
+             * 숫자 형식의 변수를 선언할 때 int?, float? 와 같이 물음표(?) 기호를 붙이면 null 가능 형식으로 변경된다.
+             * 이러한 null 가능 형식에는 아무런 값도 없음을 의미하는 null을 대입할 수 있다.
+             */
+            int? nullNumber = null;
+            Console.WriteLine("Null을 눈으로 보고 싶다{0}", nullNumber);
+            int doNothingNumber = 0;
+            /*
+             * 자동 타입 추론(Automatic type deduction)
+             * 변수에 대입하는 값의 데이터 타입이 명시적이거나 명확할 때, 데이터 타입을 명시하지 않고 생략할 수 있다.
+             * 자동 타입 추론이란 컴파일러가 대입하는 값 또는 변수의 데이터 타입으로 다른 한 쪽의 데이터 타입을
+             * 추론하는 기능을 의미한다.
+             * 
+             * default값
+             * c# 6.0 버전부터는 자동 타입 추론으로 기본 형식에 default 값을 대입할 수 있다.
+             * 기본 형식마다 정해진 default 값이 존재한다.
+             */
+            int number_ = default;
+            string stringValue = default;
+            char cjarValue = default;
+            float floatValue = default;
+
+            var autoVaribleInt = 10;
+            var autoVaribleFloat = 3.14f;
+            var autoVaribleDouble = 3.14;
+
+            /*
+             * 열거형 형식
+             * c#에서 열거형(Enumeration) 형식은 기억하기 어려운 상수들을 기억하기 쉬운 이름 하나로 묶어 관리하는
+             * 표현 방식이다. 일반적으로 열거형으로 줄여 말한다. 열거형은 enum 키워드를 사용하고 이늄 또는 이넘으로
+             * 읽는다. 열거형은 클래스 범위 내에 정의해야 하며, 메서드 범위 안에는 정의할 수 없다.
+             */
+            Align align = Align.TOP;
+            align = Align.LEFT;
+            Console.WriteLine("Enumeration 데이터는 어떻게 보일까 -> {0}", align);
+            /*
+             * 입출력에 대해서
+             * 프로그램을 실행할 때마다 서로 다른 값을 입력받으려면 콘솔에서 입력한 값을 변수에 저장할 수 있어야 한다.
+             * 키보드로 입력받고 모니터로 출력하는 일반적인 내용을 표준 입출력(Standard input/output)이라고 한다.
+             * 
+             *System.Console.ReadLine(): 콘솔에서 한 줄을 입력받는다.
+             *System.Console.Read(): 콘솔에서 한 문자를 정수로 입력받는다.
+             *System.Console.ReadKey(): 콘솔에서 다음 문자나 사용자가 누른 기능 키를 가져온다. 
+             */
+            //Console.WriteLine("이름을 입력하시오: ");
+            //string yourName = string.Empty;
+            //yourName = Console.ReadLine();
+            //Console.WriteLine("{0}", yourName);
+            /*
+             * 형식 변환
+             * Console.ReadLine() 메서드를 사용하여 콘솔에서 입력받은 데이터는 문자열이다. 문자열 대신 정수나 실수
+             * 데이터를 입력받고 싶다면 입력된 문자열을 원하는 데이터 형식으로 변환할 수 있어야 한다.
+             * 
+             * 키워드: 캐스팅 연산자, 암시적(묵시적) 형변환, 명시적 형변환
+             * 
+             * 4가지의 형변환 하는 법
+             */
+            //Console.Write("숫자를 입력하시오: ");
+            //string stringNumber = Console.ReadLine();
+            //int intNumber = Convert.ToInt32(stringNumber);
+            //int intNumber2 = int.Parse(stringNumber);
+            //int intNumber3 = default;
+            //int.TryParse(stringNumber, out intNumber3); //TryParse 가장 추천하는 방법
+            //Console.WriteLine("입력한 숫자 + 10은(는) {0}입니다.", intNumber3 + 10); //ex)100입력시 문자열은 10010나옴
+
+            //실수형 변수로 반지름을 사용자 입력받고, 실수형 상수로 원주율을 선언한 다음에 구의 겉넓이, 구의 부피 구해라
+            //1.사용자에게 무엇을 입력해야 하는지 알려주는 출력문
+            //2.구의 겉넓이: 숫자
+            //3.구의 부피: 숫자
+
+            Console.Write("원하는 반지름의 숫자를 입력하시오: ");
+            string stringNumber = Console.ReadLine();
+            float floatNumber = default;
+            const float PI2 = 3.14F;
+            float.TryParse(stringNumber, out floatNumber);
+            float dd = floatNumber * floatNumber;
+            float ddd = floatNumber * floatNumber * floatNumber;
+            Console.WriteLine("{0}", stringNumber);
+            Console.WriteLine("구의 겉넓이:{0}", 4 * PI2 * dd);
+            Console.WriteLine("구의 부피는:{0}", 4F/3F * PI2 * ddd);
 
         }
+        enum Align { TOP, BOTTOM, LEFT, RIGHT}; //메서드 범위 안에서 정의할 수 없으므로 main(메서드)안에 못씀
     }
 }
