@@ -10,6 +10,31 @@ namespace WhatIsOperator
     {
         static void Main(string[] args)
         {
+            //컵의 사이즈를 입력받아 100ml미만은 Small, 100이상 200미만은 Medium, 200이상은 Large로 출력.
+            int size;
+            Console.Write("컵의 사이즈를 입력하시오:");
+            int.TryParse(Console.ReadLine(), out size); //컵의 사이즈 입력(string형식을 int형식으로 바꿔서 받음)
+            if(size < 100) //첫번째 조건식
+            {
+                //size가 100 미만일때 실행
+                Console.WriteLine("컵의 사이즈는 Small 입니다");
+            }
+            else if(100 <= size && size < 200) //두번째 조건식
+            {
+                //size가 100이상 200미만일때 실행
+                Console.WriteLine("컵의 사이즈는 Medium 입니다");
+            }
+            else if(size >= 200) //세번째 조건식
+            {
+                //size가 200이상일때 실행
+                Console.WriteLine("컵의 사이즈는 Large 입니다");
+            }
+            else //위 조건식 모두에 해당하지 않을때 실행
+            {
+                Console.WriteLine("컵의 사이즈를 잘못 입력하셨습니다.");//예외처리
+            }
+
+
             /*
              * 1.최대한도의 사탕사기
              * 현재 1000원이 있고 사탕의 가격이 300원 일 때, 최대 살 수 있는 사탕의 개수와 나머지 돈은 얼마인지 출력하는 프로그램.

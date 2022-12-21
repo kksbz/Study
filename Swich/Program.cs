@@ -74,22 +74,22 @@ namespace Swich
             //}     //switch
 
             //Console.WriteLine("오늘의 날씨는 어떤가요? (맑음, 흐림, 비, 눈, ...)");
-            //string weather = Console.ReadLine();
-            //switch (weather)
+            //string weather = Console.ReadLine(); //날씨 입력
+            //switch (weather) //swich문에 weather값을 입력받아 아래 실행
             //{
-            //    case "맑음":
+            //    case "맑음": //weather값이 맑음 일 때 실행
             //        Console.WriteLine("오늘 날씨는 맑군요.");
-            //        break;
-            //    case "흐림":
+            //        break; //맑은 조건 실행 후 종료
+            //    case "흐림": //weather값이 흐림 일 때 실행
             //        Console.WriteLine("오늘 날씨는 흐리군요.");
-            //        break;
-            //    case "비":
+            //        break; //흐림 조건 실행 후 종료
+            //    case "비": //weather값이 비 일 때 실행
             //        Console.WriteLine("오늘 날씨는 비가 오는군요.");
-            //        break;
-            //    default:
+            //        break; //비 조건 실행 후 종료
+            //    default: //weather값이 case조건과 모두 일치하지 않을 때 실행(예외처리)
             //        Console.WriteLine("혹시 오늘 눈이 오나요?");
-            //        break;
-            //}       //switch
+            //        break; //종료
+            //}       //switch 종료
 
             /*
              * while 문은 조건식이 참일 동안 문장을 반복 실행한다.
@@ -112,17 +112,17 @@ namespace Swich
             //}
 
             //구구단 출력하는 프로그램 작성. user input 받아서 해당 단을 출력
-
-            //int userGugudan = 0;
+            //구구단 출력 프로그램 작성
+            //int userInPut = 0;
             //Console.Write("구구단 중에서 출력하고 싶은 단 입력: ");
-            //int.TryParse(Console.ReadLine(), out userGugudan);
-            //const int GUGU_LOOP_COUNT = 9;
-            //int guguLoopIdx = 1;
-            //while(guguLoopIdx <= GUGU_LOOP_COUNT)
-            //{
-            //    Console.WriteLine("{0}*{1}={2}", userGugudan, guguLoopIdx, userGugudan * guguLoopIdx);
-            //    guguLoopIdx++;
-            //}
+            //int.TryParse(Console.ReadLine(), out userInPut); //string형식으로 입력받은걸 int형식으로 변환함.
+            //const int timeTableLoopCount = 9; //1단~9단까지 구하기위해 loopCount를 9로 설정.
+            //int timeTableLoopStart = 1; //1단부터 구하기위해 설정
+            //while (timeTableLoopStart <= timeTableLoopCount) //while문 시작 
+            //{                                                   //timeTableLoopStart 값이 timeTableLoopCount과 작거나 같을때까지 반복함.
+            //    Console.WriteLine("{0}*{1}={2}", userInPut, timeTableLoopStart, userInPut * timeTableLoopStart);
+            //    timeTableLoopStart++; //while문이 반복할때마다 timeTableLoopStart를 1씩 더해서 userInPut * 1, userInPut * 2...출력하기위해 설정
+            //} //while 종료
 
             /*
              * 1.프로그램 사용자로부터 양의 정수를 하나 입력 받아서, 그 수만큼 "Hello World!"를 출력하는 프로그램 작성
@@ -286,17 +286,22 @@ namespace Swich
             //Console.WriteLine($"1부터 10까지의 정수의 합 = {sumNumber}");
             //Console.WriteLine("1부터 10까지의 정수의 합 = {0}",sumNumber);
 
-            //1~100 숫자 중에서 3의 배수를 제외한 수의 합 구하기
-            //int sum = 0;
-            //for(int index = 1; index <= 100; index++)
-            //{
-            //    if (index % 3 == 0) {/* Do nothing*/ } //의도대로 아무것도 안할거다 명시해둔것
-            //    else
+            //1~100 숫자 중에서 5의 배수를 제외한 수의 합 구하기
+            //int sum = 0; //5의 배수를 제외한 수의 합을 입력할 변수
+            //for (int index = 1; index <= 100; index++) //for문 시작 index가 1일때 index가 100보다 작거나 같으면
+            //{                                          //index에 1씩 증감해서 반복함.
+            //    if (index % 5 == 0) //if문 조건식 시작 index를 5로 나눈 나머지가 0과 같을때 실행.
             //    {
-            //        sum += index;
+            //        /* 의도적으로 아무것도 안씀 */
             //    }
-            //}
-            //Console.WriteLine("{0}", sum);
+            //    else //if문의 조건식에 해당되지 않을 때 실행.
+            //    {    //index%5 != 0 이 아닌 값들일 때 실행.
+            //        sum += index; //sum변수에 index값을 더함.
+            //        Console.WriteLine("5의 배수가 아닌 수: {0}, 합: {1}", index, sum);
+            //        Console.WriteLine(); //보기 편하게 줄바꿈
+            //    } //if문 종료 후 for문의 반복실행
+            //} //for문 종료
+            //Console.WriteLine("5의 배수가 아닌 수의 총합: {0}", sum); //출력
 
             /*
              * break 문
@@ -321,18 +326,20 @@ namespace Swich
 
             //1~100 숫자 중에서 3의 배수를 제외한 수의 합 구하기
             //int sum = 0;
-            //for(int index = 1; index <= 100; index++)
+            //for (int index = 1; index <= 100; index++)
             //{
-            //    //if (index % 3 == 0)
-            //    {                  //continue를 쓸때 index % 3 == 0이 되면 밑에 식을 무시하고 증감식시작
-            //      continue;
+            //    if (index % 3 == 0)
+            //    {                  
+            //        Console.WriteLine("{0}은(는) 3의 배수 입니다", index);
+            //        continue; //continue를 쓸때 index % 3 == 0이 되면 밑에 식을 무시하고 증감식시작
+            //        Console.WriteLine("실행되나요?");//continue문 밑에있는 식이므로 무시됨.
             //    }
             //    else
             //    {
-            //      sum += index;
+            //        sum += index;
             //    }
             //}
-            //Console.WriteLine("{0}", sum);
+            //Console.WriteLine("3의 배수를 제외한 수의 총합은: {0} 입니다", sum);
 
             /*
              * 1. 자음과 모음 개수 세기
@@ -509,15 +516,15 @@ namespace Swich
             //string 에서 글자를 하나씩 출력
             //string stringText = "Hello World!";
             //int loopCount = 0;
-            //foreach(char oneCharactor in stringText)
-            //    //stringText안에있는 것을 char로 구분
+            //foreach (char oneCharactor in stringText) //stringText안에있는 값을 char로 변환하여 oneCharactor에 넣음.
             //{
-            //    Console.Write("{0} ", oneCharactor);
+            //    Console.Write("{0},", oneCharactor); //oneCharactor에 담긴 값을 확인.
             //    //loop : stringText의 길이만큼 도는 루프
-            //    loopCount++;
-            //}
+            //    loopCount++; //몇번 loop했는지 알아보기위한 변수 돌때마자 1씩 증감.
+            //} //foreach문 종료
+            //Console.WriteLine();
             //Console.WriteLine("Loop count: {0}, stringText.Length: {1}", loopCount, stringText.Length);
-
+            
             //1. 1~100숫자 중에서 3의 배수이면서 4의 배수인 정수 합 구하기
             //int sum = 0;
             //for (int i = 0; i <100; i++)
@@ -527,9 +534,9 @@ namespace Swich
             //        sum += i;
             //    }
             //}
-            
+
             //Console.WriteLine(sum);
-            
+
             //2. 두 개의 정수를 입력 받아서 두 수의 차를 출력하는 프로그램 작성.
             //-항상 큰 수에서 작은 수를 뺀 결과는 언제나 0 이상이어야 함.
 
