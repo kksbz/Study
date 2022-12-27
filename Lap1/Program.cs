@@ -232,6 +232,8 @@ namespace Lap1
                     Console.WriteLine();
                 } //첫번째 for문 종료
             } //while문 종료
+            Console.Clear();
+            Console.WriteLine("$@$");
 
 
 
