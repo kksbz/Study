@@ -144,7 +144,7 @@ namespace WhatIsClass
              */
             TrumpCard trumpCard = new TrumpCard();
             trumpCard.SetupTrumpCards();
-            trumpCard.ShuffleCards();        
+            trumpCard.ReRollCard();        
 
 
         } //Main

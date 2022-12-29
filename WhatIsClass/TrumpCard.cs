@@ -8,9 +8,14 @@ namespace WhatIsClass
 {
     public class TrumpCard
     {
+        public TrumpCard() //< 생성자에서 셋업카드세팅을 처리
+        {
+            SetupTrumpCards();
+        }
+
         private int[] trumpCardSet; //내가 사용할 카드 세트
         private string[] trumpCardMark; //트럼프 카드의 마크
-        public void SetupTrumpCards()
+        private void SetupTrumpCards()
         {
             /**
              * 트펌프카드
