@@ -18,7 +18,6 @@ namespace Lap2
             //몬스터들의 종류(늑대,오크) 클래스는 Enemy클래스를 부모클래스로 두고있음
             //늑대2종류, 오크2종류 총 4마리의 몬스터중 랜덤으로 1마리 뽑아서 enemy에 저장
             enemy = enemy.SetRandomEnemyType();
-            
             //Battles클래스의 Battle함수 호출 (전투관련)
             //턴제로 진행되고 플레이어와 몬스터마다 speed 수치를 비교하여
             //누가 먼저 시작할지 정하고 전투시작됨

@@ -13,11 +13,24 @@ namespace Lap2
     //Creature 클래스에서는 몬스터와 플레이어의 스텟을 입력할 변수를 선언
     public class Creature
     {
-        public string name;
-        public double hp;
+        protected string name;
+        protected double hp;
         public double damage;
         public double defence;
         public int speed;
+
+        //Property 적용함
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; }
+        }
+        public double Hp
+        {
+            get { return this.hp; }
+            set { this.hp = value; }
+        }
+        //Property 적용함
     } //Creature
     
     //Battles 클래스에서는 게임의 전투방식을 정함
@@ -27,12 +40,12 @@ namespace Lap2
         public void Battle(Creature temp, Creature temp2)
         {
             //랜덤으로 선택된 몬스터의 정보출력
-            Console.WriteLine("{0} 가 나타났다!", temp2.name);
-            Console.WriteLine("{0}의 정보 HP: {1}, 공격력: {2}, 방어력: {3} 스피드: {4}", temp2.name, temp2.hp,
+            Console.WriteLine("{0} 가 나타났다!", temp2.Name);
+            Console.WriteLine("{0}의 정보 HP: {1}, 공격력: {2}, 방어력: {3} 스피드: {4}", temp2.Name, temp2.Hp,
                 temp2.damage, temp2.defence, temp2.speed);
             Console.WriteLine();
             //while문 진입 조건 선언 조건: game이 temp.hp > 0이면 True
-            bool game = temp.hp > 0;
+            bool game = temp.Hp > 0;
             while (game)
             {
                 int userInPut = 0;
@@ -45,7 +58,7 @@ namespace Lap2
                         //플레이어 턴
                         Console.WriteLine("===========================================");
                         Console.WriteLine();
-                        Console.WriteLine("{0}의 턴 입니다.", temp.name);
+                        Console.WriteLine("{0}의 턴 입니다.", temp.Name);
                         Console.WriteLine();
                     }
                     else
@@ -53,12 +66,12 @@ namespace Lap2
                         //몬스터 턴
                         Console.WriteLine("*******************************************");
                         Console.WriteLine();
-                        Console.WriteLine("{0}의 턴!", temp2.name);
+                        Console.WriteLine("{0}의 턴!", temp2.Name);
                         Console.WriteLine();
                         //몬스터 턴에선 몬스터가 플레이어를 공격 defence수치에따른 데미지감소는 Main()메서드에 주석으로 설명해둠
-                        Console.WriteLine("{0}가 {1}에게 {2} 데미지를 줌 \n{3}의 남은체력 {4}", temp2.name, temp.name,
-                                temp2.damage, temp.name, Math.Round(temp.hp - (temp2.damage - (temp.defence * 0.3))));
-                        Math.Round(temp.hp -= (temp2.damage - (temp.defence * 0.3)));
+                        Console.WriteLine("{0}가 {1}에게 {2} 데미지를 줌 \n{3}의 남은체력 {4}", temp2.Name, temp.Name,
+                                temp2.damage, temp.Name, Math.Round(temp.Hp - (temp2.damage - (temp.defence * 0.3))));
+                        Math.Round(temp.Hp -= (temp2.damage - (temp.defence * 0.3)));
                         //Math.Round함수를 통해 반올림처리하여 소수점이 안나오게함
                         Console.WriteLine();
                         Console.WriteLine("*******************************************");
@@ -67,7 +80,7 @@ namespace Lap2
                         //몬스터가 턴이 종료됨 -> for문을 다시 돌려 누가 턴을 가져갈지 정함
                         index--;
                         //만약 몬스터의 공격으로 플레이어의 체력이 0보다 작아지면 사망판정
-                        if(temp.hp < 0)
+                        if(temp.Hp < 0)
                         {
                             //몬스터 턴때 index--했으므로 플레이어의 체력과 상관없이 for문이 반복되서
                             //플레이어의 체력이 0아래로 떨어지면 반복문을 즉시종료하기위해 index++함
@@ -77,10 +90,10 @@ namespace Lap2
                 } //for문 종료
                 
                 //if문 시작 조건: 플레이어의 체력이 0보다 작거나 같을때
-                if (temp.hp <= 0)
+                if (temp.Hp <= 0)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("{0} 에게 죽었습니다. 게임종료", temp2.name);
+                    Console.WriteLine("{0} 에게 죽었습니다. 게임종료", temp2.Name);
                     //플레이어가 죽었으므로 게임종료
                     game = false;
                     break;
@@ -110,15 +123,15 @@ namespace Lap2
                     //1번 입력시 실행(공격)
                     case 1:
                         //플레이어의 공격
-                        Console.WriteLine("{0}가 {1}에게 {2} 데미지를 줌 \n{3}의 남은체력 {4}", temp.name, temp2.name,
-                            temp.damage, temp2.name, Math.Round((temp2.hp - (temp.damage - (temp2.defence * 0.3)))));
-                        Math.Round(temp2.hp -= (temp.damage - (temp2.defence * 0.3)));
+                        Console.WriteLine("{0}가 {1}에게 {2} 데미지를 줌 \n{3}의 남은체력 {4}", temp.Name, temp2.Name,
+                            temp.damage, temp2.Name, Math.Round((temp2.Hp - (temp.damage - (temp2.defence * 0.3)))));
+                        Math.Round(temp2.Hp -= (temp.damage - (temp2.defence * 0.3)));
                         //플레이어가 공격했으므로 플레이어의 스피드를 낮춤
                         temp.speed -= 2;
                         //if문 시작 조건: 몬스터의 체력이 0보다 작거나 같을 때
-                        if (temp2.hp <= 0)
+                        if (temp2.Hp <= 0)
                         {
-                            Console.WriteLine("{0} 을(를) 잡았다! 전투종료", temp2.name);
+                            Console.WriteLine("{0} 을(를) 잡았다! 전투종료", temp2.Name);
                             //몬스터를 잡았으므로 게임종료
                             game = false;
                             break;
@@ -131,9 +144,9 @@ namespace Lap2
                         //방어데미지공식 Math.Round로 반올림하여 소수점이 출력안되게 함
                         blockDamage = Math.Round(temp2.damage - ((temp2.damage - (temp.defence * 0.3)) * 0.4));
 
-                        Console.WriteLine("{0} 공격을 방어했습니다 받은피해: {1},방어한 피해: {2} \n남은체력: {3}", temp2.name, temp2.damage,
-                            blockDamage, Math.Round(temp.hp - (temp2.damage - blockDamage)));
-                        Math.Round(temp.hp -= (temp2.damage - blockDamage));
+                        Console.WriteLine("{0} 공격을 방어했습니다 받은피해: {1},방어한 피해: {2} \n남은체력: {3}", temp2.Name, temp2.damage,
+                            blockDamage, Math.Round(temp.Hp - (temp2.damage - blockDamage)));
+                        Math.Round(temp.Hp -= (temp2.damage - blockDamage));
                         //공격을 하지않고 방어했으므로 플레이어의 스피드 수치 증가
                         temp.speed += 2;
                         break;
@@ -159,15 +172,15 @@ namespace Lap2
                             double UpDamage = 0;
                             UpDamage = temp2.damage * 1.5;
                             Console.WriteLine("도망 실패!\n{0} 의 데미지보너스 1.5배! 받은피해: {1} \n남은체력: {2}",
-                                temp2.name, UpDamage, temp.hp - (UpDamage - (temp.defence * 0.3)));
-                            Math.Round(temp.hp -= (UpDamage - (temp.defence * 0.3)));
+                                temp2.Name, UpDamage, temp.Hp - (UpDamage - (temp.defence * 0.3)));
+                            Math.Round(temp.Hp -= (UpDamage - (temp.defence * 0.3)));
                             //도망실패시 플레이어의 스피드를 증가
                             temp.speed += 2;
                             //if문 시작 조건: 플레이어의 체력이 0보다 작거나 같을 때
-                            if (temp.hp <= 0)
+                            if (temp.Hp <= 0)
                             {
                                 Console.WriteLine();
-                                Console.WriteLine("{0} 에게 죽었습니다. 게임종료", temp2.name);
+                                Console.WriteLine("{0} 에게 죽었습니다. 게임종료", temp2.Name);
                                 //플레이어가 죽었으므로 게임종료
                                 game = false;
                                 break;
@@ -220,6 +233,8 @@ namespace Lap2
         } //Select
         
         //첫번째 캐릭터 함수
+        
+        
         public void Player1()
         {
             this.name = "김씨";
@@ -304,7 +319,7 @@ namespace Lap2
                 RedOrk();
             }
         } //Setorc
-        
+
         //기본오크 정보 함수
         public void Orc()
         {
