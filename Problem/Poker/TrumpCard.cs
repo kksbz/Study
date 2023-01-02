@@ -20,24 +20,52 @@ namespace Lap3
             }
             Console.WriteLine();
         } //ShowCardSet
-        public void TurnCard(List<string> InPut)
+        public List<int> TurnCard(List<string> InPut)
         {
-            List<int> cardSet = new List<int>();
-            int number = 0;
-            //"♥" = 10, "♠" = 20, "◆" = 30, "♣" = 40
+            List<int> cardSet = new List<int>(InPut.Count);
             for (int i = 0; i < InPut.Count; i++)
             {
+                int number = default;
                 number = trumpCard.Turn(InPut[i]);
                 cardSet.Add(number);
                 Console.Write("{0} ", cardSet[i]);
             }
             Console.WriteLine();
+            return cardSet;
         } //TurnCard
 
-        public void TrunCardNumber(List<string> InPut)
+        public List<int> BubbleSort(List<int> inPut)
         {
-            InPut.IndexOf("♥");
+            for(int j = 0; j < inPut.Count; j++)
+            {
+                for(int i = 0; i < inPut.Count - 1; i++)
+                {
+                    if (inPut[i] > inPut[i + 1])
+                    {
+                        int temp = inPut[i + 1];
+                        inPut[i +1] = inPut[i];
+                        inPut[i] = temp;
+                    }
+                }
+            }
+            return inPut;
         }
+        //public List<string> BubbleSortMark(List<string> inPut)
+        //{
+        //    for (int j = 0; j < inPut.Count; j++)
+        //    {
+        //        for (int i = 0; i < inPut.Count - 1; i++)
+        //        {
+        //            if (inPut[i] > inPut[i + 1])
+        //            {
+        //                string temp = inPut[i + 1];
+        //                inPut[i + 1] = inPut[i];
+        //                inPut[i] = temp;
+        //            }
+        //        }
+        //    }
+        //    return inPut;
+        //}
     } //PlayGame
 
 
@@ -48,29 +76,42 @@ namespace Lap3
         public List<string> cardSet= new List<string>();
         public List<string> PickCards()
         {
-            //string[] pickcard = ReRollCard();
-            //string cardMark = string.Empty;
-            //string cardNum = string.Empty;
-            //cardMark = pickcard[0];
-            //cardNum = pickcard[1];
             List<string> cardSets = new List<string>();
             for (int i = 0; i < 5; i++) 
             {
                 string card = string.Empty;
                 do
                 {
-                    string[] pickcard = ReRollCard();
-                    string cardMark = string.Empty;
-                    string cardNum = string.Empty;
-                    cardMark = pickcard[0];
-                    cardNum = pickcard[1];
-                    card = cardMark + cardNum;
-                    //card = ReRollCard();
+                    card = ReRollCard();
+
                 }
                 while (cardSets.Contains(card));
                 cardSets.Add(card);
             }
             return cardSets;
+        }
+
+        public string[] SplitCardMark(List<string> inPut)
+        {
+            List<string> cMarks = new List<string>();
+            string cMark = string.Empty;
+            foreach (string a in inPut)
+            {
+                cMark = a.Substring(0, 1);
+                cMarks.Add(cMark);
+            }
+            return cMarks.ToArray();
+        } //SplitCardMark
+        public List<string> SplitCardNum(List<string> inPut)
+        {
+            List<string> cNums = new List<string>();
+            string cNum = string.Empty;
+            foreach (string a in inPut)
+            {
+                cNum = a.Substring(1);
+                cNums.Add(cNum);
+            }
+            return cNums;
         }
         public void SetupTrumpCards()
         {
@@ -99,13 +140,13 @@ namespace Lap3
         //카드를 섞는 함수
 
         //셔플 하고서 카드를 한 장 뽑아서 출력하는 함수
-        public string[] ReRollCard()
+        public string ReRollCard()
         {
             ShuffleCards();
             return RollCard();
         }
         //한장의 카드를 뽑아서 보여주는 함수
-        public string[] RollCard()
+        public string RollCard()
         {
             int card = trumpCardSet[0];
             string cardMark = trumpCardMark[(card - 1) / 13]; //52를 13으로 나눈 몫이 trumpCardSet의 길이를 초과함 -1한 이유
@@ -124,13 +165,7 @@ namespace Lap3
                     cardNumber = "K";
                     break;
             } //switch
-            string[] pickCard = { cardMark, cardNumber };
-            //Console.WriteLine("내가 뽑은 카드는 {0}{1} 입니다.", cardMark, cardNumber);
-            //Console.WriteLine("-----");
-            //Console.WriteLine("|{0}{1}|", cardMark, cardNumber);
-            //Console.WriteLine("|   |");
-            //Console.WriteLine("|{1}{0}|", cardMark, cardNumber);
-            //Console.WriteLine("-----");
+            string pickCard = cardMark+cardNumber;
             return pickCard;
         } //RollCard
 

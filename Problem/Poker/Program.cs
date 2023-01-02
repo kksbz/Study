@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Poker
 {
@@ -52,31 +53,31 @@ namespace Poker
                     Console.Write("교체할 카드(1~5번, 6번->패스) 선택: ");
                     int.TryParse(Console.ReadLine(), out playerInPut);
 
-                    //switch (playerInPut)
-                    //{
-                    //    case 1:
-                    //        playerCard[0] = trumpCard.ReRollCard();
-                    //        break;
-                    //    case 2:
-                    //        playerCard[1] = trumpCard.ReRollCard();
-                    //        break;
-                    //    case 3:
-                    //        playerCard[2] = trumpCard.ReRollCard();
-                    //        break;
-                    //    case 4:
-                    //        playerCard[3] = trumpCard.ReRollCard();
-                    //        break;
-                    //    case 5:
-                    //        playerCard[4] = trumpCard.ReRollCard();
-                    //        break;
-                    //    case 6:
-                    //        //pass
-                    //        break;
-                    //    default:
-                    //        Console.WriteLine("잘못 입력했습니다. 다시 선택하세요.");
-                    //        i--;
-                    //        break;
-                    //} //switch문 종료
+                    switch (playerInPut)
+                    {
+                        case 1:
+                            playerCard[0] = trumpCard.ReRollCard();
+                            break;
+                        case 2:
+                            playerCard[1] = trumpCard.ReRollCard();
+                            break;
+                        case 3:
+                            playerCard[2] = trumpCard.ReRollCard();
+                            break;
+                        case 4:
+                            playerCard[3] = trumpCard.ReRollCard();
+                            break;
+                        case 5:
+                            playerCard[4] = trumpCard.ReRollCard();
+                            break;
+                        case 6:
+                            //pass
+                            break;
+                        default:
+                            Console.WriteLine("잘못 입력했습니다. 다시 선택하세요.");
+                            i--;
+                            break;
+                    } //switch문 종료
                 } //for문 종료
                 Console.WriteLine();
                 Console.WriteLine("플레이어 카드");
@@ -137,6 +138,29 @@ namespace Poker
                     Console.Write("{0} ", computerCard[i]);
                 }
                 Console.WriteLine();
+                computerCard.Sort();
+                playerCard.Sort();
+                string[] computerCardMark = trumpCard.SplitCardMark(computerCard);
+                List<string> computerCardNum = trumpCard.SplitCardNum(computerCard);
+                string[] playerCardMark = trumpCard.SplitCardMark(playerCard);
+                List<string> playerCardNum = trumpCard.SplitCardNum(playerCard);
+                List<int> com = playGame.TurnCard(computerCardNum);
+                List<int> play = playGame.TurnCard(playerCardNum);
+                string[] comM = new string[computerCardMark.Length];
+                string[] playM = new string[playerCardMark.Length];
+
+                //com = playGame.BubbleSort(com);
+                //play = playGame.BubbleSort(play);
+                for(int z = 0; z < com.Count;  z++)
+                {
+                    Console.Write("{0} ", computerCard[z]);
+                }
+                Console.WriteLine();
+                for (int z = 0; z < play.Count; z++)
+                {
+                    Console.Write("{0} ", playerCard[z]);
+                }
+
                 Console.WriteLine();
             } //while 종료
         } //main
