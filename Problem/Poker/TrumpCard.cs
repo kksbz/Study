@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lap3
 {
+    //구조체로 카드구성요소 정함
     public struct PokerCards
     {
         public int cardNums;
@@ -16,45 +17,34 @@ namespace Lap3
     public class PlayGame : TrumpCard
     {
         TrumpCard trumpCard = new TrumpCard();
-        public void ShowCardSet(List<PokerCards> IntArray)
+        //카드 출력 함수
+        public void ShowCardSet(List<PokerCards> list)
         {
-            for (int i = 0; i < IntArray.Count; i++)
+            //카드 출력 for문
+            for (int i = 0; i < list.Count; i++)
             {
-                Console.Write("{0}{1} ", IntArray[i].cardMark, IntArray[i].cardNum);
+                //카드 출력 카드숫자가 11, 12, 13일때 J Q K로 출력
+                switch (list[i].cardNum)
+                {
+                    case 1:
+                        Console.Write("{0}A ", list[i].cardMark);
+                        break;
+                    case 11:
+                        Console.Write("{0}J ", list[i].cardMark);
+                        break;
+                    case 12:
+                        Console.Write("{0}Q ", list[i].cardMark);
+                        break;
+                    case 13:
+                        Console.Write("{0}K ", list[i].cardMark);
+                        break;
+                    default:
+                        Console.Write("{0}{1} ", list[i].cardMark, list[i].cardNum);
+                        break;
+                }
             }
             Console.WriteLine();
         } //ShowCardSet
-        public List<int> TurnCard(List<string> InPut)
-        {
-            List<int> cardSet = new List<int>(InPut.Count);
-            for (int i = 0; i < InPut.Count; i++)
-            {
-                int number = default;
-                number = trumpCard.Turn(InPut[i]);
-                cardSet.Add(number);
-                Console.Write("{0} ", cardSet[i]);
-            }
-            Console.WriteLine();
-            return cardSet;
-        } //TurnCard
-
-        public List<int> BubbleSort(List<int> inPut)
-        {
-            for(int j = 0; j < inPut.Count; j++)
-            {
-                for(int i = 0; i < inPut.Count - 1; i++)
-                {
-                    if (inPut[i] > inPut[i + 1])
-                    {
-                        int temp = inPut[i + 1];
-                        inPut[i +1] = inPut[i];
-                        inPut[i] = temp;
-                    }
-                }
-            }
-            return inPut;
-        }
-        
     } //PlayGame
 
 
@@ -62,43 +52,9 @@ namespace Lap3
     {
         private int[] trumpCardSet; //내가 사용할 카드 세트
         private string[] trumpCardMark; //트럼프 카드의 마크
-        public List<string> cardSet= new List<string>();
-        public List<PokerCards> ComPickCards(List<PokerCards> intArray)
-        {
-            List<PokerCards> pickCard = new List<PokerCards>();
-            for (int i = 0; i < 5; i++)
-            {
-                pickCard.Add(intArray[i]);
-            }
-            return pickCard;
-        }
-        public List<PokerCards> ComAddCards(List<PokerCards> intArray)
-        {
-            List<PokerCards> pickCard = new List<PokerCards>();
-            pickCard.Add(intArray[5]);
-            pickCard.Add(intArray[46]);
-            return pickCard;
-        }
+        public List<string> cardSet = new List<string>();
 
-        public List<PokerCards> changeCards(List<PokerCards> intArray)
-        {
-            List<PokerCards> pickCard = new List<PokerCards>();
-            Random random = new Random();
-            int rN = random.Next(6,46+1);
-            pickCard.Add(intArray[rN]);
-            return pickCard;
-        }
-
-        public List<PokerCards> PlayerPickCards(List<PokerCards> intArray)
-        {
-            List<PokerCards> pickCard = new List<PokerCards>();
-            for (int i = intArray.Count - 1; i > intArray.Count - 6; i--)
-            {
-                pickCard.Add(intArray[i]);
-            }
-            return pickCard;
-        }
-        
+        //카드 1~52개까지 순차적으로 세팅하는 함수
         public List<PokerCards> SetupTrumpCards()
         {
             /**
@@ -119,63 +75,37 @@ namespace Lap3
                 cardMark = trumpCardMark[(card.cardNums - 1) / 13];
                 cardNumber = Math.Ceiling(card.cardNums % 13.1);
                 card.cardNum = (int)cardNumber;
-                card.cardMark =  cardMark;
+                card.cardMark = cardMark;
                 pokerCard.Add(card);
-                //Console.WriteLine("{0}, {1}-{2}",pokerCard[i].cardNums, pokerCard[i].cardMark, pokerCard[i].cardNum);
             } //for문 종료
-            //트럼프카드의 마크를 셋업
+            //트럼프카드 셋업
             return pokerCard;
         } //SetupTrumpCards
-       
-        public List<PokerCards> RollCard(List<PokerCards> intArray)
-        {
-            for(int i = 0; i < intArray.Count; i++)
-            {
-                int num = 0;
-                num = intArray[i].cardNum;
-                string cNum = string.Empty;
-                cNum = Convert.ToString(intArray[i].cardNum);
-                switch (num)
-                {
-                    case 11:
-                        cNum = "J";
-                        break;
-                    case 12:
-                        cNum = "Q";
-                        break;
-                    case 13:
-                        cNum = "K";
-                        break;
-                    default:
-                        cNum = Convert.ToString(num);
-                        break;
-                } //switch
-                Console.Write("{0} ", intArray[i].cardNum);
-            }
-            return intArray;
-        } //RollCard
 
-        public int Turn(string str)
+        //플레이할 카드 뽑기
+        public List<PokerCards> PickCards(List<PokerCards> list)
         {
-            int i = default;
-            switch (str)
+            List<PokerCards> pickCard = new List<PokerCards>();
+            for (int i = 0; i < 5; i++)
             {
-                case "J":
-                    i = 11;
-                    break;
-                case "Q":
-                    i = 12;
-                    break;
-                case "K":
-                    i = 13;
-                    break;
-                default:
-                    i = Convert.ToInt32(str);
-                    break;
+                pickCard.Add(list[i]);
+                list.Remove(list[i]);
             }
-            return i;
+            return pickCard;
         }
-        
+
+        //컴퓨터 추가카드, 플레이어 교체 카드 뽑기
+        public List<PokerCards> onePickCard(List<PokerCards> list)
+        {
+            List<PokerCards> pickCard = new List<PokerCards>();
+
+            pickCard.Add(list[0]);
+            list.Remove(list[0]);
+
+            return pickCard;
+        }
+
+        //셋팅된 카드 섞는 함수
         public List<PokerCards> shuffleOnce(List<PokerCards> intArray)
         {
             Random random = new Random();
@@ -190,16 +120,17 @@ namespace Lap3
             return intArray;
         } //ShuffleOnce
 
-        public List<PokerCards> ShuffleCards(List<PokerCards> intArray)
+        //셋팅된 카드 여러번 섞는 함수
+        public List<PokerCards> ShuffleCards(List<PokerCards> list)
         {
-            for(int i = 0; i< 50; i++)
+            for (int i = 0; i < 50; i++)
             {
-                for (int j = 0; j < intArray.Count; j++)
+                for (int j = 0; j < list.Count; j++)
                 {
-                    intArray = shuffleOnce(intArray);
+                    list = shuffleOnce(list);
                 }
             }
-            return intArray;
+            return list;
         } //ShuffleCards
     }
 }

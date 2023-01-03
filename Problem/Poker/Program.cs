@@ -29,27 +29,28 @@ namespace Poker
             TrumpCard trumpCard = new TrumpCard();
             PlayGame playGame = new PlayGame();
             List<PokerCards> pokerCards = new List<PokerCards>();
-            List<PokerCards> computerCards = new List<PokerCards>();
+            List<PokerCards> comCards = new List<PokerCards>();
             List<PokerCards> playerCards = new List<PokerCards>();
-            List<PokerCards> dropCards = new List<PokerCards>();
 
             int point = 10_000;
             int userInPut = -1;
             bool gameOver = false;
 
+            //게임시작
             while (gameOver == false)
             {
                 Console.Clear();
                 pokerCards = trumpCard.SetupTrumpCards();
                 pokerCards = trumpCard.ShuffleCards(pokerCards);
-                computerCards = trumpCard.ComPickCards(pokerCards);
-                playerCards = trumpCard.PlayerPickCards(pokerCards);
-
-                Console.WriteLine("컴퓨터 픽");
-                playGame.ShowCardSet(computerCards);
-                Console.WriteLine("플레이어 픽");
+                comCards = trumpCard.PickCards(pokerCards);
+                playerCards = trumpCard.PickCards(pokerCards);
+                Console.WriteLine("컴퓨터 카드셋");
+                playGame.ShowCardSet(comCards);
+                Console.WriteLine("플레이어 카드셋");
                 playGame.ShowCardSet(playerCards);
+                Console.WriteLine();
 
+                //플레이어 카드 교체하기
                 for (int i = 0; i < 2; i++)
                 {
                     int playerInPut = 0;
@@ -59,23 +60,23 @@ namespace Poker
                     switch (playerInPut)
                     {
                         case 1:
-                            randomCard = trumpCard.changeCards(pokerCards);
+                            randomCard = trumpCard.onePickCard(pokerCards);
                             playerCards[0] = randomCard[0];
                             break;
                         case 2:
-                            randomCard = trumpCard.changeCards(pokerCards);
+                            randomCard = trumpCard.onePickCard(pokerCards);
                             playerCards[1] = randomCard[0];
                             break;
                         case 3:
-                            randomCard = trumpCard.changeCards(pokerCards);
+                            randomCard = trumpCard.onePickCard(pokerCards);
                             playerCards[2] = randomCard[0];
                             break;
                         case 4:
-                            randomCard = trumpCard.changeCards(pokerCards);
+                            randomCard = trumpCard.onePickCard(pokerCards);
                             playerCards[3] = randomCard[0];
                             break;
                         case 5:
-                            randomCard = trumpCard.changeCards(pokerCards);
+                            randomCard = trumpCard.onePickCard(pokerCards);
                             playerCards[4] = randomCard[0];
                             break;
                         case 6:
@@ -87,18 +88,19 @@ namespace Poker
                             break;
                     } //switch문 종료
                 } //for문 종료
+
                 Console.WriteLine();
-                Console.WriteLine("플레이어 카드");
+                Console.WriteLine("플레이어 카드셋");
                 playGame.ShowCardSet(playerCards);
                 Console.WriteLine();
-
+                //베팅시작
                 for (int i = 0; i < 1; i++)
                 {
                     Console.Write("베팅할 금액을 입력: ");
                     string str = Console.ReadLine();
                     Console.WriteLine();
                     bool isNum = str.All(char.IsDigit);
-
+                    //베팅입력 예외처리 if문
                     if (isNum == true)
                     {
                         int.TryParse(str, out userInPut);
@@ -109,6 +111,12 @@ namespace Poker
                         Console.WriteLine();
                         i--;
                         continue;
+                    }
+                    
+                    if (userInPut > point)
+                    {
+                        Console.WriteLine("보유 포인트 안에서 베팅하세요.");
+                        i--;
                     }
 
                     if (0 < userInPut && userInPut <= point)
@@ -121,44 +129,63 @@ namespace Poker
                     //0을입력하면 패스해야되므로 조건: userInPut이 0일 때
                     else if (userInPut == 0)
                     {
+                        //베팅만 안하고 그판의 결과는 보여줌
                         Console.WriteLine("패스했습니다.");
                         Console.WriteLine();
                         //userInPut값 초기화 ->이거안하면 0입력으로 패스후 다음 반복시 문자열or특수문자입력시
                         //정수가아닙니다 출력되고 userInPut값이 0이므로 패스했습니다가 또 출력됨 
-                        userInPut -= 1;
-                        //for문 다시 반복해야되므로 index--
-                        i--;
                     } //if문 종료
                 } //for문 종료
+                List<PokerCards> comPlusCard= new List<PokerCards>();
+                comPlusCard = trumpCard.onePickCard(pokerCards);
+                comCards.Add(comPlusCard[0]);
+                comPlusCard = trumpCard.onePickCard(pokerCards);
+                comCards.Add(comPlusCard[0]);
+                Console.WriteLine("컴퓨터 카드셋");
+                playGame.ShowCardSet(comCards);
+                Console.WriteLine();
+                //컴퓨터카드 카드넘버로 오름차순 정렬
+                comCards = comCards.OrderBy(i => i.cardNum).ToList();
+                //플레이어카드 카드넘버로 오름차순 정렬
+                playerCards = playerCards.OrderBy(i => i.cardNum).ToList();
 
-                dropCards = trumpCard.ComAddCards(pokerCards);
-                computerCards.Add(dropCards[0]);
-                computerCards.Add(dropCards[1]);
-                Console.WriteLine("컴퓨터 카드");
-                playGame.ShowCardSet(computerCards);
+                PokerPlay pokerPlay = new PokerPlay();
+                var computerCardType = pokerPlay.PlayPoker(comCards);
+                var playerCardType = pokerPlay.PlayPoker(playerCards);
+
+                Console.WriteLine("플레이어: {0}, 컴퓨터: {1}", playerCardType, computerCardType);
+
+                if(computerCardType > playerCardType)
+                {
+                    Console.WriteLine("컴퓨터 승리! 플레이어 패배");
+                }
+                else if (computerCardType == playerCardType)
+                {
+                    Console.WriteLine("비겼습니다");
+                    point += userInPut;
+                }
+                else
+                {
+                    Console.WriteLine("플레이어 승리!");
+                    point += (userInPut * 2);
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("보유 포인트: {0}",point);
                 Console.WriteLine();
 
-                List<PokerCards> computerCard = computerCards.OrderBy(i => i.cardNum).ToList(); //->오름차순정렬
-                List<PokerCards> playerCard = playerCards.OrderBy(i => i.cardNum).ToList();
+                //게임승패조건
+                if(point <= 0)
+                {
+                    Console.WriteLine("포인트를 전부 잃었습니다. 패배");
+                    gameOver = true;
+                }
+                else if(point >= 100_000)
+                {
+                    Console.WriteLine("{0}포인트 획득! 승리!", point);
+                    gameOver = true;
+                }
 
-                List<int> clist = new List<int>() { computerCard[0].cardNum, computerCard[1].cardNum, computerCard[2].cardNum,
-                    computerCard[3].cardNum, computerCard[4].cardNum, computerCard[5].cardNum, computerCard[6].cardNum };
-                var resultC = clist.GroupBy(x => x)
-                        .Where(g => g.Count() > 1)
-                        .ToDictionary(x => x.Key, x => x.Count());
-                Console.WriteLine(String.Join(", ", resultC));
-
-                List<int> plist = new List<int>() { playerCard[0].cardNum, playerCard[1].cardNum, playerCard[2].cardNum,
-                    playerCard[3].cardNum, playerCard[4].cardNum};
-                var resultP = plist.GroupBy(x => x)
-                        .Where(g => g.Count() > 1)
-                        .ToDictionary(x => x.Key, x => x.Count());
-                Console.WriteLine(String.Join(", ", resultP));
-
-                int computerValue = 0;
-                int playerValue = 0;
-                
-               
                 Console.WriteLine("아무키나 입력해서 다음판으로 이동");
                 Console.ReadLine();
             } //while 종료
