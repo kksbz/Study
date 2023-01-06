@@ -45,7 +45,6 @@ namespace Lap1
             boardSet.coinX = 0;
             boardSet.cntCoin = 0;
             boardSet.loop = false;
-
             boardSet.board = new string[boardSet.boardSizeY, boardSet.boardSizeX];
             //보드 ?X?배열 선언 (Y축,X축은 유저입력으로 받음)
             //사람을 "옷"으로 표시하기위해 선언
@@ -88,7 +87,7 @@ namespace Lap1
             Console.WriteLine();
 
             return boardSet;
-        } //Map1
+        } //MapSet
 
         public BoardSet CoinMap(BoardSet boardMap)
         {
@@ -195,6 +194,22 @@ namespace Lap1
             }
             return boardMap3;
         }
+
+        //public BoardSet Lobby() 
+        //{
+        //    BoardSet lobby = new BoardSet();
+        //    lobby = MapSet();
+        //    for (int x = (lobby.boardSizeX / 2) - 1; x < (lobby.boardSizeX / 2); x++)
+        //    {
+        //        lobby.board[x, lobby.boardSizeX - 1] = "＠";
+        //        lobby.board[2, 2] = "♨";
+        //        lobby.board[7, 7] = "®";
+        //        lobby.peopleY = 1;
+        //        lobby.peopleX = x;
+        //        lobby.board[lobby.peopleY, lobby.peopleX] = lobby.people;
+        //    }
+        //    return lobby;
+        //}
         
     } //Map
 }

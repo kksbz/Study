@@ -102,7 +102,7 @@ namespace Lap2
                 //플레이어 턴 선택시작을 위한 for문 시작 loop: 1번 루프
                 for(int index = 0; index < 1; index++)
                 {
-                    Console.Write("수행할 행동을 선택하세요.\n1번: 공격, 2번: 방어, 3번: 도망 ");
+                    Console.Write("수행할 행동을 선택하세요.\n1번: 공격\n2번: 방어\n3번: 도망\n선택하기: ");
                     //string형식으로 받은 값을 int형식으로 변환
                     int.TryParse(Console.ReadLine(), out userInPut);
                     Console.WriteLine();

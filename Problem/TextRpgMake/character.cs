@@ -10,10 +10,11 @@ namespace TextRpgMake
     //모든 캐릭터의 스탯 뼈대
     public class Character
     {
+        protected string name;
+        protected string _class;
         protected int level;
         protected int exp;
         protected int[] inventory;
-        protected string name;
         protected double hp;
         protected int mp;
         protected double damage;
@@ -72,9 +73,24 @@ namespace TextRpgMake
         public int PlayerX
         {
             get { return this.playerX; }
-            set { this.PlayerX = value; }
+            set { this.playerX = value; }
         }
-        
+        public int MonsterY
+        {
+            get { return this.monsterY; }
+            set { this.monsterY = value; }
+        }
+        public int MonsterX
+        {
+            get { return this.monsterX; }
+            set { this.monsterX = value; }
+        }
+        public string _Class
+        {
+            get { return this._class; }
+            set { this._class = value; }
+        }
+
     } //character
 
     public class Player : Character
@@ -113,6 +129,7 @@ namespace TextRpgMake
 
         public void Knight(string inPut)
         {
+            this._class = "기사";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
@@ -127,6 +144,7 @@ namespace TextRpgMake
 
         public void Archer(string inPut)
         {
+            this._class = "궁수";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
@@ -141,6 +159,7 @@ namespace TextRpgMake
 
         public void Mage(string inPut)
         {
+            this._class = "마법사";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
@@ -170,7 +189,7 @@ namespace TextRpgMake
         public void Orc()
         {
             this.name = "오크";
-            this.level = 1;
+            this.level = 2;
             this.exp = 50;
             this.hp = 200;
             this.mp = 50;
@@ -190,9 +209,7 @@ namespace TextRpgMake
             this.mp = 80;
             this.damage = 45;
             this.defence = 30;
-            //Console.ForegroundColor = ConsoleColor.Red;
-            this.mark = "옼";
-            //Console.ResetColor();
+            this.mark =  "옼";
             this.monsterY = 1;
             this.monsterX = 1;
         } //Orc
@@ -201,7 +218,7 @@ namespace TextRpgMake
         {
             this.name = "오크 법사";
             this.level = 5;
-            this.exp = 200;
+            this.exp = 0;
             this.hp = 400;
             this.mp = 300;
             this.damage = 60;
@@ -214,6 +231,20 @@ namespace TextRpgMake
 
     public class GoblinType : Monster
     {
-
+        public void Goblin()
+        {
+            this.name = "고블린";
+            this.level = 1;
+            this.exp = 40;
+            this.hp = 100;
+            this.mp = 0;
+            this.damage = 20;
+            this.defence = 0;
+            this.mark = "곱";
+            this.monsterY = 1;
+            this.monsterX = 1;
+        } //Orc
     } //GoblinType
+
+
 } //namespace

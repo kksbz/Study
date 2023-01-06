@@ -69,8 +69,10 @@ namespace Lap1
             board2 = map.Map2();
             board2.mapName = 2;
             board3 = map.Map3();
+            board3.mapName = 3;
 
-            
+
+
             while (board.loop == false)
             {
                 //0.5초 멈춤
@@ -150,7 +152,7 @@ namespace Lap1
 
             } //while문 종료
 
-        }
+        } //PlayGame
 
         public BoardSet MoveInfo(BoardSet board)
         {
