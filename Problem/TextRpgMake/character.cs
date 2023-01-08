@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,91 +12,128 @@ namespace TextRpgMake
     public class Character
     {
         protected string name;
-        protected string _class;
         protected int level;
         protected int exp;
-        protected int[] inventory;
-        protected double hp;
+        public int requiredExp = 300;
+        protected int max_hp;
+        protected int max_mp;
+        protected int hp;
         protected int mp;
-        protected double damage;
-        protected double defence;
-        protected string mark;
-        protected int playerY;
-        protected int playerX;
-        protected int monsterY;
-        protected int monsterX;
+        protected int damage;
+        protected int defence;
+
 
         public int Level
         {
             get { return level; }
-            set { level = value; }
+            set 
+            {
+                //직업별 레벨보너스 설정
+                if(level < value)
+                {
+                    this.Damage = this.Damage + Player.knightDamage + Player.archerDamage + Player.mageDamage;
+                    this.Defence = this.Defence + Player.knightDefence + Player.archerDefence + Player.mageDefence;
+                    this.MaxHp = this.MaxHp + Player.knightMaxHp + Player.archerMaxHp + Player.mageMaxHp;
+                    this.MaxMp = this.MaxMp + Player.knightMaxMp + Player.archerMaxMp + Player.mageMaxMp;
+                    this.Hp = this.MaxHp;
+                    this.Mp = this.MaxMp;
+                }
+                level = value;
+            }
         }
         public int Exp
         {
             get { return exp; }
-            set { exp = value; }
+            set
+            {
+                do
+                {
+                    if (value >= requiredExp)
+                    {
+                        Level++;
+                        value -= requiredExp;
+                        requiredExp += 100;
+                    }
+                } while (value >= requiredExp);
+                exp = value;
+            }
         }
         public string Name
         {
             get { return this.name; }
             set { this.name = value; }
         }
-        public double Hp
+        public int MaxHp
+        {
+            get { return this.max_hp; }
+            set { this.max_hp = value; }
+        }
+        public int MaxMp
+        {
+            get { return this.max_mp; }
+            set { this.max_mp = value; }
+        }
+        public int Hp
         {
             get { return this.hp; }
-            set { this.hp = value; }
+            set
+            {
+                if (value >= this.MaxHp)
+                {
+                    value = this.MaxHp;
+                }
+                this.hp = value;
+            }
         }
         public int Mp
         {
             get { return this.mp; }
-            set { this.mp = value; }
+            set
+            {
+                if (value >= this.MaxMp)
+                {
+                    value = this.MaxMp;
+                }
+                this.mp = value;
+            }
         }
-        public double Damage
+        public int Damage
         {
             get { return this.damage; }
             set { this.damage = value; }
         }
-        public double Defence
+        public int Defence
         {
             get { return this.defence; }
             set { this.defence = value; }
-        }
-        public string Mark
-        {
-            get { return this.mark; }
-            set { this.mark = value; }
-        }
-        public int PlayerY
-        {
-            get { return this.playerY; }
-            set { this.playerY = value; }
-        }
-        public int PlayerX
-        {
-            get { return this.playerX; }
-            set { this.playerX = value; }
-        }
-        public int MonsterY
-        {
-            get { return this.monsterY; }
-            set { this.monsterY = value; }
-        }
-        public int MonsterX
-        {
-            get { return this.monsterX; }
-            set { this.monsterX = value; }
-        }
-        public string _Class
-        {
-            get { return this._class; }
-            set { this._class = value; }
         }
 
     } //character
 
     public class Player : Character
     {
-        public Player()
+        public string _class;
+        public List<ClassSkill> skillList = new List<ClassSkill>();
+        public List<Item> itemList = new List<Item>();
+
+        public int gold = 0;
+        public bool playerDead = false;
+        
+        public static int knightDamage = 0;
+        public static int knightDefence = 0;
+        public static int knightMaxHp = 0;
+        public static int knightMaxMp = 0;
+
+        public static int archerDamage = 0;
+        public static int archerDefence = 0;
+        public static int archerMaxHp = 0;
+        public static int archerMaxMp = 0;
+
+        public static int mageDamage = 0;
+        public static int mageDefence = 0;
+        public static int mageMaxHp = 0;
+        public static int mageMaxMp = 0;
+        public void SelectPlayer()
         {
             Console.Write("플레이어의 이름을 정하세요.");
             Console.WriteLine();
@@ -103,8 +141,7 @@ namespace TextRpgMake
             int userInPut = 0;
             for (int index = 0; index < 1; index++)
             {
-                Console.WriteLine("클래스를 선택하세요.");
-                Console.WriteLine("1 - 기사, 2 - 궁수, 3- 마법사");
+                Console.WriteLine("클래스를 선택하세요.\n【1】기사\n【2】궁수\n【3】마법사");
                 int.TryParse(Console.ReadLine(), out userInPut);
 
                 switch (userInPut)
@@ -125,126 +162,101 @@ namespace TextRpgMake
                         break;
                 } //switch
             } //for
-        } //Player(생성자)
+        } //SelectPlayer
 
         public void Knight(string inPut)
         {
+            skillList.Add(KnightSkill.Skill_1());
+            if(itemList.Count < 6)
+            {
+                itemList.Add(KnightWeapon.BasicSword());
+                itemList.Add(KnightWeapon.BasicSword());
+                itemList.Add(KnightWeapon.BasicSword());
+                itemList.Add(KnightWeapon.BasicSword());
+                itemList.Add(KnightWeapon.BasicSword());
+                itemList.Add(KnightWeapon.BasicSword());
+                itemList.Add(KnightWeapon.BasicSword());
+            }
             this._class = "기사";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.hp = 300;
-            this.mp = 100;
+            this.MaxHp = 300;
+            this.MaxMp = 100;
+            this.hp = this.MaxHp;
+            this.mp = this.MaxMp;
             this.damage = 40;
             this.defence = 40;
-            this.mark = "옷";
-            this.playerY = 1;
-            this.playerX = 1;
+            this.gold = 100;
+            this.playerDead = false;
+            knightDamage = 1;
+            knightDefence = 2;
+            knightMaxHp = 10;
+            knightMaxMp = 3;
         } //Knight
 
         public void Archer(string inPut)
         {
+            skillList.Add(ArcherSkill.Skill_1());
+            itemList.Add(ArcherWeapon.BasicBow());
             this._class = "궁수";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.hp = 250;
-            this.mp = 130;
+            this.MaxHp = 250;
+            this.MaxMp = 130;
+            this.hp = this.MaxHp;
+            this.mp = this.MaxMp;
             this.damage = 35;
             this.defence = 30;
-            this.mark = "옷";
-            this.playerY = 1;
-            this.playerX = 1;
+            this.gold = 100;
+            this.playerDead = false;
+            archerDamage = 2;
+            archerDefence = 1;
+            archerMaxHp = 7;
+            archerMaxMp = 5;
         } //Archer
 
         public void Mage(string inPut)
         {
+            skillList.Add(MageSkill.Skill_1());
+            itemList.Add(MageWeapon.BasicStaff());
             this._class = "마법사";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.hp = 220;
-            this.mp = 200;
+            this.MaxHp = 220;
+            this.MaxMp = 200;
+            this.hp = this.MaxHp;
+            this.mp = this.MaxMp;
             this.damage = 45;
             this.defence = 25;
-            this.mark = "옷";
-            this.playerY = 1;
-            this.playerX = 1;
+            this.gold = 100;
+            this.playerDead = false;
+            mageDamage = 1;
+            mageDefence = 2;
+            mageMaxHp = 5;
+            mageMaxMp = 10;
         } //Mage
 
+        
     } //Player
 
-    public class Monster : Character
+    public class Npc
     {
-        public Monster SelectMonster()
+        public List<Item> shopItemList = new List<Item>();
+        public void ShopNpc()
         {
-            OrcType orc = new OrcType();
-            orc.OrcArcher();
-            return orc;
-        } //SelectMonster
-    } //Monster
-
-    public class OrcType : Monster
-    {
-        public void Orc()
-        {
-            this.name = "오크";
-            this.level = 2;
-            this.exp = 50;
-            this.hp = 200;
-            this.mp = 50;
-            this.damage = 30;
-            this.defence = 20;
-            this.mark = "옼";
-            this.monsterY = 1;
-            this.monsterX = 1;
-        } //Orc
-
-        public void OrcArcher()
-        {
-            this.name = "오크 궁수";
-            this.level = 3;
-            this.exp = 120;
-            this.hp = 300;
-            this.mp = 80;
-            this.damage = 45;
-            this.defence = 30;
-            this.mark =  "옼";
-            this.monsterY = 1;
-            this.monsterX = 1;
-        } //Orc
-
-        public void OrcMage()
-        {
-            this.name = "오크 법사";
-            this.level = 5;
-            this.exp = 0;
-            this.hp = 400;
-            this.mp = 300;
-            this.damage = 60;
-            this.defence = 20;
-            this.mark = "옼";
-            this.monsterY = 1;
-            this.monsterX = 1;
-        } //Orc
-    } //OrcType
-
-    public class GoblinType : Monster
-    {
-        public void Goblin()
-        {
-            this.name = "고블린";
-            this.level = 1;
-            this.exp = 40;
-            this.hp = 100;
-            this.mp = 0;
-            this.damage = 20;
-            this.defence = 0;
-            this.mark = "곱";
-            this.monsterY = 1;
-            this.monsterX = 1;
-        } //Orc
-    } //GoblinType
-
+            shopItemList.Add(Expendables.HpPotion());
+            shopItemList.Add(Expendables.MpPotion());
+            int num = 1;
+            Console.WriteLine("판매 목록");
+            foreach(Item item in shopItemList) 
+            {
+                Console.WriteLine("【{0}】▶【아이템명】{1},【가격】{2}", num, item.Name, item.Price);
+                num++;
+            }
+        } //ShopNpc
+    } //NPC
 
 } //namespace

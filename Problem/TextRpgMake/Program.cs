@@ -5,17 +5,14 @@ namespace TextRpgMake
 {
     internal class Program
     {
+        static Player mainPlayer = null;
         static void Main(string[] args)
         {
-            MoveKey moveKey= new MoveKey();
-            moveKey.PlayGame();
+            mainPlayer = new Player();
+            PlayGame playGame = new PlayGame(mainPlayer);
+            //MoveKey moveKey= new MoveKey();
+            //moveKey.PlayGame(mainPlayer);
 
-
-            //monster = monster.SelectMonster();
-            //Console.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}, {6}", player.Name, player.Level, player.Exp, player.Hp, player.Mp, player.Damage, player.Defence);
-            //Battle battle = new Battle(player, monster);
-
-            Console.WriteLine();
         } //Main
-    }
+    } //Program
 }

@@ -38,6 +38,8 @@ namespace TextRpgMake
             public bool potalCount;
             public bool monsterCount;
             public bool end;
+            public bool showItem;
+            public bool showSkill;
         }
 
         MapSet mapSet = new MapSet();
@@ -46,26 +48,26 @@ namespace TextRpgMake
         {
             mapSet.mapSizeY = sizeY;
             mapSet.mapSizeX = sizeX;
-            mapSet.mapMark = ". ";
+            mapSet.mapMark = "  ";
             mapSet.mapEdgeMark = "■";
             mapSet.monsterMark = "♀";
             mapSet.playerMark = "위";
-            mapSet.motel = "♨";
-            mapSet.shop = "®";
+            mapSet.motel = "옷";
+            mapSet.shop = "⑧";
             mapSet.potal = "＠";
             mapSet.map = new string[mapSet.mapSizeY, mapSet.mapSizeX];
 
-            for(int y = 0; y < mapSet.mapSizeY; y++)
+            for (int y = 0; y < mapSet.mapSizeY; y++)
             {
-                for(int x = 0; x < mapSet.mapSizeX; x++)
+                for (int x = 0; x < mapSet.mapSizeX; x++)
                 {
                     mapSet.map[y, x] = mapSet.mapMark;
-                    
-                    if(y == 0 && 0 <= x && x < mapSet.mapSizeX)
+
+                    if (y == 0 && 0 <= x && x < mapSet.mapSizeX)
                     {
                         mapSet.map[y, x] = mapSet.mapEdgeMark;
                     }
-                    if(y == mapSet.mapSizeY - 1 && 0 <= x && x < mapSet.mapSizeX)
+                    if (y == mapSet.mapSizeY - 1 && 0 <= x && x < mapSet.mapSizeX)
                     {
                         mapSet.map[y, x] = mapSet.mapEdgeMark;
                     }
@@ -103,16 +105,15 @@ namespace TextRpgMake
             //IsthereCoin은 필드에 몬스터가있으면 true, 없으면 false
             if (!IsThereMonster)
             {
-                //보드안에 몬스터위치 선택을 위한 for문 시작 조건: 몬스터를 5개 둘거임
+                //보드안에 몬스터위치 선택을 위한 for문 시작
                 for (int index = 0; index < howManyMonster; index++)
                 {
                     //몬스터의 좌표값 랜덤설정
                     mapNumber.monsterY = randomNum.Next(1, mapNumber.mapSizeY - 1);
                     mapNumber.monsterX = randomNum.Next(1, mapNumber.mapSizeX - 1);
                     //몬스터위치 예외처리 if문 시작 조건: 맵위치에 몬스터가 없을때
-                    if (mapNumber.map[mapNumber.monsterY, mapNumber.monsterX] != mapNumber.monsterMark)
+                    if (mapNumber.map[mapNumber.monsterY, mapNumber.monsterX] == mapNumber.mapMark)
                     {
-                        //맵위치에 몬스터가 없으므로 몬스터저장
                         mapNumber.map[mapNumber.monsterY, mapNumber.monsterX] = mapNumber.monsterMark;
                     }
                     else
@@ -120,15 +121,8 @@ namespace TextRpgMake
                         //맵위치에 몬스터가 이미 있으므로 for문 한번 더돌림
                         index--;
                     }
-                    //if문 시작 조건: 배치된 몬스터위치 중 사람의 위치와 겹칠 때
-                    if (mapNumber.monsterY == 1 && mapNumber.monsterX == 1)
-                    {
-                        //사람의 위치가 코인과 겹치므로 사람으로 저장 for문 한번 더돌림
-                        mapNumber.map[mapNumber.monsterY, mapNumber.monsterX] = mapNumber.playerMark;
-                        index--;
-                    } //if문 종료
                 } //for문 종료
-                  //모든 예외처리가 완료되면 true로
+                //모든 예외처리가 완료되면 true로
                 IsThereMonster = true;
             } //if문 종료
             return mapNumber;
@@ -150,14 +144,16 @@ namespace TextRpgMake
         public MapSet Lobby()
         {
             MapSet lobby = new MapSet();
-            int Y = 10, X = 10;
+            int Y = 15, X = 15;
             lobby = MapSetting(Y, X);
+            lobby.map[2, 3] = "□"; lobby.map[3, 2] = "□"; lobby.map[3, 4] = "□"; lobby.map[3, 3] = "♨"; lobby.map[4, 2] = "□"; lobby.map[4, 4] = "□";
+            lobby.map[8, 10] = "□"; lobby.map[9, 9] = "□"; lobby.map[9, 11] = "□"; lobby.map[9, 10] = "$$"; lobby.map[10, 9] = "□"; lobby.map[10, 11] = "□";
             lobby.mapName = "마 을";
-            lobby.motelY = 3;
+            lobby.motelY = 4;
             lobby.motelX = 3;
             lobby.map[lobby.motelY, lobby.motelX] = lobby.motel;
-            lobby.shopY = 6;
-            lobby.shopX = 6;
+            lobby.shopY = 10;
+            lobby.shopX = 10;
             lobby.map[lobby.shopY, lobby.shopX] = lobby.shop;
             lobby.potalY = Y / 2;
             lobby.potalX = X - 1;
@@ -173,6 +169,7 @@ namespace TextRpgMake
             MapSet map1 = new MapSet();
             int Y = 15, X = 40;
             map1 = MapSetting(Y, X);
+            map1 = Fence(map1, 30);
             map1.mapName = "첫번째 필드";
             map1.potalY = 0;
             map1.potalX = X - 2;
@@ -188,6 +185,7 @@ namespace TextRpgMake
             MapSet map2 = new MapSet();
             int Y = 35, X = 30;
             map2 = MapSetting(Y, X);
+            map2 = Fence(map2, 60);
             map2.mapName = "두번째 필드";
             map2.potalY = 0;
             map2.potalX = X - 4;
@@ -198,6 +196,24 @@ namespace TextRpgMake
             return map2;
         }
 
+        public MapSet Fence(MapSet mapSet, int howManyFence)
+        {
+            Random random = new Random();
+            for(int index = 0; index < howManyFence; index++)
+            {
+                int Y = random.Next(2, mapSet.mapSizeY - 2);
+                int X = random.Next(2, mapSet.mapSizeX - 2);
+                if(mapSet.map[Y, X] == mapSet.mapMark)
+                {
+                    mapSet.map[Y, X] = "■";
+                }
+                else
+                {
+                    index--;
+                }
+            }
+            return mapSet;
+        }
     } //Map
 
 
