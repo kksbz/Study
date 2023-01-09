@@ -60,6 +60,7 @@ namespace TextRpgMake
             Item item = new Item();
             mapNumber.showItem = false;
             mapNumber.showSkill = false;
+            mapNumber.showInfo = false;
             mapNumber.monsterCount = false;
             mapNumber.potalCount = false;
             mapNumber.end = false;
@@ -200,6 +201,9 @@ namespace TextRpgMake
                     break;
                 case ConsoleKey.B:
                     mapNumber.showItem = true;
+                    break;
+                case ConsoleKey.C:
+                    mapNumber.showInfo = true;
                     break;
                 case ConsoleKey.K:
                     mapNumber.showSkill = true;

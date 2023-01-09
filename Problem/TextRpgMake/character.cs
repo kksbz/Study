@@ -130,7 +130,8 @@ namespace TextRpgMake
         public string _class;
         public List<ClassSkill> skillList = new List<ClassSkill>();
         public List<Item> itemList = new List<Item>();
-
+        public List<Item> putOnItem = new List<Item>();
+        public bool itemPutOn = false;
         public int gold = 0;
         public bool playerDead = false;
 
@@ -179,6 +180,29 @@ namespace TextRpgMake
             } //for
         } //SelectPlayer
 
+        public void ShowInfo(Player player)
+        {
+            Console.Clear();
+            Console.SetCursorPosition(0, 5);
+            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
+            Console.WriteLine("\t\t\t【{0}】의 정보\n",player.Name);
+            Console.WriteLine("\t【직업】  ▶ {0}\t【레벨】  ▶ {1}\n\n\t【HP】    ▶ {2}/{3}\t【MP】    ▶ {4}/{5}\n", player._class,
+                player.Level, player.Hp, player.MaxHp, player.Mp, player.MaxMp);
+            if(player.itemPutOn == false)
+            {
+                Console.WriteLine("\t【공격력】▶ {0}\t\t【방어력】▶ {1}\n", player.Damage, player.Defence);
+                Console.WriteLine("\t【무기】  ▶ 없음\n");
+            }
+            else
+            {
+                Console.WriteLine("\t【공격력】▶ {0} + {1}\t【방어력】▶ {1}\n", player.Damage - player.putOnItem[0].WeaponDamage,
+                    player.putOnItem[0].WeaponDamage, player.Defence);
+                Console.WriteLine("\t【무기】  ▶ {0}【무기공격력】▶ {1}\n", player.putOnItem[0].Name, player.putOnItem[0].WeaponDamage);
+            }
+            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
+            Console.ReadLine();
+            Console.Clear();
+        }
         public void Knight(string inPut)
         {
             skillList.Add(KnightSkill.Skill_1());
@@ -198,6 +222,7 @@ namespace TextRpgMake
             this.defence = 40;
             this.gold = 100;
             this.playerDead = false;
+            this.itemPutOn = false;
             knightDamage = 1;
             knightDefence = 2;
             knightMaxHp = 10;
@@ -223,6 +248,7 @@ namespace TextRpgMake
             this.defence = 30;
             this.gold = 100;
             this.playerDead = false;
+            this.itemPutOn = false;
             archerDamage = 2;
             archerDefence = 1;
             archerMaxHp = 7;
@@ -248,6 +274,7 @@ namespace TextRpgMake
             this.defence = 25;
             this.gold = 100;
             this.playerDead = false;
+            this.itemPutOn = false;
             mageDamage = 1;
             mageDefence = 2;
             mageMaxHp = 5;

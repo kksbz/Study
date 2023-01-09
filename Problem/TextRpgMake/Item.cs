@@ -51,12 +51,12 @@ namespace TextRpgMake
             set { hpMpPlus = value; }
         }
 
-        public void ShowItemList(List<Item> itemList)
+        public void ShowItemList(List<Item> itemList, Player player)
         {
             Console.Clear();
             Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
             int countNumber = 1;
-            Console.WriteLine("\t【보유 아이템 목록】\n");
+            Console.WriteLine("\t【보유 아이템 목록】\t【보유골드】{0}\n",player.gold);
             foreach (var item in itemList)
             {
                 if(item.ItemType == "무기")
@@ -103,13 +103,13 @@ namespace TextRpgMake
 
         public static KnightWeapon MithrilSword()
         {
-            KnightWeapon sword = new KnightWeapon("무기", "미스릴 검", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 검\n생각보다 가벼우니 사용에 주의!", 2000, 20);
+            KnightWeapon sword = new KnightWeapon("무기", "미스릴 검", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 검\n\t\t생각보다 가벼우니 사용에 주의!", 2000, 20);
             return sword;
         } //MithrilSword
 
         public static KnightWeapon Excalibur()
         {
-            KnightWeapon sword = new KnightWeapon("무기", "엑스칼리버", "과거 전설의 용사가 마왕을 벨 때 사용했다고 알려진 검\n신비한 기운이 검신을 감돌고 있다.", 5000, 40);
+            KnightWeapon sword = new KnightWeapon("무기", "엑스칼리버", "과거 전설의 용사가 마왕을 벨 때 사용했다고 알려진 검\n\t\t신비한 기운이 검신을 감돌고 있다.", 5000, 40);
             return sword;
         } //Excalibur
     } //KnightWeapon
@@ -139,13 +139,13 @@ namespace TextRpgMake
 
         public static ArcherWeapon MithrilBow() 
         {
-            ArcherWeapon bow = new ArcherWeapon("무기", "미스릴 보우", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 활\n화살이 없으면 이걸로 내려쳐라!", 2000, 20);
+            ArcherWeapon bow = new ArcherWeapon("무기", "미스릴 보우", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 활\n\t\t화살이 없으면 이걸로 내려쳐라!", 2000, 20);
             return bow;
         } //MithrilBow
 
         public static ArcherWeapon Windforce()
         {
-            ArcherWeapon bow = new ArcherWeapon("무기", "윈드포스", "바람의 힘이 담긴 전설속의 활\n대충 쏴도 원하는 곳에 화살을 때려박을 수 있다.", 5000, 40);
+            ArcherWeapon bow = new ArcherWeapon("무기", "윈드포스", "바람의 힘이 담긴 전설속의 활\n\t\t대충 쏴도 원하는 곳에 화살을 때려박을 수 있다.", 5000, 40);
             return bow;
         } //Windforce
     } //ArcherWeapon
@@ -175,13 +175,13 @@ namespace TextRpgMake
 
         public static MageWeapon WizardStaff() 
         {
-            MageWeapon staff = new MageWeapon("무기", "위자드 스태프", "마법아카데미 교수들이 즐겨쓴다는 스태프\n사람들에게 아카데미 교수라고 구라 쳐보자!", 2000, 20);
+            MageWeapon staff = new MageWeapon("무기", "위자드 스태프", "마법아카데미 교수들이 즐겨쓴다는 스태프\n\t\t사람들에게 아카데미 교수라고 구라 쳐보자!", 2000, 20);
             return staff;
         } //WizardStaff
 
         public static MageWeapon ArchonStaff()
         {
-            MageWeapon staff = new MageWeapon("무기", "아콘 스태프", "과거 대마법사가 사용했다고 알려진 전설속의 스태프\n무엇을 상상하든 그이상이 실현된다", 5000, 40);
+            MageWeapon staff = new MageWeapon("무기", "아콘 스태프", "과거 대마법사가 사용했다고 알려진 전설속의 스태프\n\t\t무엇을 상상하든 그이상이 실현된다", 5000, 40);
             return staff;
         } //ArchonStaff
     } //MageWeapon

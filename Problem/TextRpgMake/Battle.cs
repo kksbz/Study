@@ -121,7 +121,7 @@ namespace TextRpgMake
                             {
                                 Console.Clear();
                                 Console.SetCursorPosition(0, 5);
-                                item.ShowItemList(player.itemList);
+                                item.ShowItemList(player.itemList, player);
                                 Console.WriteLine("【사용하기】▶ 사용할 아이템 번호 /【뒤로】▶ 아이템 목록을 제외한 아무키\n");
                                 int itemInPut = -1;
                                 int.TryParse(Console.ReadLine(), out itemInPut);

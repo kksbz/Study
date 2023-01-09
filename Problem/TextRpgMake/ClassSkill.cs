@@ -44,15 +44,13 @@ namespace TextRpgMake
         {
             Console.Clear();
             int countNumber = 1;
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
-            Console.WriteLine("▣\t\t\t\t\t\t\t\t\t▣");
-            Console.WriteLine("▣       【보유 스킬 목록】\t\t\t\t\t\t▣");
+            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
+            Console.WriteLine("\t\t\t【보유 스킬 목록】\n");
             foreach (var skill in skillList)
             {
-                Console.WriteLine($"▣【{countNumber}】▶【스킬명】{skill.SkillName}\t【스킬데미지】{skill.SkillDamage}\t【소모마나】{skill.UseMp}  ▣\n▣       【정보】{skill.skillDesc}\t\t\t\t\t▣");
+                Console.WriteLine($"【{countNumber}】▶【스킬명】{skill.SkillName}\t【스킬데미지】{skill.SkillDamage}\t【소모마나】{skill.UseMp}\t\n       【정보】{skill.skillDesc}\n");
                 countNumber++;
             }
-            Console.WriteLine("▣\t\t\t\t\t\t\t\t\t▣");
             Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
         } //ShowSkillList
 
@@ -206,7 +204,7 @@ namespace TextRpgMake
 
         public static MageSkill Skill_3()
         {
-            MageSkill skill = new MageSkill(5, "메테오", "거대한 운석을 소환하여 내리꽂는다", 300, 100);
+            MageSkill skill = new MageSkill(5, "메테오 폴", "거대한 운석을 소환하여 내리꽂는다", 300, 100);
             return skill;
         } //Skill_2
     } //ArcherSkill

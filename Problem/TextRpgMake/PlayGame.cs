@@ -21,8 +21,8 @@ namespace TextRpgMake
             MapSet map1 = new MapSet();
             MapSet map2 = new MapSet();
             board = map.Lobby();
-            bool itemPutOn = false;
 
+            Console.Clear();
             while (board.end == false)
             {
                 //맵초기화
@@ -32,6 +32,7 @@ namespace TextRpgMake
                 //0.5초 멈춤
                 Thread.Sleep(50);
                 //콘솔창 커서위치 초기화
+                Console.CursorVisible = false;
                 Console.SetCursorPosition(0, 0);
 
                 if (board.mapName == map1.mapName)
@@ -44,14 +45,14 @@ namespace TextRpgMake
                 }
 
                 map.MapShow(board);
-                Console.WriteLine("【플레이방법】▶【w】↑【s】↓【a】←【d】→【b】인벤토리【k】스킬【x】게임종료");
-                Console.WriteLine("【{0}】▶【레벨】{1}\t【HP】{2}/{3}\t【MP】{4}/{5}\t【보유골드】{6}\t【현재위치】{7}", player.Name, player.Level,
-                    player.Hp, player.MaxHp, player.Mp, player.MaxMp, player.gold, board.mapName);
+                Console.WriteLine("【플레이방법】▶【w】↑【s】↓【a】←【d】→\n【인벤토리】  ▶【b】【스킬】▶【k】【상태창】▶【c】【게임종료】▶【x】\n");
+                Console.WriteLine("【{0}】▶【레벨】{1}【HP】{2}/{3}【MP】{4}/{5}【보유골드】{6}", player.Name, player.Level,
+                    player.Hp, player.MaxHp, player.Mp, player.MaxMp, player.gold);
                 Console.WriteLine();
                 //플레이어 이동입력 함수 호출
                 MoveKey moveKey = new MoveKey();
                 board = moveKey.MoveInfo(board);
-
+                //몬스터만나면 배틀시작
                 if (board.monsterCount == true)
                 {
                     Monster monster = new Monster();
@@ -59,7 +60,7 @@ namespace TextRpgMake
                     Battle battle = new Battle(player, monster);
                     board.monsterCount = false;
                 }
-
+                //플레이어 죽으면 로비로 이동
                 if (player.playerDead == true)
                 {
                     player.Hp = player.MaxHp;
@@ -67,44 +68,60 @@ namespace TextRpgMake
                     board = lobby;
                     player.playerDead = false;
                 }
+                //플레이어 정보보기
+                if (board.showInfo == true)
+                {
+                    player.ShowInfo(player);
+                }
 
+                //가방열기 아이템사용
                 if (board.showItem == true)
                 {
-                    item.ShowItemList(player.itemList);
-                    Console.WriteLine("【선택】▶ 사용할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키");
-                    int itemInPut = -1;
-                    int.TryParse(Console.ReadLine(), out itemInPut);
-                    if (0 < itemInPut && itemInPut <= player.itemList.Count)
+                    for(int index = 0; index < 1; index++)
                     {
-                        itemInPut = itemInPut - 1;
-                        if (player.itemList[itemInPut].ItemType == "무기")
+                        item.ShowItemList(player.itemList, player);
+                        Console.WriteLine("【선택】▶ 사용할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키");
+                        int itemInPut = -1;
+                        int.TryParse(Console.ReadLine(), out itemInPut);
+                        if (0 < itemInPut && itemInPut <= player.itemList.Count)
                         {
-                            Console.WriteLine("【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
-                            string putOn = Console.ReadLine();
-                            switch (putOn)
+                            itemInPut = itemInPut - 1;
+                            if (player.itemList[itemInPut].ItemType == "무기")
                             {
-                                case "y":
-                                    if(itemPutOn == false)
-                                    {
-                                        player.Damage += player.itemList[itemInPut].WeaponDamage;
-                                        player.itemList[itemInPut].Name += "【장착중】";
-                                        itemPutOn = true;
-                                    }
-                                    break;
-                                case "n":
-                                    if (itemPutOn == true)
-                                    {
-                                        player.Damage -= player.itemList[itemInPut].WeaponDamage;
-                                        player.itemList[itemInPut].Name.Replace("【장착중】");
-                                        itemPutOn = false;
-                                    }
-                                    break;
-                            }
-
-                        }
-                    }
+                                string putOnItem = "【장착중】";
+                                Console.WriteLine("【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
+                                string putOn = Console.ReadLine();
+                                switch (putOn)
+                                {
+                                    case "y":
+                                        if(player.itemPutOn == false)
+                                        {
+                                            Console.WriteLine("【{0}】▶ 장착 완료 【데미지】+{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
+                                            player.Damage += player.itemList[itemInPut].WeaponDamage;
+                                            player.itemList[itemInPut].Name += putOnItem;
+                                            player.putOnItem.Add(player.itemList[itemInPut]);
+                                            player.itemPutOn = true;
+                                            Console.ReadLine();
+                                        }
+                                        break;
+                                    case "n":
+                                        if (player.itemPutOn == true)
+                                        {
+                                            player.Damage -= player.itemList[itemInPut].WeaponDamage;
+                                            Console.WriteLine("【{0}】▶ 장착해제 완료 【데미지】-{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
+                                            player.itemList[itemInPut].Name = player.itemList[itemInPut].Name.Substring(0 , putOnItem.Length - 1);
+                                            player.putOnItem.Remove(player.itemList[itemInPut]);
+                                            player.itemPutOn = false;
+                                            Console.ReadLine();
+                                        }
+                                        break;
+                                } //switch
+                                index--;
+                            } //if
+                        } //if
+                    }//for
                     Console.Clear();
-                }
+                } //if
 
                 if (board.showSkill == true)
                 {
@@ -161,7 +178,7 @@ namespace TextRpgMake
                                 for (int index3 = 0; index3 < 1; index3++)
                                 {
                                     Console.Clear();
-                                    item.ShowItemList(player.itemList);
+                                    item.ShowItemList(player.itemList, player);
                                     Console.WriteLine();
                                     Console.WriteLine("【판매시 물건가격의 절반을 받습니다】【보유 골드】{0}\n\n【판매】▶판매할 물건 번호 /【뒤로】▶인벤토리 목록을 제외한 아무키", player.gold);
                                     int sell = -1;

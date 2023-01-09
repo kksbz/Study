@@ -40,6 +40,7 @@ namespace TextRpgMake
             public bool end;
             public bool showItem;
             public bool showSkill;
+            public bool showInfo;
         }
 
         MapSet mapSet = new MapSet();
@@ -130,7 +131,7 @@ namespace TextRpgMake
 
         public void MapShow(MapSet mapSet)
         {
-            Console.WriteLine("현재 위치: {0}", mapSet.mapName);
+            Console.WriteLine("【현재 위치】▶ {0}", mapSet.mapName);
             for (int y = 0; y < mapSet.mapSizeY; y++)
             {
                 for (int x = 0; x < mapSet.mapSizeX; x++)
