@@ -21,7 +21,7 @@ namespace TextRpgMake
             MapSet map1 = new MapSet();
             MapSet map2 = new MapSet();
             board = map.Lobby();
-
+            bool itemPutOn = false;
 
             while (board.end == false)
             {
@@ -71,86 +71,133 @@ namespace TextRpgMake
                 if (board.showItem == true)
                 {
                     item.ShowItemList(player.itemList);
+                    Console.WriteLine("【선택】▶ 사용할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키");
+                    int itemInPut = -1;
+                    int.TryParse(Console.ReadLine(), out itemInPut);
+                    if (0 < itemInPut && itemInPut <= player.itemList.Count)
+                    {
+                        itemInPut = itemInPut - 1;
+                        if (player.itemList[itemInPut].ItemType == "무기")
+                        {
+                            Console.WriteLine("【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
+                            string putOn = Console.ReadLine();
+                            switch (putOn)
+                            {
+                                case "y":
+                                    if(itemPutOn == false)
+                                    {
+                                        player.Damage += player.itemList[itemInPut].WeaponDamage;
+                                        player.itemList[itemInPut].Name += "【장착중】";
+                                        itemPutOn = true;
+                                    }
+                                    break;
+                                case "n":
+                                    if (itemPutOn == true)
+                                    {
+                                        player.Damage -= player.itemList[itemInPut].WeaponDamage;
+                                        player.itemList[itemInPut].Name.Replace("【장착중】");
+                                        itemPutOn = false;
+                                    }
+                                    break;
+                            }
+
+                        }
+                    }
+                    Console.Clear();
                 }
 
                 if (board.showSkill == true)
                 {
                     classSkill.ShowSkillList(player.skillList);
+                    Console.ReadLine();
+                    Console.Clear();
                 }
 
                 if (board.shopCount == true)
                 {
-                    Console.Clear();
-                    Console.WriteLine("【상인】{0} 오랜만에 보는구먼\n【상인】필요한 물건있나 한번 보시게\n【상인】우리가게 상품은 최상품이라구!", player.Name);
-                    Console.WriteLine();
-                    Console.WriteLine("【1】오늘의 상품은 뭐가 있나 한번 볼까?\n【2】아이템을 팔러왔소\n【3】다음에 다시 온다");
-                    string shopInPut = Console.ReadLine();
                     for (int index = 0; index < 1; index++)
                     {
+                        Console.Clear();
+                        Console.WriteLine("【상인】▶【{0}】오랜만에 보는구먼\n【상인】▶필요한 물건 있나 한번 보게나\n【상인】▶우리가게 상품은 최상품이라구!", player.Name);
+                        Console.WriteLine();
+                        Console.WriteLine("【1】▶오늘의 상품은 뭐가 있나 한번 볼까?\n【2】▶아이템을 팔러왔소\n【3】▶다음에 다시 온다");
+                        string shopInPut = Console.ReadLine();
+                        Console.Clear();
                         switch (shopInPut)
                         {
                             case "1":
-                                Npc npc = new Npc();
-                                npc.ShopNpc();
-                                Console.WriteLine("구매할 물건의 번호를 입력하세요.");
-                                int buy = 0;
-                                int.TryParse(Console.ReadLine(), out buy);
-                                if(0 < buy && buy <= npc.shopItemList.Count)
+                                for (int index2 = 0; index2 < 1; index2++)
                                 {
-                                    if(player.gold >= npc.shopItemList[buy - 1].Price)
+                                    Console.Clear();
+                                    Npc npc = new Npc();
+                                    npc.ShopNpc();
+                                    Console.WriteLine("\t\t【보유 골드】{0}골드\n【구매】▶구매할 물건 번호 /【뒤로】▶상점 목록을 제외한 아무키", player.gold);
+                                    int buy = 0;
+                                    int.TryParse(Console.ReadLine(), out buy);
+                                    if (0 < buy && buy <= npc.shopItemList.Count)
                                     {
-                                        player.itemList.Add(npc.shopItemList[buy - 1]);
-                                        player.gold -= npc.shopItemList[buy - 1].Price;
+                                        if (player.gold >= npc.shopItemList[buy - 1].Price)
+                                        {
+                                            Console.WriteLine("【구매 완료】▶【{0}】", npc.shopItemList[buy - 1].Name);
+                                            player.gold -= npc.shopItemList[buy - 1].Price;
+                                            player.itemList.Add(npc.shopItemList[buy - 1]);
+                                            Console.ReadLine();
+                                            index2--;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("【충분한 골드가 없습니다】");
+                                            Console.ReadLine();
+                                            index2--;
+                                        }
                                     }
                                     else
                                     {
-                                        Console.WriteLine("충분한 골드가 없습니다.");
+                                        index--;
                                     }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("잘못 입력했습니다. 다시 입력하세요.");
-                                    index--;
                                 }
                                 break;
                             case "2":
-                                item.ShowItemList(player.itemList);
-                                Console.WriteLine();
-                                Console.WriteLine("【판매시 물건가격의 절반을 받습니다.】\n판매할 물건의 번호를 입력하세요.");
-                                int sell = 0;
-                                int.TryParse(Console.ReadLine(), out sell);
-                                if (0 < sell && sell <= player.itemList.Count)
+                                for (int index3 = 0; index3 < 1; index3++)
                                 {
-                                    player.itemList.Remove(player.itemList[sell - 1]);
-                                    player.gold += player.itemList[sell - 1].Price / 2;
-                                    Console.WriteLine("【{0}】을(를) 판매했습니다 【{1}】골드 획득", player.itemList[sell - 1].Name, player.itemList[sell - 1].Price / 2);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("잘못 입력했습니다. 다시 입력하세요.");
-                                    index--;
+                                    Console.Clear();
+                                    item.ShowItemList(player.itemList);
+                                    Console.WriteLine();
+                                    Console.WriteLine("【판매시 물건가격의 절반을 받습니다】【보유 골드】{0}\n\n【판매】▶판매할 물건 번호 /【뒤로】▶인벤토리 목록을 제외한 아무키", player.gold);
+                                    int sell = -1;
+                                    int.TryParse(Console.ReadLine(), out sell);
+                                    if (0 < sell && sell <= player.itemList.Count)
+                                    {
+                                        sell = sell - 1;
+                                        player.gold += (player.itemList[sell].Price / 2);
+                                        Console.WriteLine("【판매 완료】▶【{0}】【{1}】골드 획득", player.itemList[sell].Name, player.itemList[sell].Price / 2);
+                                        Console.ReadLine();
+                                        player.itemList.Remove(player.itemList[sell]);
+                                        index3--;
+                                    }
+                                    else
+                                    {
+                                        index--;
+                                    }
                                 }
                                 break;
                             case "3":
-                                Console.WriteLine("【{0}】다음에 다시 오겠소", player.Name);
+                                Console.WriteLine("【{0}】▶다음에 다시 오겠소", player.Name);
                                 break;
                             default:
-                                Console.WriteLine("잘못 입력했습니다. 다시 입력하세요.");
                                 index--;
                                 break;
                         }
-                        Console.WriteLine("아무키나 눌러 계속 진행.");
-                        Console.ReadLine();
-                        Console.Clear();
                     }
                     board.shopCount = false;
+                    Console.Clear();
                 }
 
                 if (board.motelCount == true)
                 {
                     Console.Clear();
-                    Console.WriteLine("【여관주인】자네 피곤해 보이는군 싸게줄테니 한숨 자고 가겠나? -200gold-");
-                    Console.WriteLine("【1】여관에서 하루 쉬었다 간다.\n【2】다음에 쉰다.");
+                    Console.WriteLine("【여관주인】▶자네 피곤해 보이는군 싸게줄테니 한숨 자고 가겠나? -200gold-\n\n");
+                    Console.WriteLine("【1】▶여관에서 하루 쉬었다 간다.\n【2】▶다음에 쉰다.\n");
                     string motelInPut = Console.ReadLine();
                     for (int index = 0; index < 1; index++)
                     {
@@ -162,17 +209,17 @@ namespace TextRpgMake
                                     player.gold -= 200;
                                     player.Hp = player.MaxHp;
                                     player.Mp = player.MaxMp;
-                                    Console.WriteLine("【{0}】하루 푹 쉬고나니 상쾌하군", player.Name);
+                                    Console.WriteLine("【{0}】▶하루 푹 쉬고나니 상쾌하군", player.Name);
                                     Console.WriteLine("【{0}】의 체력과 마나가 가득찼습니다.", player.Name);
                                     Console.ReadLine();
                                 }
                                 else
                                 {
-                                    Console.WriteLine("【여관주인】자네 200골드도 없나? 네고는 안된다네");
+                                    Console.WriteLine("【여관주인】▶자네 200골드도 없나? 네고는 안된다네");
                                 }
                                 break;
                             case "2":
-                                Console.WriteLine("【{0}】지금은 괜찮소 다음에 다시 오겠소.", player.Name);
+                                Console.WriteLine("【{0}】▶지금은 괜찮소 다음에 다시 오겠소.", player.Name);
                                 break;
                             default:
                                 Console.WriteLine("잘못 입력했습니다. 다시 입력하세요.");

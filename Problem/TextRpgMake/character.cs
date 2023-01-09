@@ -26,17 +26,32 @@ namespace TextRpgMake
         public int Level
         {
             get { return level; }
-            set 
+            set
             {
                 //직업별 레벨보너스 설정
-                if(level < value)
+                if (level < value)
                 {
+                    int level = this.Level;
+                    int hp = this.MaxHp;
+                    int mp = this.MaxMp;
+                    int damage = this.Damage;
+                    int defence = this.Defence;
                     this.Damage = this.Damage + Player.knightDamage + Player.archerDamage + Player.mageDamage;
                     this.Defence = this.Defence + Player.knightDefence + Player.archerDefence + Player.mageDefence;
                     this.MaxHp = this.MaxHp + Player.knightMaxHp + Player.archerMaxHp + Player.mageMaxHp;
                     this.MaxMp = this.MaxMp + Player.knightMaxMp + Player.archerMaxMp + Player.mageMaxMp;
                     this.Hp = this.MaxHp;
                     this.Mp = this.MaxMp;
+                    Console.Clear();
+                    Console.SetCursorPosition(0, 5);
+                    Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★\n");
+                    Console.WriteLine("\t\t\t【레   벨   업】\n");
+                    Console.WriteLine("\t\t【레벨】\t(+{0})\t▶\t{1}\n\t\t【MaxHP】\t(+{2})\t▶\t{3}\n\t\t【MaxMP】\t(+{4})\t▶\t{5}" +
+                        "\n\t\t【데미지】\t(+{6})\t▶\t{7}\n\t\t【방어력】\t(+{8})\t▶\t{9}\n",
+                        this.Level, (this.Level + 1), (this.MaxHp - hp), this.MaxHp, (this.MaxMp - mp), this.MaxMp,
+                        (this.Damage - damage), this.Damage, (this.Defence - defence), this.defence);
+                    Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+                    Console.ReadLine();
                 }
                 level = value;
             }
@@ -118,7 +133,7 @@ namespace TextRpgMake
 
         public int gold = 0;
         public bool playerDead = false;
-        
+
         public static int knightDamage = 0;
         public static int knightDefence = 0;
         public static int knightMaxHp = 0;
@@ -167,16 +182,10 @@ namespace TextRpgMake
         public void Knight(string inPut)
         {
             skillList.Add(KnightSkill.Skill_1());
-            if(itemList.Count < 6)
-            {
-                itemList.Add(KnightWeapon.BasicSword());
-                itemList.Add(KnightWeapon.BasicSword());
-                itemList.Add(KnightWeapon.BasicSword());
-                itemList.Add(KnightWeapon.BasicSword());
-                itemList.Add(KnightWeapon.BasicSword());
-                itemList.Add(KnightWeapon.BasicSword());
-                itemList.Add(KnightWeapon.BasicSword());
-            }
+            itemList.Add(KnightWeapon.BasicSword());
+            itemList.Add(Expendables.ThrowingDagger());
+            itemList.Add(Expendables.HpPotion());
+            itemList.Add(Expendables.MpPotion());
             this._class = "기사";
             this.name = inPut;
             this.level = 1;
@@ -199,6 +208,9 @@ namespace TextRpgMake
         {
             skillList.Add(ArcherSkill.Skill_1());
             itemList.Add(ArcherWeapon.BasicBow());
+            itemList.Add(Expendables.ThrowingDagger());
+            itemList.Add(Expendables.HpPotion());
+            itemList.Add(Expendables.MpPotion());
             this._class = "궁수";
             this.name = inPut;
             this.level = 1;
@@ -221,6 +233,9 @@ namespace TextRpgMake
         {
             skillList.Add(MageSkill.Skill_1());
             itemList.Add(MageWeapon.BasicStaff());
+            itemList.Add(Expendables.ThrowingDagger());
+            itemList.Add(Expendables.HpPotion());
+            itemList.Add(Expendables.MpPotion());
             this._class = "마법사";
             this.name = inPut;
             this.level = 1;
@@ -239,7 +254,7 @@ namespace TextRpgMake
             mageMaxMp = 10;
         } //Mage
 
-        
+
     } //Player
 
     public class Npc
@@ -250,12 +265,13 @@ namespace TextRpgMake
             shopItemList.Add(Expendables.HpPotion());
             shopItemList.Add(Expendables.MpPotion());
             int num = 1;
-            Console.WriteLine("판매 목록");
-            foreach(Item item in shopItemList) 
+            Console.WriteLine("\t【판매 목록】\n");
+            foreach (Item item in shopItemList)
             {
-                Console.WriteLine("【{0}】▶【아이템명】{1},【가격】{2}", num, item.Name, item.Price);
+                Console.WriteLine("【{0}】▶【아이템명】{1}【가격】{2}【정보】{3}", num, item.Name, item.Price, item.ItemDesc);
                 num++;
             }
+            Console.WriteLine();
         } //ShopNpc
     } //NPC
 

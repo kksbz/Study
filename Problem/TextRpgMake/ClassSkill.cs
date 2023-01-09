@@ -42,14 +42,18 @@ namespace TextRpgMake
         }
         public void ShowSkillList(List<ClassSkill> skillList)
         {
+            Console.Clear();
             int countNumber = 1;
-            Console.WriteLine();
-            Console.WriteLine("보유 스킬 목록");
+            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
+            Console.WriteLine("▣\t\t\t\t\t\t\t\t\t▣");
+            Console.WriteLine("▣       【보유 스킬 목록】\t\t\t\t\t\t▣");
             foreach (var skill in skillList)
             {
-                Console.WriteLine($"【{countNumber}】▶【스킬명】{skill.SkillName}\t【스킬데미지】{skill.SkillDamage}\t【소모마나】{skill.UseMp}");
+                Console.WriteLine($"▣【{countNumber}】▶【스킬명】{skill.SkillName}\t【스킬데미지】{skill.SkillDamage}\t【소모마나】{skill.UseMp}  ▣\n▣       【정보】{skill.skillDesc}\t\t\t\t\t▣");
                 countNumber++;
             }
+            Console.WriteLine("▣\t\t\t\t\t\t\t\t\t▣");
+            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
         } //ShowSkillList
 
         public Player GetSkill(Player player)
@@ -60,15 +64,17 @@ namespace TextRpgMake
                     if (player.Level == 3)
                     {
                         Console.Clear();
+                        Console.SetCursorPosition(0, 5);
                         player.skillList.Add(KnightSkill.Skill_2());
-                        Console.WriteLine("【{0}】은(는)【{1}】을 습득했다!!",player.Name, KnightSkill.Skill_2().SkillName);
+                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_2().SkillName);
                         Console.ReadLine();
                     }
                     else if (player.Level == 5) 
                     {
                         Console.Clear();
+                        Console.SetCursorPosition(0, 5);
                         player.skillList.Add(KnightSkill.Skill_3());
-                        Console.WriteLine("【{0}】은(는)【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_3().SkillName);
+                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_3().SkillName);
                         Console.ReadLine();
                     }
                     
@@ -76,21 +82,37 @@ namespace TextRpgMake
                 case "궁수":
                     if (player.Level == 3)
                     {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
                         player.skillList.Add(ArcherSkill.Skill_2());
+                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_2().SkillName);
+                        Console.ReadLine();
                     }
                     else if (player.Level == 5)
                     {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
                         player.skillList.Add(ArcherSkill.Skill_3());
+                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_3().SkillName);
+                        Console.ReadLine();
                     }
                     break;
                 case "마법사":
                     if (player.Level == 3)
                     {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
                         player.skillList.Add(MageSkill.Skill_2());
+                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_2().SkillName);
+                        Console.ReadLine();
                     }
                     else if (player.Level == 5)
                     {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
                         player.skillList.Add(MageSkill.Skill_3());
+                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_3().SkillName);
+                        Console.ReadLine();
                     }
                     break;
             }
