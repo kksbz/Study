@@ -55,9 +55,12 @@ namespace TextRpgMake
                 }
 
                 map.MapShow(board);
-                Console.WriteLine("【플레이방법】▶【w】↑【s】↓【a】←【d】→\n【인벤토리】  ▶【b】【스킬】▶【k】【상태창】▶【c】【게임종료】▶【x】\n");
-                Console.WriteLine("【{0}】▶【레벨】{1}【HP】{2}/{3}【MP】{4}/{5}【보유골드】{6}", player.Name, player.Level,
-                    player.Hp, player.MaxHp, player.Mp, player.MaxMp, player.gold);
+                Console.WriteLine("\n\t【{0}】▶【레벨】{1}【HP】{2}/{3}【MP】{4}/{5}", player.Name, player.Level,
+                    player.Hp, player.MaxHp, player.Mp, player.MaxMp);
+                Console.WriteLine("\t┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+                Console.WriteLine("\t┃   【상태창】\t    ▶\t【 c 】 ┃\n\t┃   【인벤토리】    ▶\t【 b 】 ┃\n\t┃   【스킬】\t    ▶\t【 k 】 ┃\n\t┃   【게임종료】    ▶\t【 x 】 ┃");
+                Console.WriteLine("\t┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+                
                 Console.WriteLine();
                 //플레이어 이동입력 함수 호출
                 MoveKey moveKey = new MoveKey();
@@ -118,7 +121,7 @@ namespace TextRpgMake
 
                 if (board.showSkill == true)
                 {
-                    classSkill.ShowSkillList(player.skillList);
+                    classSkill.ShowSkillList(player.skillList, player);
                     Console.ReadLine();
                     Console.Clear();
                 }
@@ -248,7 +251,8 @@ namespace TextRpgMake
                     for (int index = 0; index < 1; index++)
                     {
                         Console.Clear();
-                        Console.WriteLine("이동할 맵을 선택하세요.\n【1】▶필드1\n【2】▶필드2\n【3】▶필드3\n【4】▶마지막 필드\n【0】▶마을");
+                        Console.SetCursorPosition(0, 5);
+                        Console.WriteLine("\t 이동할 맵을 선택하세요\n\n\t【1】▶필드1\n\t【2】▶필드2【제한레벨 3】\n\t【3】▶필드3【제한레벨 5】\n\t【4】▶마지막 필드\n\t【0】▶마을");
                         string inPut = Console.ReadLine();
                         switch (inPut)
                         {
@@ -299,6 +303,7 @@ namespace TextRpgMake
                                 index--;
                                 break;
                         } //switch
+                        Console.Clear();
                         board.potalCount = false;
                     } //for
                 } //if

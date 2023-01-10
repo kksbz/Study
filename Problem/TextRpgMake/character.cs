@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -124,6 +125,63 @@ namespace TextRpgMake
             set { this.defence = value; }
         }
 
+        public void ShowHpMpPlayer(Player player)
+        {
+            int cut = player.MaxHp / 10;
+            int heart = player.Hp / cut;
+            int emptyHeart = 10 - heart;
+            Console.Write("\t     ");
+            for (int index = 0; index < heart; index++)
+            {
+                Console.Write("♥");
+            }
+            for (int index = 0; index < emptyHeart; index++)
+            {
+                Console.Write("♡");
+            }
+            Console.Write("\t");
+            int cutmana = player.MaxMp / 10;
+            int mana = player.Mp / cutmana;
+            int emptyMana = 10 - mana;
+            for(int index = 0; index < mana; index++)
+            {
+                Console.Write("◆");
+            }
+            for (int index = 0; index < emptyMana; index++)
+            {
+                Console.Write("◇");
+            }
+            Console.WriteLine();
+        } //ShowHpMpInfo
+
+        public void ShowHpMpMonster(Monster monster)
+        {
+            int cut = monster.MaxHp / 10;
+            int heart = monster.Hp / cut;
+            int emptyHeart = 10 - heart;
+            Console.Write("\t     ");
+            for (int index = 0; index < heart; index++)
+            {
+                Console.Write("♥");
+            }
+            for (int index = 0; index < emptyHeart; index++)
+            {
+                Console.Write("♡");
+            }
+            Console.Write("\t");
+            int cutmana = monster.MaxMp / 10;
+            int mana = monster.Mp / cutmana;
+            int emptyMana = 10 - mana;
+            for (int index = 0; index < mana; index++)
+            {
+                Console.Write("◆");
+            }
+            for (int index = 0; index < emptyMana; index++)
+            {
+                Console.Write("◇");
+            }
+            Console.WriteLine();
+        }
     } //character
 
     public class Player : Character
@@ -137,6 +195,7 @@ namespace TextRpgMake
         public bool playerDead = false;
         public bool findMonster = false;
         public bool findBoss = false;
+        public bool itemUse = false;
 
         public static int knightDamage = 0;
         public static int knightDefence = 0;
@@ -186,23 +245,23 @@ namespace TextRpgMake
         public void ShowInfo(Player player)
         {
             Console.Clear();
-            Console.SetCursorPosition(0, 5);
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
-            Console.WriteLine("\t\t\t【{0}】의 정보\n",player.Name);
+            Console.SetCursorPosition(0, 2);
+            Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t\t\t\t\t┃\n┃\t\t\t【상 태 창】\t\t\t┃\n┃\t\t\t\t\t\t\t┃");
+            Console.WriteLine("\t\t【닉네임】   ▶ 【{0}】\n", player.name);
             Console.WriteLine("\t【직업】  ▶ {0}\t【레벨】  ▶ {1}\n\n\t【HP】    ▶ {2}/{3}\t【MP】    ▶ {4}/{5}\n", player._class,
                 player.Level, player.Hp, player.MaxHp, player.Mp, player.MaxMp);
             if(player.itemPutOn == false)
             {
                 Console.WriteLine("\t【공격력】▶ {0}\t\t【방어력】▶ {1}\n", player.Damage, player.Defence);
-                Console.WriteLine("\t【무기】  ▶ 없음\n");
+                Console.WriteLine("\t【무기】  ▶ 없음");
             }
             else
             {
                 Console.WriteLine("\t【공격력】▶ {0} + {1}\t【방어력】▶ {1}\n", player.Damage - player.putOnItem[0].WeaponDamage,
                     player.putOnItem[0].WeaponDamage, player.Defence);
-                Console.WriteLine("\t【무기】  ▶ {0}【무기공격력】▶ {1}\n", player.putOnItem[0].Name, player.putOnItem[0].WeaponDamage);
+                Console.WriteLine("\t【무기】  ▶ {0}\n\t【무기공격력】▶ {1}", player.putOnItem[0].Name, player.putOnItem[0].WeaponDamage);
             }
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
+            Console.WriteLine("┃\t\t\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
             Console.ReadLine();
             Console.Clear();
         }
@@ -261,6 +320,8 @@ namespace TextRpgMake
         public void Mage(string inPut)
         {
             skillList.Add(MageSkill.Skill_1());
+            skillList.Add(MageSkill.Skill_2());
+            skillList.Add(MageSkill.Skill_3());
             itemList.Add(MageWeapon.BasicStaff());
             itemList.Add(Expendables.ThrowingDagger());
             itemList.Add(Expendables.HpPotion());

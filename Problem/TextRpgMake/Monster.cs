@@ -98,7 +98,7 @@ namespace TextRpgMake
         Random random = new Random();
         public void Orc()
         {
-            int bonus = 5;
+            int bonus = 6;
             this.name = "오크";
             this.level = random.Next(1,4+1);
             this.exp = 100 + bonus * this.level;
@@ -116,7 +116,7 @@ namespace TextRpgMake
 
         public void OrcArcher(Player player)
         {
-            int bonus = 7;
+            int bonus = 8;
             this.name = "오크 궁수";
             this.level = random.Next(3, 6 + 1);
             this.exp = 250 + bonus * this.level;
@@ -185,16 +185,16 @@ namespace TextRpgMake
         Random random = new Random();
         public void Goblin()
         {
-            int bonus = 7;
+            int bonus = 6;
             this.name = "고블린";
             this.level = random.Next(1, 3 + 1);
             this.exp = 70 + bonus * this.level;
             this.MaxHp = 100 + bonus * this.level;
-            this.MaxMp = 0 + bonus * this.level;
+            this.MaxMp = 50 + bonus * this.level;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 20 + bonus + this.level;
-            this.defence = 0 + bonus + this.level;
+            this.defence = 5 + bonus + this.level;
             this.buffDefence = 10;
             this.monsterGold = 70 + bonus * this.level;
             dropItem.Add(Expendables.HpPotion());
@@ -203,12 +203,12 @@ namespace TextRpgMake
 
         public void HobGoblin(Player player)
         {
-            int bonus = 7;
+            int bonus = 8;
             this.name = "홉고블린";
             this.level = random.Next(3, 6 + 1);
             this.exp = 250 + bonus * this.level;
             this.MaxHp = 250 + bonus * this.level;
-            this.MaxMp = 0 + bonus * this.level;
+            this.MaxMp = 70 + bonus * this.level;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 35 + bonus + this.level;
@@ -241,7 +241,7 @@ namespace TextRpgMake
             this.level = random.Next(6, 9 + 1);
             this.exp = 370 + bonus * this.level;
             this.MaxHp = 500 + bonus * this.level;
-            this.MaxMp = 100 + bonus * this.level;
+            this.MaxMp = 200 + bonus * this.level;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 55 + bonus + this.level;
@@ -272,12 +272,12 @@ namespace TextRpgMake
         Random random = new Random();
         public void Spider()
         {
-            int bonus = 5;
+            int bonus = 6;
             this.name = "거미";
             this.level = random.Next(1, 3 + 1);
             this.exp = 90 + bonus * this.level;
             this.MaxHp = 240 + bonus * this.level;
-            this.MaxMp = 0 + bonus * this.level;
+            this.MaxMp = 50 + bonus * this.level;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 32 + bonus + this.level;
@@ -290,12 +290,12 @@ namespace TextRpgMake
 
         public void PoisonSpider(Player player)
         {
-            int bonus = 7;
+            int bonus = 8;
             this.name = "독거미";
             this.level = random.Next(4, 7 + 1);
             this.exp = 270 + bonus * this.level;
             this.MaxHp = 370 + bonus * this.level;
-            this.MaxMp = 30 + bonus * this.level;
+            this.MaxMp = 100 + bonus * this.level;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 45 + bonus + this.level;
@@ -328,7 +328,7 @@ namespace TextRpgMake
             this.level = random.Next(7, 9 + 1);
             this.exp = 400 + bonus * this.level;
             this.MaxHp = 500 + bonus * this.level;
-            this.MaxMp = 30 + bonus * this.level;
+            this.MaxMp = 200 + bonus * this.level;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 55 + bonus + this.level;
@@ -363,7 +363,7 @@ namespace TextRpgMake
             bossSkill.Add(BossSkill.Skill_1()); ;
             bossSkill.Add(BossSkill.Skill_2()); ;
             bossSkill.Add(BossSkill.Skill_3()); ;
-            int bonus = 15;
+            int bonus = 14;
             this.name = "보스";
             this.level = random.Next(10, 13 + 1);
             this.exp = 1000 + bonus * this.level;

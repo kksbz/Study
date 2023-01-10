@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TextRpgMake
@@ -133,15 +134,17 @@ namespace TextRpgMake
 
         public void MapShow(MapSet mapSet)
         {
-            Console.WriteLine("【현재 위치】▶ {0}", mapSet.mapName);
+            Console.SetCursorPosition(0, 1);
             for (int y = 0; y < mapSet.mapSizeY; y++)
             {
+                Console.Write("\t");
                 for (int x = 0; x < mapSet.mapSizeX; x++)
                 {
                     Console.Write("{0}", mapSet.map[y, x]);
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine("\t【현재 위치】▶ {0}", mapSet.mapName);
         } //MapShow
 
         public MapSet Lobby()

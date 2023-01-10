@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace TextRpgMake
         public int SkillDamage
         {
             get { return skillDamage; }
-            set 
+            set
             {
                 skillDamage = value;
             }
@@ -43,18 +44,28 @@ namespace TextRpgMake
             get { return useMp; }
             set { useMp = value; }
         }
-        public void ShowSkillList(List<ClassSkill> skillList)
+        public void ShowSkillList(List<ClassSkill> skillList, Player player)
         {
             Console.Clear();
+            Console.SetCursorPosition(0, 2);
             int countNumber = 1;
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
-            Console.WriteLine("\t\t\t【보유 스킬 목록】\n");
+            Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t\t\t\t\t\t\t\t     ┃");
+            Console.WriteLine("┃\t\t\t\t【보유 스킬 목록】\t\t\t\t     ┃\n┃\t\t\t\t\t\t\t\t\t\t     ┃\n");
             foreach (var skill in skillList)
             {
-                Console.WriteLine($"【{countNumber}】▶【스킬명】{skill.SkillName}\t【스킬데미지】{skill.SkillDamage}\t【소모마나】{skill.UseMp}\t\n       【정보】{skill.skillDesc}\n");
+                Console.WriteLine($"\t【{countNumber}】▶\t【스킬명】{skill.SkillName}\t【스킬데미지】{skill.SkillDamage}\t【소모마나】{skill.UseMp}\t\n\t\t【정보】{skill.skillDesc}\n");
                 countNumber++;
             }
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
+            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t     ┃");
+            if (player.findMonster == true)
+            {
+                Console.WriteLine("┃\t【스킬사용】▶ 스킬 번호 입력\t【뒤로】▶ 스킬 목록을 제외한 아무키\t     ┃");
+            }
+            else
+            {
+                Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t     ┃");
+            }
+            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t     ┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
         } //ShowSkillList
 
         public void GetSkill(Player player)

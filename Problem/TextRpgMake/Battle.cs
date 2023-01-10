@@ -13,6 +13,7 @@ namespace TextRpgMake
         public Battle(Player player, Monster monster)
         {
             ClassSkill classSkill = new ClassSkill();
+            Character character= new Character();
             Item item = new Item();
             Random random = new Random();
             bool battleWin = false;
@@ -20,42 +21,34 @@ namespace TextRpgMake
             int turnCount = 0;
             Console.Clear();
             Console.SetCursorPosition(0, 5);
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
-            Console.WriteLine("\t【{0}】▶\t【{1}】을(를) 보며 입맛을 다십니다!!", monster.Name, player.Name);
-            Console.WriteLine();
-            Console.WriteLine("\t\t\t전\t투\t시\t작\n");
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
+            Console.WriteLine("\t\t【{0}】▶ 【{1}】을(를) 보며 입맛을 다십니다!!\n\n", monster.Name, player.Name);
+            Console.WriteLine("\t\t\t【 전    투    시    작 】\n");
             Console.ReadLine();
             while (battleWin == false)
             {
                 int playerRun = 0;
                 for (int index = 0; index < 1; index++)
                 {
-                    Console.SetCursorPosition(0, 0);
                     Console.Clear();
+                    Console.SetCursorPosition(0, 2);
                     Console.WriteLine();
-                    Console.WriteLine("\t\t\t【{0}】【{1}】", player.Name, player.Level);
-                    Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
-                    Console.WriteLine("▣\t\t\t\t\t\t\t\t▣");
-                    Console.WriteLine("▣【HP】{0}/{1}\t【MP】{2}/{3}\t【공격력】{4}\t【방어력】{5}    ▣", player.Hp, player.MaxHp,
-                        player.Mp, player.MaxMp, player.Damage, player.Defence);
-                    Console.WriteLine("▣\t\t\t\t\t\t\t\t▣");
-                    Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
-                    Console.WriteLine();
-                    Console.WriteLine("\t\t\t【{0}】【{1}】", monster.Name, monster.Level);
-                    Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
-                    Console.WriteLine("▣\t\t\t\t\t\t\t\t▣");
-                    Console.WriteLine("▣【HP】{0}/{1}\t【MP】{2}/{3}\t【공격력】{4}\t【방어력】{5}    ▣", monster.Hp, monster.MaxHp,
-                        monster.Mp, monster.MaxMp, monster.Damage, monster.Defence);
-                    Console.WriteLine("▣\t\t\t\t\t\t\t\t▣");
-                    Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
-                    Console.WriteLine();
-                    Console.WriteLine("\t【【{0}】의 턴 】\n\n【1】공   격\n【2】스킬 사용\n【3】아이템 사용\n【4】도   망", player.Name);
+                    Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t      【플레이어】\t\t\t\t┃");
+                    Console.WriteLine("\t\t【레벨】{0}\t\t   【{1}】", player.Level, player.Name);
+                    Console.WriteLine("\t\t【공격력】{0}\t\t   【방어력】{1}", player.Damage, player.Defence);
+                    Console.WriteLine("\t\t【HP】{0}/{1}\t\t   【MP】{2}/{3}", player.Hp, player.MaxHp, player.Mp, player.MaxMp);
+                    character.ShowHpMpPlayer(player);
+                    Console.WriteLine("┃\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+                    Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t      【몬 스 터】\t\t\t\t┃");
+                    Console.WriteLine("\t\t【레벨】{0}\t\t   【{1}】", monster.Level, monster.Name);
+                    Console.WriteLine("\t\t【공격력】{0}\t\t   【방어력】{1}", monster.Damage, monster.Defence);
+                    Console.WriteLine("\t\t【HP】{0}/{1}\t\t   【MP】{2}/{3}", monster.Hp, monster.MaxHp, monster.Mp, monster.MaxMp);
+                    character.ShowHpMpMonster(monster);
+                    Console.WriteLine("┃\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+                    Console.WriteLine("\t\t\t【【{0}】의 턴 】\n\n\t\t\t【1】공   격\n\t\t\t【2】스킬 사용\n\t\t\t【3】아이템 사용\n\t\t\t【4】도   망", player.Name);
                     string inPut = Console.ReadLine();
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
-                    Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
-                    Console.WriteLine("\t\t\t【{0}】의 턴\n", player.Name);
+                    Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
                     switch (inPut)
                     {
                         case "1":
@@ -68,35 +61,21 @@ namespace TextRpgMake
                             int number1 = -1;
                             Console.Clear();
                             Console.SetCursorPosition(0, 5);
-                            classSkill.ShowSkillList(player.skillList);
-                            Console.WriteLine("【스킬사용】▶ 스킬 번호 /【뒤로】▶ 스킬 목록을 제외한 아무키");
+                            classSkill.ShowSkillList(player.skillList, player);
                             int skillInPut = -1;
                             int.TryParse(Console.ReadLine(), out skillInPut);
                             if (0 < skillInPut && skillInPut <= player.skillList.Count)
                             {
-                                switch (skillInPut)
-                                {
-                                    case 1:
-                                        number1 = 0;
-                                        break;
-                                    case 2:
-                                        number1 = 1;
-                                        break;
-                                    case 3:
-                                        number1 = 2;
-                                        break;
-                                } //switch
-
-                                if (player.Mp >= player.skillList[number1].UseMp)
+                                skillInPut = skillInPut - 1;
+                                if (player.Mp >= player.skillList[skillInPut].UseMp)
                                 {
                                     Console.Clear();
                                     Console.SetCursorPosition(0, 5);
-                                    Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
-                                    Console.WriteLine("\t\t\t\t【{0}】의 턴\n", player.Name);
-                                    Console.WriteLine("\t【{0}】▶ 【{1}】사용【{2}】에게【{3}】데미지!!!", player.Name, player.skillList[number1].SkillName,
-                                        monster.Name, player.skillList[number1].SkillDamage);
-                                    monster.Hp -= player.skillList[number1].SkillDamage - (monster.Defence / 2);
-                                    player.Mp -= player.skillList[number1].UseMp;
+                                    Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
+                                    Console.WriteLine("\t【{0}】▶ 【{1}】사용【{2}】에게【{3}】데미지!!!", player.Name, player.skillList[skillInPut].SkillName,
+                                        monster.Name, player.skillList[skillInPut].SkillDamage);
+                                    monster.Hp -= player.skillList[skillInPut].SkillDamage - (monster.Defence / 2);
+                                    player.Mp -= player.skillList[skillInPut].UseMp;
                                 }
                                 else
                                 {
@@ -115,20 +94,24 @@ namespace TextRpgMake
                         case "3":
                             //아이템 사용
                             item.UseItem(player, monster);
+                            if (player.itemUse == false)
+                            {
+                                index--;
+                            }
                             break;
                         case "4":
                             //도망 실행
                             int dice = random.Next(0, 10);
                             if (dice >= 6)
                             {
-                                Console.WriteLine("\t\t\t【도망 성공!!】\n");
+                                Console.WriteLine("\t\t\t     【도망 성공!!】\n");
                                 Console.WriteLine("\t【{0}】▶ 【{1}】새끼 니 얼굴 기억했다.\n\n\t【{2}】은(는)【{3}】의 눈에 흙을 뿌리며 전력으로 도망쳤다\n",
                                     player.Name, monster.Name, player.Name, monster.Name);
                                 playerRun = 2;
                             }
                             else
                             {
-                                Console.WriteLine("\t\t\t【도망 실패!!】\n");
+                                Console.WriteLine("\t\t\t     【도망 실패!!】\n");
                                 Console.WriteLine("\t\t【{0}】▶ 등짝.. 등짝을 보자!!\n\n\t\t【{1}】▶ 아..아...안....안돼!!!!!\n", monster.Name, player.Name);
                                 Console.WriteLine("\t\t【{0}】▶ 공격력 2배 상승!!\n\n\t\t【{1}】의 눈가가 촉촉해진다..", monster.Name, player.Name);
                                 playerRun = 1;
@@ -139,8 +122,7 @@ namespace TextRpgMake
                             break;
                     } //switch
                 } //for
-                Console.WriteLine();
-                Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
+                Console.WriteLine("┃\t\t\t\t\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
                 Console.ReadLine();
                 //몬스터 방어태세 확인
                 if (monsterDefence == true)

@@ -57,26 +57,27 @@ namespace TextRpgMake
         public void ShowItemList(List<Item> itemList, Player player)
         {
             Console.Clear();
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
+            Console.SetCursorPosition(0,2);
+            Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t\t\t\t\t\t\t\t┃");
             int countNumber = 1;
-            Console.WriteLine("\t【보유 아이템 목록】\t【보유골드】{0}\n", player.gold);
+            Console.WriteLine("┃\t【보유 아이템 목록】\t【보유골드】{0}\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t┃\n", player.gold);
             foreach (var item in itemList)
             {
                 if (item.ItemType == "무기")
                 {
-                    Console.WriteLine($"【{countNumber}】▶\t【아이템】{item.Name}\t【데미지】{item.weaponDamage}\t【가격】{item.Price}골드\n\t【정보】{item.itemDesc}\n");
+                    Console.WriteLine($"\t【{countNumber}】▶\t【아이템】{item.Name}\t【데미지】{item.weaponDamage}\t【가격】{item.Price}골드\n\t\t【정보】{item.itemDesc}\n");
                 }
                 else if (item.ItemType == "회복소모품")
                 {
-                    Console.WriteLine($"【{countNumber}】▶\t【아이템】{item.Name}\t【회복량】{item.HpMpPlus}\t【가격】{item.Price}골드\n\t【정보】{item.itemDesc}\n");
+                    Console.WriteLine($"\t【{countNumber}】▶\t【아이템】{item.Name}\t【회복량】{item.HpMpPlus}\t【가격】{item.Price}골드\n\t\t【정보】{item.itemDesc}\n");
                 }
                 else if (item.ItemType == "투척소모품")
                 {
-                    Console.WriteLine($"【{countNumber}】▶\t【아이템】{item.Name}\t【데미지】{item.weaponDamage}\t【가격】{item.Price}골드\n\t【정보】{item.itemDesc}\n");
+                    Console.WriteLine($"\t【{countNumber}】▶\t【아이템】{item.Name}\t【데미지】{item.weaponDamage}\t【가격】{item.Price}골드\n\t\t【정보】{item.itemDesc}\n");
                 }
                 countNumber++;
             }
-            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
+            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃\n┃\t【선택】▶ 사용할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키\t┃\n┃\t\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
         } //ShowItemList
 
         //아이템사용
@@ -86,7 +87,6 @@ namespace TextRpgMake
             for (int index = 0; index < 1; index++)
             {
                 ShowItemList(player.itemList, player);
-                Console.WriteLine("【선택】▶ 사용할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키");
                 int itemInPut = -1;
                 int.TryParse(Console.ReadLine(), out itemInPut);
                 if (0 < itemInPut && itemInPut <= player.itemList.Count)
@@ -136,39 +136,65 @@ namespace TextRpgMake
                     {
                         if (player.Hp == player.MaxHp)
                         {
-                            Console.WriteLine("【이미 체력이 가득 차 있습니다】");
+                            Console.WriteLine("\t\t【이미 체력이 가득 차 있습니다】");
+                            Console.ReadLine();
                             index--;
                         }
                         else if (player.Hp < player.MaxHp)
                         {
-                            player.Hp += player.itemList[itemInPut].HpMpPlus;
-                            Console.WriteLine("【사용】▶ 【{0}】 HP + {1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].HpMpPlus);
-                            if (player.Hp >= player.MaxHp)
+                            if(player.findMonster == true)
                             {
-                                player.Hp = player.MaxHp;
+                                player.Hp += player.itemList[itemInPut].HpMpPlus;
+                                Console.Clear();
+                                Console.SetCursorPosition(0, 5);
+                                Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
+                                Console.WriteLine("\t\t\t【사용】▶ 【{0}】\n", player.itemList[itemInPut].Name);
+                                Console.WriteLine("\t\t【{0}】▶ 【{1}】사용! 【HP】+ {2}", player.Name, player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                if (player.Hp >= player.MaxHp)
+                                {
+                                    player.Hp = player.MaxHp;
+                                }
+                                player.itemList.Remove(player.itemList[itemInPut]);
+                                player.itemUse = true;
                             }
-                            player.itemList.Remove(player.itemList[itemInPut]);
+                            else
+                            {
+                                Console.WriteLine("\t\t【{0}】사용! 【HP】+ {1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                Console.ReadLine();
+                            }
                         }
-                        Console.ReadLine();
                     }
                     else if (player.itemList[itemInPut].Name == "MP포션" || player.itemList[itemInPut].Name == "상급MP포션")
                     {
                         if (player.Mp == player.MaxMp)
                         {
-                            Console.WriteLine("【이미 마나가 가득 차 있습니다】");
+                            Console.WriteLine("\t\t【이미 마나가 가득 차 있습니다】");
+                            Console.ReadLine();
                             index--;
                         }
                         else if (player.Mp < player.MaxMp)
                         {
-                            player.Mp += player.itemList[itemInPut].HpMpPlus;
-                            Console.WriteLine("【사용】▶ 【{0}】 MP + {1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].HpMpPlus);
-                            if (player.Mp >= player.MaxMp)
+                            if(player.findMonster == true)
                             {
-                                player.Mp = player.MaxMp;
+                                player.Mp += player.itemList[itemInPut].HpMpPlus;
+                                Console.Clear();
+                                Console.SetCursorPosition(0, 5);
+                                Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
+                                Console.WriteLine("\t\t\t【사용】▶ 【{0}】\n", player.itemList[itemInPut].Name);
+                                Console.WriteLine("\t\t【{0}】▶ 【{1}】사용! 【MP】+ {2}",player.Name, player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                if (player.Mp >= player.MaxMp)
+                                {
+                                    player.Mp = player.MaxMp;
+                                }
+                                player.itemList.Remove(player.itemList[itemInPut]);
+                                player.itemUse = true;
                             }
-                            player.itemList.Remove(player.itemList[itemInPut]);
+                            else
+                            {
+                                Console.WriteLine("\t\t【{0}】사용! 【MP】+ {1}",player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                Console.ReadLine();
+                            }
                         }
-                        Console.ReadLine();
                     } //포션if
                     else if (player.itemList[itemInPut].ItemType == "투척소모품")
                     {
@@ -176,12 +202,13 @@ namespace TextRpgMake
                         {
                             Console.Clear();
                             Console.SetCursorPosition(0, 5);
-                            Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
+                            Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
                             Console.WriteLine("\t\t\t【사용】▶ 【{0}】\n", player.itemList[itemInPut].Name);
                             Console.WriteLine("\t【{0}】▶ 【{1}】사용! 【{2}】에게 【{3}】고정피해!!", player.Name, player.itemList[itemInPut].Name,
                                 monster.Name, player.itemList[itemInPut].WeaponDamage);
                             monster.Hp -= player.itemList[itemInPut].WeaponDamage;
                             player.itemList.Remove(player.itemList[itemInPut]);
+                            player.itemUse = true;
                         }
                         else
                         {
@@ -191,8 +218,12 @@ namespace TextRpgMake
                         }
                     } //투척if
                 } //if 입력조건
+                else
+                {
+                    player.itemUse = false;
+                }
             }//for
-        }
+        } //UseItem
     } //Item
 
 
