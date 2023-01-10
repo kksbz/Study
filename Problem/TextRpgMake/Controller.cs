@@ -62,6 +62,7 @@ namespace TextRpgMake
             mapNumber.showSkill = false;
             mapNumber.showInfo = false;
             mapNumber.monsterCount = false;
+            mapNumber.bossCount = false;
             mapNumber.potalCount = false;
             mapNumber.end = false;
             //Controller 클래스 인스턴스화
@@ -98,6 +99,10 @@ namespace TextRpgMake
                         {
                             mapNumber.potalCount = true;
                         }
+                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.bossMark)
+                        {
+                            mapNumber.bossCount = true;
+                        }
                     }
                     else
                     {
@@ -128,6 +133,10 @@ namespace TextRpgMake
                         else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] == mapNumber.potal)
                         {
                             mapNumber.potalCount = true;
+                        }
+                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.bossMark)
+                        {
+                            mapNumber.bossCount = true;
                         }
                     }
                     else
@@ -160,6 +169,10 @@ namespace TextRpgMake
                         {
                             mapNumber.potalCount = true;
                         }
+                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.bossMark)
+                        {
+                            mapNumber.bossCount = true;
+                        }
                     }
                     else
                     {
@@ -190,6 +203,10 @@ namespace TextRpgMake
                         else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] == mapNumber.potal)
                         {
                             mapNumber.potalCount = true;
+                        }
+                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.bossMark)
+                        {
+                            mapNumber.bossCount = true;
                         }
                     }
                     else

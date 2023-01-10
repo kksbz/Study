@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,12 +15,15 @@ namespace TextRpgMake
         {
             player.SelectPlayer();
             ClassSkill classSkill = new ClassSkill();
+            Monster monster = new Monster();
             Item item = new Item();
             Map map = new Map();
             MapSet board = new MapSet();
             MapSet lobby = new MapSet();
             MapSet map1 = new MapSet();
             MapSet map2 = new MapSet();
+            MapSet map3 = new MapSet();
+            MapSet bossMap = new MapSet();
             board = map.Lobby();
 
             Console.Clear();
@@ -29,6 +33,8 @@ namespace TextRpgMake
                 lobby = map.Lobby();
                 map1 = map.Map1();
                 map2 = map.Map2();
+                map3 = map.Map3();
+                bossMap = map.BossMap();
                 //0.5초 멈춤
                 Thread.Sleep(50);
                 //콘솔창 커서위치 초기화
@@ -37,11 +43,15 @@ namespace TextRpgMake
 
                 if (board.mapName == map1.mapName)
                 {
-                    board = map.MonsterMap(board, 10);
+                    board = map.MonsterMap(board, 20);
                 }
                 else if (board.mapName == map2.mapName)
                 {
                     board = map.MonsterMap(board, 30);
+                }
+                else if(board.mapName == map3.mapName)
+                {
+                    board = map.MonsterMap(board, 25);
                 }
 
                 map.MapShow(board);
@@ -55,10 +65,35 @@ namespace TextRpgMake
                 //몬스터만나면 배틀시작
                 if (board.monsterCount == true)
                 {
-                    Monster monster = new Monster();
-                    monster = monster.SelectMonster();
-                    Battle battle = new Battle(player, monster);
+                    player.findMonster = true;
+                    if(board.mapName == map1.mapName)
+                    {
+                        monster = monster.SelectMonster_1();
+                        Battle battle = new Battle(player, monster);
+                    }
+                    else if (board.mapName == map2.mapName)
+                    {
+                        monster = monster.SelectMonster_2(player);
+                        Battle battle = new Battle(player, monster);
+                    }
+                    else if (board.mapName == map3.mapName)
+                    {
+                        monster = monster.SelectMonster_3(player);
+                        Battle battle = new Battle(player, monster);
+                    }
                     board.monsterCount = false;
+                    player.findMonster = false;
+                }
+                //보스만나면 전투
+                if(board.bossCount == true)
+                {
+                    player.findBoss = true;
+                    player.findMonster = true;
+                    monster = monster.SelectBoss(player);
+                    Battle battle = new Battle(player, monster);
+                    board.bossCount = false;
+                    player.findBoss = false;
+                    player.findMonster = false;
                 }
                 //플레이어 죽으면 로비로 이동
                 if (player.playerDead == true)
@@ -77,49 +112,7 @@ namespace TextRpgMake
                 //가방열기 아이템사용
                 if (board.showItem == true)
                 {
-                    for(int index = 0; index < 1; index++)
-                    {
-                        item.ShowItemList(player.itemList, player);
-                        Console.WriteLine("【선택】▶ 사용할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키");
-                        int itemInPut = -1;
-                        int.TryParse(Console.ReadLine(), out itemInPut);
-                        if (0 < itemInPut && itemInPut <= player.itemList.Count)
-                        {
-                            itemInPut = itemInPut - 1;
-                            if (player.itemList[itemInPut].ItemType == "무기")
-                            {
-                                string putOnItem = "【장착중】";
-                                Console.WriteLine("【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
-                                string putOn = Console.ReadLine();
-                                switch (putOn)
-                                {
-                                    case "y":
-                                        if(player.itemPutOn == false)
-                                        {
-                                            Console.WriteLine("【{0}】▶ 장착 완료 【데미지】+{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
-                                            player.Damage += player.itemList[itemInPut].WeaponDamage;
-                                            player.itemList[itemInPut].Name += putOnItem;
-                                            player.putOnItem.Add(player.itemList[itemInPut]);
-                                            player.itemPutOn = true;
-                                            Console.ReadLine();
-                                        }
-                                        break;
-                                    case "n":
-                                        if (player.itemPutOn == true)
-                                        {
-                                            player.Damage -= player.itemList[itemInPut].WeaponDamage;
-                                            Console.WriteLine("【{0}】▶ 장착해제 완료 【데미지】-{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
-                                            player.itemList[itemInPut].Name = player.itemList[itemInPut].Name.Substring(0 , putOnItem.Length - 1);
-                                            player.putOnItem.Remove(player.itemList[itemInPut]);
-                                            player.itemPutOn = false;
-                                            Console.ReadLine();
-                                        }
-                                        break;
-                                } //switch
-                                index--;
-                            } //if
-                        } //if
-                    }//for
+                    item.UseItem(player, monster);
                     Console.Clear();
                 } //if
 
@@ -147,7 +140,7 @@ namespace TextRpgMake
                                 {
                                     Console.Clear();
                                     Npc npc = new Npc();
-                                    npc.ShopNpc();
+                                    npc.ShopNpc(player);
                                     Console.WriteLine("\t\t【보유 골드】{0}골드\n【구매】▶구매할 물건 번호 /【뒤로】▶상점 목록을 제외한 아무키", player.gold);
                                     int buy = 0;
                                     int.TryParse(Console.ReadLine(), out buy);
@@ -213,7 +206,7 @@ namespace TextRpgMake
                 if (board.motelCount == true)
                 {
                     Console.Clear();
-                    Console.WriteLine("【여관주인】▶자네 피곤해 보이는군 싸게줄테니 한숨 자고 가겠나? -200gold-\n\n");
+                    Console.WriteLine("【여관주인】▶자네 피곤해 보이는군\n【여관주인】▶싸게줄테니 한숨 자고 가겠나? -200gold-\n\n");
                     Console.WriteLine("【1】▶여관에서 하루 쉬었다 간다.\n【2】▶다음에 쉰다.\n");
                     string motelInPut = Console.ReadLine();
                     for (int index = 0; index < 1; index++)
@@ -248,14 +241,14 @@ namespace TextRpgMake
                         Console.Clear();
                     }
                     board.motelCount = false;
-                }
+                } //if
 
                 if (board.potalCount == true)
                 {
                     for (int index = 0; index < 1; index++)
                     {
                         Console.Clear();
-                        Console.WriteLine("이동할 맵을 선택하세요.\n【1】▶필드1\n【2】▶필드2\n【0】▶마을");
+                        Console.WriteLine("이동할 맵을 선택하세요.\n【1】▶필드1\n【2】▶필드2\n【3】▶필드3\n【4】▶마지막 필드\n【0】▶마을");
                         string inPut = Console.ReadLine();
                         switch (inPut)
                         {
@@ -266,7 +259,40 @@ namespace TextRpgMake
                                 board = map1;
                                 break;
                             case "2":
-                                board = map2;
+                                if(player.Level >= 0)
+                                {
+                                    board = map2;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("【요구 레벨을 충족하지 못했습니다】\n【{0}의 제한레벨】▶ 5",map2.mapName);
+                                    index--;
+                                    Console.ReadLine();
+                                }
+                                break;
+                            case "3":
+                                if (player.Level >= 0)
+                                {
+                                    board = map3;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("【요구 레벨을 충족하지 못했습니다】\n【{0}의 제한레벨】▶ 7", map3.mapName);
+                                    index--;
+                                    Console.ReadLine();
+                                }
+                                break;
+                                case "4":
+                                if (player.Level >= 0)
+                                {
+                                    board = bossMap;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("【요구 레벨을 충족하지 못했습니다】\n【{0}의 제한레벨】▶ 10", map3.mapName);
+                                    index--;
+                                    Console.ReadLine();
+                                }
                                 break;
                             default:
                                 Console.WriteLine("잘못 입력했습니다. 다시 입력하세요.");

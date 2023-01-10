@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -22,7 +23,7 @@ namespace TextRpgMake
         protected int damage;
         protected int defence;
 
-
+        ClassSkill classSkill = new ClassSkill();
         public int Level
         {
             get { return level; }
@@ -134,6 +135,8 @@ namespace TextRpgMake
         public bool itemPutOn = false;
         public int gold = 0;
         public bool playerDead = false;
+        public bool findMonster = false;
+        public bool findBoss = false;
 
         public static int knightDamage = 0;
         public static int knightDefence = 0;
@@ -223,10 +226,10 @@ namespace TextRpgMake
             this.gold = 100;
             this.playerDead = false;
             this.itemPutOn = false;
-            knightDamage = 1;
-            knightDefence = 2;
-            knightMaxHp = 10;
-            knightMaxMp = 3;
+            knightDamage = 3;
+            knightDefence = 3;
+            knightMaxHp = 13;
+            knightMaxMp = 5;
         } //Knight
 
         public void Archer(string inPut)
@@ -244,15 +247,15 @@ namespace TextRpgMake
             this.MaxMp = 130;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
-            this.damage = 35;
+            this.damage = 45;
             this.defence = 30;
             this.gold = 100;
             this.playerDead = false;
             this.itemPutOn = false;
-            archerDamage = 2;
-            archerDefence = 1;
-            archerMaxHp = 7;
-            archerMaxMp = 5;
+            archerDamage = 5;
+            archerDefence = 2;
+            archerMaxHp = 10;
+            archerMaxMp = 8;
         } //Archer
 
         public void Mage(string inPut)
@@ -270,15 +273,15 @@ namespace TextRpgMake
             this.MaxMp = 200;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
-            this.damage = 45;
+            this.damage = 50;
             this.defence = 25;
             this.gold = 100;
             this.playerDead = false;
             this.itemPutOn = false;
-            mageDamage = 1;
-            mageDefence = 2;
-            mageMaxHp = 5;
-            mageMaxMp = 10;
+            mageDamage = 7;
+            mageDefence = 1;
+            mageMaxHp = 7;
+            mageMaxMp = 15;
         } //Mage
 
 
@@ -287,15 +290,56 @@ namespace TextRpgMake
     public class Npc
     {
         public List<Item> shopItemList = new List<Item>();
-        public void ShopNpc()
+        public List<Item> sellKnight = new List<Item>();
+        public List<Item> sellArcher = new List<Item>();
+        public List<Item> sellMage = new List<Item>();
+
+        public void SellItem(List<Item> shopItemList, Player player)
+        {
+            if (player._class == "기사")
+            {
+                shopItemList.Add(KnightWeapon.SteelSword());
+                shopItemList.Add(KnightWeapon.MithrilSword());
+                shopItemList.Add(KnightWeapon.Excalibur());
+            }
+            else if (player._class == "궁수")
+            {
+                shopItemList.Add(ArcherWeapon.LongBow());
+                shopItemList.Add(ArcherWeapon.MithrilBow());
+                shopItemList.Add(ArcherWeapon.Windforce());
+            }
+            else if (player._class == "마법사")
+            {
+                shopItemList.Add(MageWeapon.JewelStaff());
+                shopItemList.Add(MageWeapon.WizardStaff());
+                shopItemList.Add(MageWeapon.ArchonStaff());
+            }
+        } //SellItem
+        public void ShopNpc(Player player)
         {
             shopItemList.Add(Expendables.HpPotion());
             shopItemList.Add(Expendables.MpPotion());
+            shopItemList.Add(Expendables.HighHpPotion());
+            shopItemList.Add(Expendables.HighMpPotion());
+            //직업별로 판매목록 구분
+            SellItem(shopItemList, player);
+            
             int num = 1;
             Console.WriteLine("\t【판매 목록】\n");
             foreach (Item item in shopItemList)
             {
-                Console.WriteLine("【{0}】▶【아이템명】{1}【가격】{2}【정보】{3}", num, item.Name, item.Price, item.ItemDesc);
+                if (item.ItemType == "무기")
+                {
+                    Console.WriteLine($"【{num}】▶\t【아이템】{item.Name}\t【데미지】{item.WeaponDamage}\t【가격】{item.Price}골드\n\t【정보】{item.ItemDesc}\n");
+                }
+                else if (item.ItemType == "회복소모품")
+                {
+                    Console.WriteLine($"【{num}】▶\t【아이템】{item.Name}\t【회복량】{item.HpMpPlus}\t【가격】{item.Price}골드\n\t【정보】{item.ItemDesc}\n");
+                }
+                else if (item.ItemType == "투척소모품")
+                {
+                    Console.WriteLine($"【{num}】▶\t【아이템】{item.Name}\t【데미지】{item.WeaponDamage}\t【가격】{item.Price}골드\n\t【정보】{item.ItemDesc}\n");
+                }
                 num++;
             }
             Console.WriteLine();

@@ -10,9 +10,6 @@ namespace TextRpgMake
         {
             mainPlayer = new Player();
             PlayGame playGame = new PlayGame(mainPlayer);
-            //MoveKey moveKey= new MoveKey();
-            //moveKey.PlayGame(mainPlayer);
-
         } //Main
     } //Program
 }

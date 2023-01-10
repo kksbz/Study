@@ -19,6 +19,7 @@ namespace TextRpgMake
             public string mapMark;
             public string monsterMark;
             public string playerMark;
+            public string bossMark;
             public int playerY;
             public int playerX;
             public int monsterY;
@@ -37,6 +38,7 @@ namespace TextRpgMake
             public string[,] map;
             public bool potalCount;
             public bool monsterCount;
+            public bool bossCount;
             public bool end;
             public bool showItem;
             public bool showSkill;
@@ -53,6 +55,7 @@ namespace TextRpgMake
             mapSet.mapEdgeMark = "■";
             mapSet.monsterMark = "♀";
             mapSet.playerMark = "위";
+            mapSet.bossMark = "㈇";
             mapSet.motel = "옷";
             mapSet.shop = "⑧";
             mapSet.potal = "＠";
@@ -102,7 +105,6 @@ namespace TextRpgMake
                     }
                 }
             }
-            //if문 시작 조건: IsThereCoin의 값이 반대일때
             //IsthereCoin은 필드에 몬스터가있으면 true, 없으면 false
             if (!IsThereMonster)
             {
@@ -170,7 +172,7 @@ namespace TextRpgMake
             MapSet map1 = new MapSet();
             int Y = 15, X = 40;
             map1 = MapSetting(Y, X);
-            map1 = Fence(map1, 30);
+            map1 = Fence(map1, 90);
             map1.mapName = "첫번째 필드";
             map1.potalY = 0;
             map1.potalX = X - 2;
@@ -184,9 +186,9 @@ namespace TextRpgMake
         public MapSet Map2()
         {
             MapSet map2 = new MapSet();
-            int Y = 35, X = 30;
+            int Y = 22, X = 30;
             map2 = MapSetting(Y, X);
-            map2 = Fence(map2, 60);
+            map2 = Fence(map2, 80);
             map2.mapName = "두번째 필드";
             map2.potalY = 0;
             map2.potalX = X - 4;
@@ -197,14 +199,84 @@ namespace TextRpgMake
             return map2;
         }
 
+        public MapSet Map3()
+        {
+            MapSet map3 = new MapSet();
+            int Y = 20, X = 40;
+            map3 = MapSetting(Y, X);
+            map3 = Fence(map3, 100);
+            map3.mapName = "세번째 필드";
+            map3.potalY = Y / 3;
+            map3.potalX = X - 1;
+            map3.map[map3.potalY, map3.potalX] = map3.potal;
+            map3.playerY = Y - 2;
+            map3.playerX = 1;
+            map3.map[map3.playerY, map3.playerX] = map3.playerMark;
+            return map3;
+        } //Map3
+
+        public MapSet BossMap()
+        {
+            MapSet bossMap = new MapSet();
+            int Y = 20, X = 20;
+            bossMap = MapSetting(Y, X);
+            bossMap.potalY = Y - 1;
+            bossMap.potalX = 10;
+            bossMap.map[bossMap.potalY, bossMap.potalX] = bossMap.potal;
+            bossMap.playerY = Y - 2;
+            bossMap.playerX = 1;
+            bossMap.map[bossMap.playerY, bossMap.playerX] = bossMap.playerMark;
+
+            bossMap.map[9, 9] = bossMap.bossMark;
+            bossMap.map[9, 10] = bossMap.bossMark;
+            bossMap.map[10, 9] = bossMap.bossMark;
+            bossMap.map[10, 10] = bossMap.bossMark;
+
+            bossMap.map[7, 8] = "♨";
+            bossMap.map[7, 11] = "♨";
+            bossMap.map[8, 6] = "♨";
+            bossMap.map[8, 8] = "♨";
+            bossMap.map[8, 9] = "♨";
+            bossMap.map[8, 10] = "♨";
+            bossMap.map[8, 11] = "♨";
+            bossMap.map[8, 13] = "♨";
+            bossMap.map[9, 4] = "♨";
+            bossMap.map[9, 6] = "♨";
+            bossMap.map[9, 7] = "♨";
+            bossMap.map[9, 8] = "♨";
+            bossMap.map[9, 11] = "♨";
+            bossMap.map[9, 12] = "♨";
+            bossMap.map[9, 13] = "♨";
+            bossMap.map[9, 15] = "♨";
+            bossMap.map[10, 4] = "♨";
+            bossMap.map[10, 5] = "♨";
+            bossMap.map[10, 6] = "♨";
+            bossMap.map[10, 13] = "♨";
+            bossMap.map[10, 14] = "♨";
+            bossMap.map[10, 15] = "♨";
+            bossMap.map[11, 5] = "♨";
+            bossMap.map[11, 8] = "♨";
+            bossMap.map[11, 14] = "♨";
+            bossMap.map[11, 11] = "♨";
+            bossMap.map[12, 5] = "♨";
+            bossMap.map[12, 6] = "♨";
+            bossMap.map[12, 7] = "♨";
+            bossMap.map[12, 8] = "♨";
+            bossMap.map[12, 11] = "♨";
+            bossMap.map[12, 12] = "♨";
+            bossMap.map[12, 13] = "♨";
+            bossMap.map[12, 14] = "♨";
+            return bossMap;
+        }
+
         public MapSet Fence(MapSet mapSet, int howManyFence)
         {
             Random random = new Random();
-            for(int index = 0; index < howManyFence; index++)
+            for (int index = 0; index < howManyFence; index++)
             {
                 int Y = random.Next(2, mapSet.mapSizeY - 2);
                 int X = random.Next(2, mapSet.mapSizeX - 2);
-                if(mapSet.map[Y, X] == mapSet.mapMark)
+                if (mapSet.map[Y, X] == mapSet.mapMark)
                 {
                     mapSet.map[Y, X] = "■";
                 }

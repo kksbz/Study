@@ -33,7 +33,10 @@ namespace TextRpgMake
         public int SkillDamage
         {
             get { return skillDamage; }
-            set { skillDamage = value; }
+            set 
+            {
+                skillDamage = value;
+            }
         }
         public int UseMp
         {
@@ -54,12 +57,12 @@ namespace TextRpgMake
             Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
         } //ShowSkillList
 
-        public Player GetSkill(Player player)
+        public void GetSkill(Player player)
         {
             switch (player._class)
             {
                 case "기사":
-                    if (player.Level == 3)
+                    if (player.Level == 3 && player.skillList.Count == 1)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -67,7 +70,7 @@ namespace TextRpgMake
                         Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_2().SkillName);
                         Console.ReadLine();
                     }
-                    else if (player.Level == 5) 
+                    else if (player.Level == 5 && player.skillList.Count == 2)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -75,10 +78,10 @@ namespace TextRpgMake
                         Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_3().SkillName);
                         Console.ReadLine();
                     }
-                    
+
                     break;
                 case "궁수":
-                    if (player.Level == 3)
+                    if (player.Level == 3 && player.skillList.Count == 1)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -86,7 +89,7 @@ namespace TextRpgMake
                         Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_2().SkillName);
                         Console.ReadLine();
                     }
-                    else if (player.Level == 5)
+                    else if (player.Level == 5 && player.skillList.Count == 2)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -98,13 +101,16 @@ namespace TextRpgMake
                 case "마법사":
                     if (player.Level == 3)
                     {
-                        Console.Clear();
-                        Console.SetCursorPosition(0, 5);
-                        player.skillList.Add(MageSkill.Skill_2());
-                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_2().SkillName);
-                        Console.ReadLine();
+                        if (player.Level == 3 && player.skillList.Count == 1)
+                        {
+                            Console.Clear();
+                            Console.SetCursorPosition(0, 5);
+                            player.skillList.Add(MageSkill.Skill_2());
+                            Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_2().SkillName);
+                            Console.ReadLine();
+                        }
                     }
-                    else if (player.Level == 5)
+                    else if (player.Level == 5 && player.skillList.Count == 2)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -114,7 +120,6 @@ namespace TextRpgMake
                     }
                     break;
             }
-            return player;
         } //GetSkill
     } //ClassSkill
 
@@ -209,4 +214,29 @@ namespace TextRpgMake
         } //Skill_2
     } //ArcherSkill
 
+    public class BossSkill : ClassSkill
+    {
+        public BossSkill(string skillName, int skillDamage, int useMp)
+        {
+            this.skillName = skillName;
+            this.skillDamage = skillDamage;
+            this.useMp = useMp;
+        } //BossSkill(생성자)
+
+        public static BossSkill Skill_1()
+        {
+            BossSkill skill = new BossSkill("불", 150, 80);
+            return skill;
+        } //Skill_1
+        public static BossSkill Skill_2()
+        {
+            BossSkill skill = new BossSkill("물", 200, 120);
+            return skill;
+        } //Skill_2
+        public static BossSkill Skill_3()
+        {
+            BossSkill skill = new BossSkill("땅", 300, 150);
+            return skill;
+        } //Skill_3
+    } //BossSkill
 }

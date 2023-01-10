@@ -12,9 +12,6 @@ namespace TextRpgMake
     {
         public Battle(Player player, Monster monster)
         {
-            //Map map = new Map();
-            //MapSet lobby = new MapSet();
-            //lobby = map.Lobby();
             ClassSkill classSkill = new ClassSkill();
             Item item = new Item();
             Random random = new Random();
@@ -37,7 +34,7 @@ namespace TextRpgMake
                     Console.SetCursorPosition(0, 0);
                     Console.Clear();
                     Console.WriteLine();
-                    Console.WriteLine("\t\t\t【{0}】", player.Name);
+                    Console.WriteLine("\t\t\t【{0}】【{1}】", player.Name, player.Level);
                     Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
                     Console.WriteLine("▣\t\t\t\t\t\t\t\t▣");
                     Console.WriteLine("▣【HP】{0}/{1}\t【MP】{2}/{3}\t【공격력】{4}\t【방어력】{5}    ▣", player.Hp, player.MaxHp,
@@ -45,7 +42,7 @@ namespace TextRpgMake
                     Console.WriteLine("▣\t\t\t\t\t\t\t\t▣");
                     Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
                     Console.WriteLine();
-                    Console.WriteLine("\t\t\t【{0}】", monster.Name);
+                    Console.WriteLine("\t\t\t【{0}】【{1}】", monster.Name, monster.Level);
                     Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
                     Console.WriteLine("▣\t\t\t\t\t\t\t\t▣");
                     Console.WriteLine("▣【HP】{0}/{1}\t【MP】{2}/{3}\t【공격력】{4}\t【방어력】{5}    ▣", monster.Hp, monster.MaxHp,
@@ -116,63 +113,8 @@ namespace TextRpgMake
                             } //if
                             break;
                         case "3":
-                            //아이템 사용 선택지 예외처리 및 실행
-                            for (int index2 = 0; index2 < 1; index2++)
-                            {
-                                Console.Clear();
-                                Console.SetCursorPosition(0, 5);
-                                item.ShowItemList(player.itemList, player);
-                                Console.WriteLine("【사용하기】▶ 사용할 아이템 번호 /【뒤로】▶ 아이템 목록을 제외한 아무키\n");
-                                int itemInPut = -1;
-                                int.TryParse(Console.ReadLine(), out itemInPut);
-                                if (0 < itemInPut && itemInPut <= player.itemList.Count)
-                                {
-                                    itemInPut = itemInPut - 1;
-                                    if (player.itemList[itemInPut].ItemType == "회복소모품")
-                                    {
-                                        Console.WriteLine("【사용】▶ 【{0}】", player.itemList[itemInPut].Name);
-                                        if (player.itemList[itemInPut].Name == "HP포션" || player.itemList[itemInPut].Name == "상급HP포션")
-                                        {
-                                            player.Hp += player.itemList[itemInPut].HpMpPlus;
-                                            if (player.Hp >= player.MaxHp)
-                                            {
-                                                player.Hp = player.MaxHp;
-                                            }
-                                            player.itemList.Remove(player.itemList[itemInPut]);
-                                        }
-                                        else if (player.itemList[itemInPut].Name == "MP포션" || player.itemList[itemInPut].Name == "상급MP포션")
-                                        {
-                                            player.Mp += player.itemList[itemInPut].HpMpPlus;
-                                            if (player.Mp >= player.MaxMp)
-                                            {
-                                                player.Mp = player.MaxMp;
-                                            }
-                                            player.itemList.Remove(player.itemList[itemInPut]);
-                                        } //if
-                                    }
-                                    else if (player.itemList[itemInPut].ItemType == "투척소모품")
-                                    {
-                                        Console.Clear();
-                                        Console.SetCursorPosition(0, 5);
-                                        Console.WriteLine("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣\n");
-                                        Console.WriteLine("\t\t\t【사용】▶ 【{0}】\n", player.itemList[itemInPut].Name);
-                                        Console.WriteLine("\t【{0}】▶ 【{1}】사용! 【{2}】에게 【{3}】고정피해!!", player.Name, player.itemList[itemInPut].Name,
-                                            monster.Name, player.itemList[itemInPut].WeaponDamage);
-                                        monster.Hp -= player.itemList[itemInPut].WeaponDamage;
-                                        player.itemList.Remove(player.itemList[itemInPut]);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("【장비아이템은 사용할 수 없습니다】");
-                                        Console.ReadLine();
-                                        index2--;
-                                    }
-                                }
-                                else
-                                {
-                                    index--;
-                                } //if
-                            } //for
+                            //아이템 사용
+                            item.UseItem(player, monster);
                             break;
                         case "4":
                             //도망 실행
@@ -207,13 +149,50 @@ namespace TextRpgMake
                     monsterDefence = false;
                 }
 
-                if (monster.Hp <= 0)
+                if (monster.Hp <= 0 && player.findBoss == true)
                 {
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
+                    //보스템 3개 랜덤얻음
+                    
                     Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★\n\n");
-                    Console.WriteLine("\t【{0}】을(를) 해치웠다!!\n\n\t【EXP】{1}【골드】{2} 획득!!\n\n", monster.Name, monster.Exp, monster.monsterGold);
-                    Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★");
+                    Console.WriteLine("\t【{0}】을(를) 해치웠다!!\n\n\t【EXP】{1}【골드】{2}\n", monster.Name,
+                        monster.Exp, monster.monsterGold);
+                    for (int index2 = 0; index2 < 3; index2++)
+                    {
+                        int bossDrop = 0;
+                        bossDrop = random.Next(0, monster.dropItem.Count);
+                        Console.WriteLine("\t【아이템】{0} 획득!!\n", monster.dropItem[bossDrop].Name);
+                        player.itemList.Add(monster.dropItem[bossDrop]);
+                        monster.dropItem.RemoveAt(bossDrop);
+                    }
+                    Console.WriteLine("\n★★★★★★★★★★★★★★★★★★★★★★★★");
+                    Console.ReadLine();
+                    player.Exp += monster.Exp;
+                    player.gold += monster.monsterGold;
+                    battleWin = true;
+                }
+                else if (monster.Hp <= 0 && player.findMonster == true)
+                {
+                    Console.Clear();
+                    Console.SetCursorPosition(0, 5);
+                    int dropitem = random.Next(0, monster.dropItem.Count);
+                    int getDrop = random.Next(0, 9 + 1);
+                    if (getDrop >= 4)
+                    {
+                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★\n\n");
+                        Console.WriteLine("\t【{0}】을(를) 해치웠다!!\n\n\t【EXP】{1}【골드】{2}\n\n\t【아이템】{3} 획득!!!\n\n", monster.Name,
+                            monster.Exp, monster.monsterGold, monster.dropItem[dropitem].Name);
+                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★");
+                        player.itemList.Add(monster.dropItem[dropitem]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★\n\n");
+                        Console.WriteLine("\t【{0}】을(를) 해치웠다!!\n\n\t【EXP】{1}【골드】{2}\n\n", monster.Name,
+                            monster.Exp, monster.monsterGold);
+                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★");
+                    }
                     Console.ReadLine();
                     player.Exp += monster.Exp;
                     player.gold += monster.monsterGold;
@@ -223,11 +202,100 @@ namespace TextRpgMake
                 {
                     player.Hp -= (monster.Damage * 2) - (player.Defence / 2);
                     playerRun = 0;
-
+                    if (player.Hp <= 0)
+                    {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
+                        Console.WriteLine("==========================================================================\n\n");
+                        Console.WriteLine("\t【{0}】에게 패배! 마을로 돌아갑니다.\n\n", monster.Name);
+                        Console.WriteLine("==========================================================================");
+                        player.playerDead = true;
+                        battleWin = true;
+                    }
                 }
                 else if (playerRun == 2)
                 {
                     battleWin = true;
+                }
+                else if (player.findBoss == true)
+                {
+                    Console.Clear();
+                    Console.SetCursorPosition(0, 5);
+                    Console.WriteLine("==========================================================================\n");
+                    Console.WriteLine("\t\t\t【{0}】의 턴\n", monster.Name);
+                    int monsterAction = random.Next(0, 10);
+                    if (monsterAction >= 6)
+                    {
+                        Console.WriteLine("\t【{0}】▶ 【{1}】에게【{2}】데미지 공격!!\n", monster.Name, player.Name, monster.Damage);
+                        player.Hp -= monster.Damage - (player.Defence / 2);
+                    }
+                    else if (2 < monsterAction && monsterAction < 6)
+                    {
+                        int randomSkill = random.Next(0, 10);
+                        if (randomSkill <= 6)
+                        {
+                            if (monster.Mp >= BossSkill.Skill_1().UseMp)
+                            {
+                                Console.WriteLine("\t【{0}】▶【{1}】시전!!【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_1().SkillName,
+                                    player.Name, BossSkill.Skill_1().SkillDamage);
+                                player.Hp -= BossSkill.Skill_1().SkillDamage - (player.Defence / 2);
+                                monster.Mp -= BossSkill.Skill_1().UseMp;
+                            }
+                            else
+                            {
+                                Console.WriteLine("【{0}】▶【마나 회복】시전!! 【MP】+ 100", monster.Name);
+                                monster.Mp += 100;
+                            }
+                        }
+                        else if (2 < randomSkill && randomSkill < 6)
+                        {
+                            if (monster.Mp >= BossSkill.Skill_2().UseMp)
+                            {
+                                Console.WriteLine("\t【{0}】▶【{1}】시전!!【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_2().SkillName,
+                                    player.Name, BossSkill.Skill_2().SkillDamage);
+                                player.Hp -= BossSkill.Skill_2().SkillDamage - (player.Defence / 2);
+                                monster.Mp -= BossSkill.Skill_2().UseMp;
+                            }
+                            else
+                            {
+                                Console.WriteLine("【{0}】▶【마나 회복】시전!! 【MP】+ 100", monster.Name);
+                                monster.Mp += 100;
+                            }
+                        }
+                        else
+                        {
+                            if (monster.Mp >= BossSkill.Skill_3().UseMp)
+                            {
+                                Console.WriteLine("\t【{0}】▶【{1}】시전!!【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_3().SkillName,
+                                    player.Name, BossSkill.Skill_3().SkillDamage);
+                                player.Hp -= BossSkill.Skill_3().SkillDamage - (player.Defence / 2);
+                                monster.Mp -= BossSkill.Skill_3().UseMp;
+                            }
+                            else
+                            {
+                                Console.WriteLine("\t【{0}】▶【마나 회복】시전!! 【MP】+ 100", monster.Name);
+                                monster.Mp += 100;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\t【{0}】▶ 방어자세를 취했다! 다음턴【방어력】{1}증가!!\n", monster.Name, monster.buffDefence);
+                        monster.Defence += monster.buffDefence;
+                        monsterDefence = true;
+                    }
+                    Console.WriteLine("==========================================================================");
+
+                    if (player.Hp <= 0)
+                    {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
+                        Console.WriteLine("==========================================================================\n\n");
+                        Console.WriteLine("\t【{0}】에게 패배! 마을로 돌아갑니다.\n\n", monster.Name);
+                        Console.WriteLine("==========================================================================");
+                        player.playerDead = true;
+                        battleWin = true;
+                    }
                 }
                 else
                 {
