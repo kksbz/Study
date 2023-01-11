@@ -130,7 +130,14 @@ namespace TextRpgMake
             int cut = player.MaxHp / 10;
             int heart = player.Hp / cut;
             int emptyHeart = 10 - heart;
-            Console.Write("\t     ");
+            if (player.findMonster == true)
+            {
+                Console.Write("\t     ");
+            }
+            else
+            {
+                Console.Write("\t");
+            }
             for (int index = 0; index < heart; index++)
             {
                 Console.Write("♥");
@@ -190,8 +197,9 @@ namespace TextRpgMake
         public List<ClassSkill> skillList = new List<ClassSkill>();
         public List<Item> itemList = new List<Item>();
         public List<Item> putOnItem = new List<Item>();
+        public int gold;
+        public string classMark;
         public bool itemPutOn = false;
-        public int gold = 0;
         public bool playerDead = false;
         public bool findMonster = false;
         public bool findBoss = false;
@@ -220,12 +228,14 @@ namespace TextRpgMake
                 Console.Clear();
                 Console.SetCursorPosition(25, 10);
                 Console.WriteLine("【플레이어의 이름을 정하세요】");
+                Console.CursorVisible = true;
                 Console.SetCursorPosition(35, 12);
                 string nickName = Console.ReadLine();
                 int userInPut = 0;
                 for (int index2 = 0; index2 < 1; index2++)
                 {
                     Console.Clear();
+                    Console.CursorVisible = false;
                     ShowSelectClass();
                     int.TryParse(Console.ReadLine(), out userInPut);
 
@@ -249,6 +259,7 @@ namespace TextRpgMake
                     } //switch
                 } //for
             } //for
+            Console.Clear();
         } //SelectPlayer
 
         public void ShowSelectClass()
@@ -262,7 +273,6 @@ namespace TextRpgMake
             Console.WriteLine("\t【스킬】  ▶ 더블 어택\t【스킬】  ▶ 더블 샷\t【스킬】  ▶ 파이어볼");
             Console.WriteLine("\t【아이템】▶ 기본 검\t【아이템】▶ 기본 활\t【아이템】▶ 기본 스태프");
             Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t\t┃\n┃\t\t【클래스를 선택하세요】\t\t【4번】▶ 이름 재설정\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-
         }
 
         public void ShowInfo(Player player)
@@ -296,6 +306,7 @@ namespace TextRpgMake
             itemList.Add(Expendables.HpPotion());
             itemList.Add(Expendables.MpPotion());
             this._class = "기사";
+            this.classMark = "위";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
@@ -323,6 +334,7 @@ namespace TextRpgMake
             itemList.Add(Expendables.HpPotion());
             itemList.Add(Expendables.MpPotion());
             this._class = "궁수";
+            this.classMark = "∑";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
@@ -345,18 +357,17 @@ namespace TextRpgMake
         public void Mage(string inPut)
         {
             skillList.Add(MageSkill.Skill_1());
-            skillList.Add(MageSkill.Skill_2());
-            skillList.Add(MageSkill.Skill_3());
             itemList.Add(MageWeapon.BasicStaff());
             itemList.Add(Expendables.ThrowingDagger());
             itemList.Add(Expendables.HpPotion());
             itemList.Add(Expendables.MpPotion());
             this._class = "마법사";
+            this.classMark = "Å";
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.MaxHp = 2400;
-            this.MaxMp = 1600;
+            this.MaxHp = 240;
+            this.MaxMp = 170;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 50;

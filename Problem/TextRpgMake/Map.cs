@@ -40,6 +40,7 @@ namespace TextRpgMake
             public bool potalCount;
             public bool monsterCount;
             public bool bossCount;
+            public bool chiefCount;
             public bool end;
             public bool showItem;
             public bool showSkill;
@@ -55,7 +56,6 @@ namespace TextRpgMake
             mapSet.mapMark = "  ";
             mapSet.mapEdgeMark = "■";
             mapSet.monsterMark = "♀";
-            mapSet.playerMark = "위";
             mapSet.bossMark = "㈇";
             mapSet.motel = "옷";
             mapSet.shop = "⑧";
@@ -131,7 +131,6 @@ namespace TextRpgMake
             } //if문 종료
             return mapNumber;
         } //MonsterMap
-
         public void MapShow(MapSet mapSet)
         {
             Console.SetCursorPosition(0, 1);
@@ -144,10 +143,10 @@ namespace TextRpgMake
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("\t【현재 위치】▶ {0}", mapSet.mapName);
+            Console.WriteLine("\n\t【현재 위치】▶ {0}", mapSet.mapName);
         } //MapShow
 
-        public MapSet Lobby()
+        public MapSet Lobby(Player player)
         {
             MapSet lobby = new MapSet();
             int Y = 15, X = 15;
@@ -157,6 +156,7 @@ namespace TextRpgMake
             lobby.mapName = "마 을";
             lobby.motelY = 4;
             lobby.motelX = 3;
+            lobby.map[4, 11] = "⑻";
             lobby.map[lobby.motelY, lobby.motelX] = lobby.motel;
             lobby.shopY = 10;
             lobby.shopX = 10;
@@ -166,69 +166,70 @@ namespace TextRpgMake
             lobby.map[lobby.potalY, lobby.potalX] = lobby.potal;
             lobby.playerY = Y / 2;
             lobby.playerX = X / 2;
-            lobby.map[lobby.playerY, lobby.playerX] = lobby.playerMark;
+            lobby.map[lobby.playerY, lobby.playerX] = player.classMark;
             return lobby;
         }
 
-        public MapSet Map1()
+        public MapSet Map1(Player player)
         {
             MapSet map1 = new MapSet();
             int Y = 15, X = 40;
             map1 = MapSetting(Y, X);
-            map1 = Fence(map1, 90);
-            map1.mapName = "첫번째 필드";
+            map1 = Fence(map1, 90, "■");
+            map1.mapName = "암석 지대";
             map1.potalY = 0;
             map1.potalX = X - 2;
             map1.map[map1.potalY, map1.potalX] = map1.potal;
             map1.playerY = Y - 2;
             map1.playerX = 1;
-            map1.map[map1.playerY, map1.playerX] = map1.playerMark;
+            map1.map[map1.playerY, map1.playerX] = player.classMark;
             return map1;
         }
 
-        public MapSet Map2()
+        public MapSet Map2(Player player)
         {
             MapSet map2 = new MapSet();
             int Y = 22, X = 30;
             map2 = MapSetting(Y, X);
-            map2 = Fence(map2, 80);
-            map2.mapName = "두번째 필드";
+            map2 = Fence(map2, 100, "♣");
+            map2.mapName = "깊은 숲";
             map2.potalY = 0;
             map2.potalX = X - 4;
             map2.map[map2.potalY, map2.potalX] = map2.potal;
             map2.playerY = Y - 2;
             map2.playerX = 1;
-            map2.map[map2.playerY, map2.playerX] = map2.playerMark;
+            map2.map[map2.playerY, map2.playerX] = player.classMark;
             return map2;
         }
 
-        public MapSet Map3()
+        public MapSet Map3(Player player)
         {
             MapSet map3 = new MapSet();
             int Y = 20, X = 40;
             map3 = MapSetting(Y, X);
-            map3 = Fence(map3, 100);
-            map3.mapName = "세번째 필드";
+            map3 = Fence(map3, 110, "♨");
+            map3.mapName = "지옥불 반도";
             map3.potalY = Y / 3;
             map3.potalX = X - 1;
             map3.map[map3.potalY, map3.potalX] = map3.potal;
             map3.playerY = Y - 2;
             map3.playerX = 1;
-            map3.map[map3.playerY, map3.playerX] = map3.playerMark;
+            map3.map[map3.playerY, map3.playerX] = player.classMark;
             return map3;
         } //Map3
 
-        public MapSet BossMap()
+        public MapSet BossMap(Player player)
         {
             MapSet bossMap = new MapSet();
             int Y = 20, X = 20;
             bossMap = MapSetting(Y, X);
+            bossMap.mapName = "소환의 제단";
             bossMap.potalY = Y - 1;
             bossMap.potalX = 10;
             bossMap.map[bossMap.potalY, bossMap.potalX] = bossMap.potal;
             bossMap.playerY = Y - 2;
             bossMap.playerX = 1;
-            bossMap.map[bossMap.playerY, bossMap.playerX] = bossMap.playerMark;
+            bossMap.map[bossMap.playerY, bossMap.playerX] = player.classMark;
 
             bossMap.map[9, 9] = bossMap.bossMark;
             bossMap.map[9, 10] = bossMap.bossMark;
@@ -272,7 +273,7 @@ namespace TextRpgMake
             return bossMap;
         }
 
-        public MapSet Fence(MapSet mapSet, int howManyFence)
+        public MapSet Fence(MapSet mapSet, int howManyFence, string mark)
         {
             Random random = new Random();
             for (int index = 0; index < howManyFence; index++)
@@ -281,7 +282,7 @@ namespace TextRpgMake
                 int X = random.Next(2, mapSet.mapSizeX - 2);
                 if (mapSet.map[Y, X] == mapSet.mapMark)
                 {
-                    mapSet.map[Y, X] = "■";
+                    mapSet.map[Y, X] = mark;
                 }
                 else
                 {

@@ -54,7 +54,7 @@ namespace TextRpgMake
     public class MoveKey
     {
         //플레이어 움직임입력 함수
-        public MapSet MoveInfo(MapSet mapNumber)
+        public MapSet MoveInfo(MapSet mapNumber, Player player)
         {
             ClassSkill classSkill = new ClassSkill();
             Item item = new Item();
@@ -83,6 +83,9 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
+                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
+                            mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] = player.classMark;
+                            mapNumber.playerY--;
                         }
                         else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.shop)
                         {
@@ -100,11 +103,15 @@ namespace TextRpgMake
                         {
                             mapNumber.bossCount = true;
                         }
+                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == "⑻")
+                        {
+                            mapNumber.chiefCount = true;
+                        }
                     }
                     else
                     {
                         mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                        mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] = mapNumber.playerMark;
+                        mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] = player.classMark;
                         mapNumber.playerY--;
                     }
                     break; //case 종료
@@ -115,6 +122,9 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
+                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
+                            mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] = player.classMark;
+                            mapNumber.playerX--;
                         }
                         else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] == mapNumber.shop)
                         {
@@ -132,11 +142,15 @@ namespace TextRpgMake
                         {
                             mapNumber.bossCount = true;
                         }
+                        else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] == "⑻")
+                        {
+                            mapNumber.chiefCount = true;
+                        }
                     }
                     else
                     {
                         mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                        mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] = mapNumber.playerMark;
+                        mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] = player.classMark;
                         mapNumber.playerX--;
                     }
                     break; //case 종료
@@ -147,6 +161,9 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
+                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
+                            mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] = player.classMark;
+                            mapNumber.playerY++;
                         }
                         else if (mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] == mapNumber.shop)
                         {
@@ -164,11 +181,15 @@ namespace TextRpgMake
                         {
                             mapNumber.bossCount = true;
                         }
+                        else if (mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] == "⑻")
+                        {
+                            mapNumber.chiefCount = true;
+                        }
                     }
                     else
                     {
                         mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                        mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] = mapNumber.playerMark;
+                        mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] = player.classMark;
                         mapNumber.playerY++;
                     }
                     break; //case 종료
@@ -179,6 +200,9 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
+                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
+                            mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] = player.classMark;
+                            mapNumber.playerX++;
                         }
                         else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] == mapNumber.shop)
                         {
@@ -196,11 +220,15 @@ namespace TextRpgMake
                         {
                             mapNumber.bossCount = true;
                         }
+                        else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] == "⑻")
+                        {
+                            mapNumber.chiefCount = true;
+                        }
                     }
                     else
                     {
                         mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                        mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] = mapNumber.playerMark;
+                        mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] = player.classMark;
                         mapNumber.playerX++;
                     }
                     break;
@@ -215,9 +243,11 @@ namespace TextRpgMake
                     break;
                 case ConsoleKey.X:
                     int num = 3;
-                    for(int index = 0; index < 3; index++)
+                    Console.Clear();
+                    for(int index = 0; index < 4; index++)
                     {
-                        Console.WriteLine("\t\t{0}초 뒤 게임을 종료합니다", num);
+                        Console.SetCursorPosition(0, 5);
+                        Console.WriteLine("\t\t【{0}초 뒤 게임을 종료합니다】", num);
                         Thread.Sleep(1000);
                         num--;
                     }

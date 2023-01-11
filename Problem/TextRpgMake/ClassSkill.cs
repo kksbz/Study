@@ -78,7 +78,7 @@ namespace TextRpgMake
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
                         player.skillList.Add(KnightSkill.Skill_2());
-                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_2().SkillName);
+                        Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_2().SkillName);
                         Console.ReadLine();
                     }
                     else if (player.Level == 5 && player.skillList.Count == 2)
@@ -86,7 +86,7 @@ namespace TextRpgMake
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
                         player.skillList.Add(KnightSkill.Skill_3());
-                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_3().SkillName);
+                        Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_3().SkillName);
                         Console.ReadLine();
                     }
 
@@ -97,7 +97,7 @@ namespace TextRpgMake
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
                         player.skillList.Add(ArcherSkill.Skill_2());
-                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_2().SkillName);
+                        Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_2().SkillName);
                         Console.ReadLine();
                     }
                     else if (player.Level == 5 && player.skillList.Count == 2)
@@ -105,7 +105,7 @@ namespace TextRpgMake
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
                         player.skillList.Add(ArcherSkill.Skill_3());
-                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_3().SkillName);
+                        Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_3().SkillName);
                         Console.ReadLine();
                     }
                     break;
@@ -117,7 +117,7 @@ namespace TextRpgMake
                             Console.Clear();
                             Console.SetCursorPosition(0, 5);
                             player.skillList.Add(MageSkill.Skill_2());
-                            Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_2().SkillName);
+                            Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_2().SkillName);
                             Console.ReadLine();
                         }
                     }
@@ -126,7 +126,7 @@ namespace TextRpgMake
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
                         player.skillList.Add(MageSkill.Skill_3());
-                        Console.WriteLine("\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_3().SkillName);
+                        Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_3().SkillName);
                         Console.ReadLine();
                     }
                     break;

@@ -70,7 +70,6 @@ namespace TextRpgMake
                         case "2":
                             //스킬 사용 예외처리 및 실행
                             int number1 = -1;
-                            Console.Clear();
                             Console.SetCursorPosition(0, 5);
                             classSkill.ShowSkillList(player.skillList, player);
                             int skillInPut = -1;
@@ -160,7 +159,7 @@ namespace TextRpgMake
                     }
                     Console.WriteLine("\t\t【아이템】{0} 획득!!\n", monster.dropItem[0].Name);
                     player.itemList.Add(monster.dropItem[0]);
-                    //monster.dropItem.Remove(monster.dropItem[0]);
+                    monster.dropItem.Remove(monster.dropItem[0]);
                     Console.WriteLine("\n\t★★★★★★★★★★★★★★★★★★★★★★");
                     Console.ReadLine();
                     player.Exp += monster.Exp;
