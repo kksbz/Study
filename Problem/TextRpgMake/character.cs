@@ -46,13 +46,13 @@ namespace TextRpgMake
                     this.Mp = this.MaxMp;
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
-                    Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★\n");
+                    Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★★★★★\n\n");
                     Console.WriteLine("\t\t\t【레   벨   업】\n");
                     Console.WriteLine("\t\t【레벨】\t(+{0})\t▶\t{1}\n\t\t【MaxHP】\t(+{2})\t▶\t{3}\n\t\t【MaxMP】\t(+{4})\t▶\t{5}" +
                         "\n\t\t【데미지】\t(+{6})\t▶\t{7}\n\t\t【방어력】\t(+{8})\t▶\t{9}\n",
                         this.Level, (this.Level + 1), (this.MaxHp - hp), this.MaxHp, (this.MaxMp - mp), this.MaxMp,
                         (this.Damage - damage), this.Damage, (this.Defence - defence), this.defence);
-                    Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+                    Console.WriteLine("\n\t★★★★★★★★★★★★★★★★★★★★★★★★★★");
                     Console.ReadLine();
                 }
                 level = value;
@@ -143,7 +143,7 @@ namespace TextRpgMake
             int cutmana = player.MaxMp / 10;
             int mana = player.Mp / cutmana;
             int emptyMana = 10 - mana;
-            for(int index = 0; index < mana; index++)
+            for (int index = 0; index < mana; index++)
             {
                 Console.Write("◆");
             }
@@ -196,6 +196,8 @@ namespace TextRpgMake
         public bool findMonster = false;
         public bool findBoss = false;
         public bool itemUse = false;
+        public bool useWeapon = false;
+        public bool bossKill = false;
 
         public static int knightDamage = 0;
         public static int knightDefence = 0;
@@ -213,34 +215,55 @@ namespace TextRpgMake
         public static int mageMaxMp = 0;
         public void SelectPlayer()
         {
-            Console.Write("플레이어의 이름을 정하세요.");
-            Console.WriteLine();
-            string nickName = Console.ReadLine();
-            int userInPut = 0;
             for (int index = 0; index < 1; index++)
             {
-                Console.WriteLine("클래스를 선택하세요.\n【1】기사\n【2】궁수\n【3】마법사");
-                int.TryParse(Console.ReadLine(), out userInPut);
-
-                switch (userInPut)
+                Console.Clear();
+                Console.SetCursorPosition(25, 10);
+                Console.WriteLine("【플레이어의 이름을 정하세요】");
+                Console.SetCursorPosition(35, 12);
+                string nickName = Console.ReadLine();
+                int userInPut = 0;
+                for (int index2 = 0; index2 < 1; index2++)
                 {
-                    case 1:
-                        Knight(nickName);
-                        break;
-                    case 2:
-                        Archer(nickName);
-                        break;
-                    case 3:
-                        Mage(nickName);
-                        break;
-                    default:
-                        Console.WriteLine("잘못 입력하셨습니다. 다시 입력하세요.");
-                        index--;
-                        Console.Clear();
-                        break;
-                } //switch
+                    Console.Clear();
+                    ShowSelectClass();
+                    int.TryParse(Console.ReadLine(), out userInPut);
+
+                    switch (userInPut)
+                    {
+                        case 1:
+                            Knight(nickName);
+                            break;
+                        case 2:
+                            Archer(nickName);
+                            break;
+                        case 3:
+                            Mage(nickName);
+                            break;
+                        case 4:
+                            index--;
+                            break;
+                        default:
+                            index2--;
+                            break;
+                    } //switch
+                } //for
             } //for
         } //SelectPlayer
+
+        public void ShowSelectClass()
+        {
+            Console.SetCursorPosition(0, 5);
+            Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t\t\t\t\t\t\t\t\t┃\n┃\t【1】【기 사】\t\t【2】【궁 수】\t\t【3】【마법사】\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t\t┃");
+            Console.WriteLine("\t【HP】    ▶ 300/300\t【HP】    ▶ 250/250\t【HP】    ▶ 240/240");
+            Console.WriteLine("\t【MP】    ▶ 100/100\t【MP】    ▶ 150/150\t【MP】    ▶ 160/160");
+            Console.WriteLine("\t【공격력】▶    40\t【공격력】▶    45\t【공격력】▶    50");
+            Console.WriteLine("\t【방어력】▶    40\t【방어력】▶    30\t【방어력】▶    25");
+            Console.WriteLine("\t【스킬】  ▶ 더블 어택\t【스킬】  ▶ 더블 샷\t【스킬】  ▶ 파이어볼");
+            Console.WriteLine("\t【아이템】▶ 기본 검\t【아이템】▶ 기본 활\t【아이템】▶ 기본 스태프");
+            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t\t┃\n┃\t\t【클래스를 선택하세요】\t\t【4번】▶ 이름 재설정\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+
+        }
 
         public void ShowInfo(Player player)
         {
@@ -250,7 +273,7 @@ namespace TextRpgMake
             Console.WriteLine("\t\t【닉네임】   ▶ 【{0}】\n", player.name);
             Console.WriteLine("\t【직업】  ▶ {0}\t【레벨】  ▶ {1}\n\n\t【HP】    ▶ {2}/{3}\t【MP】    ▶ {4}/{5}\n", player._class,
                 player.Level, player.Hp, player.MaxHp, player.Mp, player.MaxMp);
-            if(player.itemPutOn == false)
+            if (player.itemPutOn == false)
             {
                 Console.WriteLine("\t【공격력】▶ {0}\t\t【방어력】▶ {1}\n", player.Damage, player.Defence);
                 Console.WriteLine("\t【무기】  ▶ 없음");
@@ -259,7 +282,7 @@ namespace TextRpgMake
             {
                 Console.WriteLine("\t【공격력】▶ {0} + {1}\t【방어력】▶ {1}\n", player.Damage - player.putOnItem[0].WeaponDamage,
                     player.putOnItem[0].WeaponDamage, player.Defence);
-                Console.WriteLine("\t【무기】  ▶ {0}\n\t【무기공격력】▶ {1}", player.putOnItem[0].Name, player.putOnItem[0].WeaponDamage);
+                Console.WriteLine("\t【무기】  ▶ {0}【장착중】\n\n\t【무기공격력】▶ {1}", player.putOnItem[0].Name, player.putOnItem[0].WeaponDamage);
             }
             Console.WriteLine("┃\t\t\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
             Console.ReadLine();
@@ -282,13 +305,14 @@ namespace TextRpgMake
             this.mp = this.MaxMp;
             this.damage = 40;
             this.defence = 40;
-            this.gold = 100;
+            this.gold = 0;
             this.playerDead = false;
             this.itemPutOn = false;
-            knightDamage = 3;
-            knightDefence = 3;
-            knightMaxHp = 13;
-            knightMaxMp = 5;
+            this.bossKill = false;
+            knightDamage = 5;
+            knightDefence = 4;
+            knightMaxHp = 20;
+            knightMaxMp = 10;
         } //Knight
 
         public void Archer(string inPut)
@@ -302,19 +326,20 @@ namespace TextRpgMake
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.MaxHp = 250;
+            this.MaxHp = 270;
             this.MaxMp = 130;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 45;
             this.defence = 30;
-            this.gold = 100;
+            this.gold = 0;
             this.playerDead = false;
             this.itemPutOn = false;
-            archerDamage = 5;
-            archerDefence = 2;
-            archerMaxHp = 10;
-            archerMaxMp = 8;
+            this.bossKill = false;
+            archerDamage = 6;
+            archerDefence = 3;
+            archerMaxHp = 15;
+            archerMaxMp = 15;
         } //Archer
 
         public void Mage(string inPut)
@@ -330,81 +355,21 @@ namespace TextRpgMake
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.MaxHp = 220;
-            this.MaxMp = 200;
+            this.MaxHp = 2400;
+            this.MaxMp = 1600;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 50;
             this.defence = 25;
-            this.gold = 100;
+            this.gold = 0;
             this.playerDead = false;
             this.itemPutOn = false;
+            this.bossKill = false;
             mageDamage = 7;
-            mageDefence = 1;
-            mageMaxHp = 7;
-            mageMaxMp = 15;
+            mageDefence = 2;
+            mageMaxHp = 10;
+            mageMaxMp = 20;
         } //Mage
 
-
     } //Player
-
-    public class Npc
-    {
-        public List<Item> shopItemList = new List<Item>();
-        public List<Item> sellKnight = new List<Item>();
-        public List<Item> sellArcher = new List<Item>();
-        public List<Item> sellMage = new List<Item>();
-
-        public void SellItem(List<Item> shopItemList, Player player)
-        {
-            if (player._class == "기사")
-            {
-                shopItemList.Add(KnightWeapon.SteelSword());
-                shopItemList.Add(KnightWeapon.MithrilSword());
-                shopItemList.Add(KnightWeapon.Excalibur());
-            }
-            else if (player._class == "궁수")
-            {
-                shopItemList.Add(ArcherWeapon.LongBow());
-                shopItemList.Add(ArcherWeapon.MithrilBow());
-                shopItemList.Add(ArcherWeapon.Windforce());
-            }
-            else if (player._class == "마법사")
-            {
-                shopItemList.Add(MageWeapon.JewelStaff());
-                shopItemList.Add(MageWeapon.WizardStaff());
-                shopItemList.Add(MageWeapon.ArchonStaff());
-            }
-        } //SellItem
-        public void ShopNpc(Player player)
-        {
-            shopItemList.Add(Expendables.HpPotion());
-            shopItemList.Add(Expendables.MpPotion());
-            shopItemList.Add(Expendables.HighHpPotion());
-            shopItemList.Add(Expendables.HighMpPotion());
-            //직업별로 판매목록 구분
-            SellItem(shopItemList, player);
-            
-            int num = 1;
-            Console.WriteLine("\t【판매 목록】\n");
-            foreach (Item item in shopItemList)
-            {
-                if (item.ItemType == "무기")
-                {
-                    Console.WriteLine($"【{num}】▶\t【아이템】{item.Name}\t【데미지】{item.WeaponDamage}\t【가격】{item.Price}골드\n\t【정보】{item.ItemDesc}\n");
-                }
-                else if (item.ItemType == "회복소모품")
-                {
-                    Console.WriteLine($"【{num}】▶\t【아이템】{item.Name}\t【회복량】{item.HpMpPlus}\t【가격】{item.Price}골드\n\t【정보】{item.ItemDesc}\n");
-                }
-                else if (item.ItemType == "투척소모품")
-                {
-                    Console.WriteLine($"【{num}】▶\t【아이템】{item.Name}\t【데미지】{item.WeaponDamage}\t【가격】{item.Price}골드\n\t【정보】{item.ItemDesc}\n");
-                }
-                num++;
-            }
-            Console.WriteLine();
-        } //ShopNpc
-    } //NPC
-
 } //namespace

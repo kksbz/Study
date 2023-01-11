@@ -360,9 +360,9 @@ namespace TextRpgMake
         List<ClassSkill> bossSkill = new List<ClassSkill>();
         public void BossMonster(Player player)
         {
-            bossSkill.Add(BossSkill.Skill_1()); ;
-            bossSkill.Add(BossSkill.Skill_2()); ;
-            bossSkill.Add(BossSkill.Skill_3()); ;
+            bossSkill.Add(BossSkill.Skill_1());
+            bossSkill.Add(BossSkill.Skill_2());
+            bossSkill.Add(BossSkill.Skill_3());
             int bonus = 14;
             this.name = "보스";
             this.level = random.Next(10, 13 + 1);
@@ -375,6 +375,7 @@ namespace TextRpgMake
             this.defence = 40 + bonus + this.level;
             this.buffDefence = 30;
             this.monsterGold = 1000 + bonus * this.level;
+            dropItem.Add(Expendables.Ring());
             dropItem.Add(Expendables.HighHpPotion());
             dropItem.Add(Expendables.HighMpPotion());
             dropItem.Add(Expendables.Bomb());

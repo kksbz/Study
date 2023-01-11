@@ -83,9 +83,6 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
-                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                            mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] = mapNumber.playerMark;
-                            mapNumber.playerY--;
                         }
                         else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.shop)
                         {
@@ -118,9 +115,6 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
-                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                            mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] = mapNumber.playerMark;
-                            mapNumber.playerX--;
                         }
                         else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] == mapNumber.shop)
                         {
@@ -134,7 +128,7 @@ namespace TextRpgMake
                         {
                             mapNumber.potalCount = true;
                         }
-                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.bossMark)
+                        else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX - 1] == mapNumber.bossMark)
                         {
                             mapNumber.bossCount = true;
                         }
@@ -153,9 +147,6 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
-                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                            mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] = mapNumber.playerMark;
-                            mapNumber.playerY++;
                         }
                         else if (mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] == mapNumber.shop)
                         {
@@ -169,7 +160,7 @@ namespace TextRpgMake
                         {
                             mapNumber.potalCount = true;
                         }
-                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.bossMark)
+                        else if (mapNumber.map[mapNumber.playerY + 1, mapNumber.playerX] == mapNumber.bossMark)
                         {
                             mapNumber.bossCount = true;
                         }
@@ -188,9 +179,6 @@ namespace TextRpgMake
                         if (mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] == mapNumber.monsterMark)
                         {
                             mapNumber.monsterCount = true;
-                            mapNumber.map[mapNumber.playerY, mapNumber.playerX] = mapNumber.mapMark;
-                            mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] = mapNumber.playerMark;
-                            mapNumber.playerX++;
                         }
                         else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] == mapNumber.shop)
                         {
@@ -204,7 +192,7 @@ namespace TextRpgMake
                         {
                             mapNumber.potalCount = true;
                         }
-                        else if (mapNumber.map[mapNumber.playerY - 1, mapNumber.playerX] == mapNumber.bossMark)
+                        else if (mapNumber.map[mapNumber.playerY, mapNumber.playerX + 1] == mapNumber.bossMark)
                         {
                             mapNumber.bossCount = true;
                         }
@@ -226,8 +214,13 @@ namespace TextRpgMake
                     mapNumber.showSkill = true;
                     break;
                 case ConsoleKey.X:
-                    Console.WriteLine("2초 뒤 게임을 종료합니다.");
-                    Thread.Sleep(2000);
+                    int num = 3;
+                    for(int index = 0; index < 3; index++)
+                    {
+                        Console.WriteLine("\t\t{0}초 뒤 게임을 종료합니다", num);
+                        Thread.Sleep(1000);
+                        num--;
+                    }
                     //게임종료를 입력했으므로 while문을 빠져나가기위한 조건인 end값을 true로 저장
                     mapNumber.end = true;
                     break;

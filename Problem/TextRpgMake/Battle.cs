@@ -21,9 +21,20 @@ namespace TextRpgMake
             int turnCount = 0;
             Console.Clear();
             Console.SetCursorPosition(0, 5);
-            Console.WriteLine("\t\t【{0}】▶ 【{1}】을(를) 보며 입맛을 다십니다!!\n\n", monster.Name, player.Name);
-            Console.WriteLine("\t\t\t【 전    투    시    작 】\n");
-            Console.ReadLine();
+            if (player.findBoss)
+            {
+                Console.WriteLine("\t\t【{0}】▶ 벌써 여기까지 오다니\n\n\t\t【{0}】▶ 제법이군 【{1}】\n\n" +
+                    "\t\t【{0}】▶ 완전한 강림후에 싸웠으면 좋았을텐데..\n\n\t\t【{0}】▶ 포탈이 내 힘을 버티지 못하는게 아쉽군\n\n" +
+                    "\t\t【{0}】▶ 잡설은 이쯤하지\n\n\t\t【{0}】▶ 【{1}】!! 어디 재롱 한번 부려봐라!!", monster.Name, player.Name); ;
+                Console.WriteLine("\n\n\t\t\t【 전    투    시    작 】\n");
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("\t\t【{0}】▶ 【{1}】을(를) 보며 입맛을 다십니다!!\n\n", monster.Name, player.Name);
+                Console.WriteLine("\t\t\t【 전    투    시    작 】\n");
+                Console.ReadLine();
+            }
             while (battleWin == false)
             {
                 int playerRun = 0;
@@ -72,7 +83,7 @@ namespace TextRpgMake
                                     Console.Clear();
                                     Console.SetCursorPosition(0, 5);
                                     Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
-                                    Console.WriteLine("\t【{0}】▶ 【{1}】사용【{2}】에게【{3}】데미지!!!", player.Name, player.skillList[skillInPut].SkillName,
+                                    Console.WriteLine("\t【{0}】▶ 【{1}】사용!!\n\n\t【{0}】▶ 【{2}】에게【{3}】데미지!!!", player.Name, player.skillList[skillInPut].SkillName,
                                         monster.Name, player.skillList[skillInPut].SkillDamage);
                                     monster.Hp -= player.skillList[skillInPut].SkillDamage - (monster.Defence / 2);
                                     player.Mp -= player.skillList[skillInPut].UseMp;
@@ -80,8 +91,8 @@ namespace TextRpgMake
                                 else
                                 {
                                     Console.Clear();
-                                    Console.SetCursorPosition(0, 5);
-                                    Console.WriteLine("\t\t\t【마나가 부족합니다】\n");
+                                    Console.SetCursorPosition(0, 10);
+                                    Console.WriteLine("\t\t\t\t【마나가 부족합니다】\n");
                                     index--;
                                     Console.ReadLine();
                                 }
@@ -105,15 +116,15 @@ namespace TextRpgMake
                             if (dice >= 6)
                             {
                                 Console.WriteLine("\t\t\t     【도망 성공!!】\n");
-                                Console.WriteLine("\t【{0}】▶ 【{1}】새끼 니 얼굴 기억했다.\n\n\t【{2}】은(는)【{3}】의 눈에 흙을 뿌리며 전력으로 도망쳤다\n",
-                                    player.Name, monster.Name, player.Name, monster.Name);
+                                Console.WriteLine("\t【{0}】▶ 【{1}】새끼 니 얼굴 기억했다.\n\n\t【{0}】▶ 【{1}】의 눈에 흙을 뿌리며 전력으로 도망쳤다\n",
+                                    player.Name, monster.Name);
                                 playerRun = 2;
                             }
                             else
                             {
                                 Console.WriteLine("\t\t\t     【도망 실패!!】\n");
                                 Console.WriteLine("\t\t【{0}】▶ 등짝.. 등짝을 보자!!\n\n\t\t【{1}】▶ 아..아...안....안돼!!!!!\n", monster.Name, player.Name);
-                                Console.WriteLine("\t\t【{0}】▶ 공격력 2배 상승!!\n\n\t\t【{1}】의 눈가가 촉촉해진다..", monster.Name, player.Name);
+                                Console.WriteLine("\t\t【{0}】▶ 공격력 2배 상승\n\n\t\t【{0}】▶ 【{1}】에게 【{2}】데미지!!!\n\n\t\t【{1}】의 눈가가 촉촉해진다..", monster.Name, player.Name, (monster.Damage * 2));
                                 playerRun = 1;
                             }
                             break;
@@ -136,23 +147,30 @@ namespace TextRpgMake
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
                     //보스템 3개 랜덤얻음
-                    
-                    Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★\n\n");
-                    Console.WriteLine("\t【{0}】을(를) 해치웠다!!\n\n\t【EXP】{1}【골드】{2}\n", monster.Name,
+                    Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★\n\n");
+                    Console.WriteLine("\t\t【{0}】을(를) 해치웠다!!\n\n\t\t【EXP】{1}【골드】{2}\n", monster.Name,
                         monster.Exp, monster.monsterGold);
                     for (int index2 = 0; index2 < 3; index2++)
                     {
                         int bossDrop = 0;
-                        bossDrop = random.Next(0, monster.dropItem.Count);
-                        Console.WriteLine("\t【아이템】{0} 획득!!\n", monster.dropItem[bossDrop].Name);
+                        bossDrop = random.Next(1, monster.dropItem.Count);
+                        Console.WriteLine("\t\t【아이템】{0} 획득!!\n", monster.dropItem[bossDrop].Name);
                         player.itemList.Add(monster.dropItem[bossDrop]);
                         monster.dropItem.RemoveAt(bossDrop);
                     }
-                    Console.WriteLine("\n★★★★★★★★★★★★★★★★★★★★★★★★");
+                    Console.WriteLine("\t\t【아이템】{0} 획득!!\n", monster.dropItem[0].Name);
+                    player.itemList.Add(monster.dropItem[0]);
+                    //monster.dropItem.Remove(monster.dropItem[0]);
+                    Console.WriteLine("\n\t★★★★★★★★★★★★★★★★★★★★★★");
                     Console.ReadLine();
                     player.Exp += monster.Exp;
                     player.gold += monster.monsterGold;
+                    player.bossKill = true;
                     battleWin = true;
+                    //보스잡은후 출력
+                    Console.Clear();
+                    Console.SetCursorPosition(0,10);
+                    Console.WriteLine("\t\t【{0}】▶ 【{1}】! 이거라면..\n\n\t\t\t【{1}】를 가지고\n\n\t\t\t【마을촌장】에게 가보자\n\n", player.Name, monster.dropItem[0].Name);
                 }
                 else if (monster.Hp <= 0 && player.findMonster == true)
                 {
@@ -162,18 +180,18 @@ namespace TextRpgMake
                     int getDrop = random.Next(0, 9 + 1);
                     if (getDrop >= 4)
                     {
-                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★\n\n");
-                        Console.WriteLine("\t【{0}】을(를) 해치웠다!!\n\n\t【EXP】{1}【골드】{2}\n\n\t【아이템】{3} 획득!!!\n\n", monster.Name,
+                        Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★\n\n");
+                        Console.WriteLine("\t\t【{0}】을(를) 해치웠다!!\n\n\t\t【EXP】{1}【골드】{2}\n\n\t\t【아이템】{3} 획득!!!\n\n", monster.Name,
                             monster.Exp, monster.monsterGold, monster.dropItem[dropitem].Name);
-                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★");
+                        Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★");
                         player.itemList.Add(monster.dropItem[dropitem]);
                     }
                     else
                     {
-                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★\n\n");
-                        Console.WriteLine("\t【{0}】을(를) 해치웠다!!\n\n\t【EXP】{1}【골드】{2}\n\n", monster.Name,
+                        Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★\n\n");
+                        Console.WriteLine("\t\t【{0}】을(를) 해치웠다!!\n\n\t\t【EXP】{1}【골드】{2}\n\n", monster.Name,
                             monster.Exp, monster.monsterGold);
-                        Console.WriteLine("★★★★★★★★★★★★★★★★★★★★★★★★");
+                        Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★");
                     }
                     Console.ReadLine();
                     player.Exp += monster.Exp;
@@ -188,9 +206,9 @@ namespace TextRpgMake
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
-                        Console.WriteLine("==========================================================================\n\n");
-                        Console.WriteLine("\t【{0}】에게 패배! 마을로 돌아갑니다.\n\n", monster.Name);
-                        Console.WriteLine("==========================================================================");
+                        Console.WriteLine("========================================================\n\n");
+                        Console.WriteLine("\t\t\t【†】\n\n\t\t【{0}】에게 패배!!\n\n\t\t 마을로 돌아갑니다.\n\n", monster.Name);
+                        Console.WriteLine("========================================================");
                         player.playerDead = true;
                         battleWin = true;
                     }
@@ -203,7 +221,7 @@ namespace TextRpgMake
                 {
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
-                    Console.WriteLine("==========================================================================\n");
+                    Console.WriteLine("=================================================================\n\n");
                     Console.WriteLine("\t\t\t【{0}】의 턴\n", monster.Name);
                     int monsterAction = random.Next(0, 10);
                     if (monsterAction >= 6)
@@ -218,14 +236,14 @@ namespace TextRpgMake
                         {
                             if (monster.Mp >= BossSkill.Skill_1().UseMp)
                             {
-                                Console.WriteLine("\t【{0}】▶【{1}】시전!!【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_1().SkillName,
+                                Console.WriteLine("\t【{0}】▶ 【{1}】시전!!\n\n\t【{0}】▶ 【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_1().SkillName,
                                     player.Name, BossSkill.Skill_1().SkillDamage);
                                 player.Hp -= BossSkill.Skill_1().SkillDamage - (player.Defence / 2);
                                 monster.Mp -= BossSkill.Skill_1().UseMp;
                             }
                             else
                             {
-                                Console.WriteLine("【{0}】▶【마나 회복】시전!! 【MP】+ 100", monster.Name);
+                                Console.WriteLine("\t【{0}】▶ 【마나 회복】시전!!\n\n\t【{0}】▶ 【MP】+ 100", monster.Name);
                                 monster.Mp += 100;
                             }
                         }
@@ -233,14 +251,14 @@ namespace TextRpgMake
                         {
                             if (monster.Mp >= BossSkill.Skill_2().UseMp)
                             {
-                                Console.WriteLine("\t【{0}】▶【{1}】시전!!【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_2().SkillName,
+                                Console.WriteLine("\t【{0}】▶ 【{1}】시전!!\n\n\t【{0}】▶ 【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_2().SkillName,
                                     player.Name, BossSkill.Skill_2().SkillDamage);
                                 player.Hp -= BossSkill.Skill_2().SkillDamage - (player.Defence / 2);
                                 monster.Mp -= BossSkill.Skill_2().UseMp;
                             }
                             else
                             {
-                                Console.WriteLine("【{0}】▶【마나 회복】시전!! 【MP】+ 100", monster.Name);
+                                Console.WriteLine("\t【{0}】▶ 【마나 회복】시전!!\n\n\t【{0}】▶ 【MP】+ 100", monster.Name);
                                 monster.Mp += 100;
                             }
                         }
@@ -248,33 +266,33 @@ namespace TextRpgMake
                         {
                             if (monster.Mp >= BossSkill.Skill_3().UseMp)
                             {
-                                Console.WriteLine("\t【{0}】▶【{1}】시전!!【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_3().SkillName,
+                                Console.WriteLine("\t【{0}】▶ 【{1}】시전!!\n\n\t【{0}】▶ 【{2}】에게 【{3}】데미지!!!\n", monster.Name, BossSkill.Skill_3().SkillName,
                                     player.Name, BossSkill.Skill_3().SkillDamage);
                                 player.Hp -= BossSkill.Skill_3().SkillDamage - (player.Defence / 2);
                                 monster.Mp -= BossSkill.Skill_3().UseMp;
                             }
                             else
                             {
-                                Console.WriteLine("\t【{0}】▶【마나 회복】시전!! 【MP】+ 100", monster.Name);
+                                Console.WriteLine("\t【{0}】▶ 【마나 회복】시전!!\n\n\t【{0}】▶ 【MP】+ 100", monster.Name);
                                 monster.Mp += 100;
                             }
                         }
                     }
                     else
                     {
-                        Console.WriteLine("\t【{0}】▶ 방어자세를 취했다! 다음턴【방어력】{1}증가!!\n", monster.Name, monster.buffDefence);
+                        Console.WriteLine("\t【{0}】▶ 방어자세를 취했다!!\n\n\t【{0}】▶ 【방어력】{1}증가!!\n", monster.Name, monster.buffDefence);
                         monster.Defence += monster.buffDefence;
                         monsterDefence = true;
                     }
-                    Console.WriteLine("==========================================================================");
+                    Console.WriteLine("\n=================================================================");
 
                     if (player.Hp <= 0)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
-                        Console.WriteLine("==========================================================================\n\n");
-                        Console.WriteLine("\t【{0}】에게 패배! 마을로 돌아갑니다.\n\n", monster.Name);
-                        Console.WriteLine("==========================================================================");
+                        Console.WriteLine("========================================================\n\n");
+                        Console.WriteLine("\t\t\t【†】\n\n\t\t【{0}】에게 패배!!\n\n\t\t 마을로 돌아갑니다.\n\n", monster.Name);
+                        Console.WriteLine("========================================================");
                         player.playerDead = true;
                         battleWin = true;
                     }
@@ -283,7 +301,7 @@ namespace TextRpgMake
                 {
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
-                    Console.WriteLine("==========================================================================\n");
+                    Console.WriteLine("=================================================================\n\n");
                     Console.WriteLine("\t\t\t【{0}】의 턴\n", monster.Name);
                     int monsterAction = random.Next(0, 10);
                     if (monsterAction >= 3)
@@ -293,19 +311,19 @@ namespace TextRpgMake
                     }
                     else
                     {
-                        Console.WriteLine("\t【{0}】▶ 방어자세를 취했다! 다음턴【방어력】{1}증가!!\n", monster.Name, monster.buffDefence);
+                        Console.WriteLine("\t【{0}】▶ 방어자세를 취했다!!\n\n\t【{0}】▶ 【방어력】{1}증가!!\n", monster.Name, monster.buffDefence);
                         monster.Defence += monster.buffDefence;
                         monsterDefence = true;
                     }
-                    Console.WriteLine("==========================================================================");
+                    Console.WriteLine("\n=================================================================");
 
                     if (player.Hp <= 0)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
-                        Console.WriteLine("==========================================================================\n\n");
-                        Console.WriteLine("\t【{0}】에게 패배! 마을로 돌아갑니다.\n\n", monster.Name);
-                        Console.WriteLine("==========================================================================");
+                        Console.WriteLine("========================================================\n\n");
+                        Console.WriteLine("\t\t\t【†】\n\n\t\t【{0}】에게 패배!!\n\n\t\t 마을로 돌아갑니다.\n\n", monster.Name);
+                        Console.WriteLine("========================================================");
                         player.playerDead = true;
                         battleWin = true;
                     }

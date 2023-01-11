@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using static TextRpgMake.Map;
 
 namespace TextRpgMake
@@ -15,6 +16,7 @@ namespace TextRpgMake
         protected string name;
         protected string itemDesc;
         protected string itemType;
+        protected string useType;
         protected int price;
         protected int weaponDamage;
         protected int hpMpPlus;
@@ -47,25 +49,43 @@ namespace TextRpgMake
             get { return itemType; }
             set { itemType = value; }
         }
-
+        public string UseType
+        {
+            get { return useType; }
+            set { useType = value; }
+        }
         public int HpMpPlus
         {
             get { return hpMpPlus; }
             set { hpMpPlus = value; }
         }
+        public List<Item> shopItemList = new List<Item>();
+        public List<Item> selectItemList = new List<Item>();
 
-        public void ShowItemList(List<Item> itemList, Player player)
+        public void ShowItemList(List<Item> itemList, Player player, int show)
         {
             Console.Clear();
-            Console.SetCursorPosition(0,2);
+            Console.SetCursorPosition(0, 2);
             Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t\t\t\t\t\t\t\t┃");
             int countNumber = 1;
-            Console.WriteLine("┃\t【보유 아이템 목록】\t【보유골드】{0}\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t┃\n", player.gold);
+            if (show == 1)
+            {
+                Console.WriteLine("┃\t【판매 아이템 목록】\t【보유골드】{0}\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t┃", player.gold);
+            }
+            else
+            {
+                Console.WriteLine("┃\t【보유 아이템 목록】\t【보유골드】{0}\t\t\t\t\t┃", player.gold);
+            }
+            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃\n");
             foreach (var item in itemList)
             {
                 if (item.ItemType == "무기")
                 {
                     Console.WriteLine($"\t【{countNumber}】▶\t【아이템】{item.Name}\t【데미지】{item.weaponDamage}\t【가격】{item.Price}골드\n\t\t【정보】{item.itemDesc}\n");
+                }
+                else if (item.ItemType == "장착중")
+                {
+                    Console.WriteLine($"\t【{countNumber}】▶\t【아이템】{item.Name}【장착중】\t【데미지】{item.weaponDamage}\t【가격】{item.Price}골드\n\t\t【정보】{item.itemDesc}\n");
                 }
                 else if (item.ItemType == "회복소모품")
                 {
@@ -75,9 +95,26 @@ namespace TextRpgMake
                 {
                     Console.WriteLine($"\t【{countNumber}】▶\t【아이템】{item.Name}\t【데미지】{item.weaponDamage}\t【가격】{item.Price}골드\n\t\t【정보】{item.itemDesc}\n");
                 }
+                else if (item.ItemType == "증표")
+                {
+                    Console.WriteLine($"\t【{countNumber}】▶\t【아이템】{item.Name}\t【가격】{item.Price}골드\n\t\t【정보】{item.itemDesc}\n");
+                }
                 countNumber++;
             }
-            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃\n┃\t【선택】▶ 사용할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키\t┃\n┃\t\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃");
+            if (show == 1)
+            {
+                Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃\n┃\t【구매】▶ 구매할 아이템 번호  【뒤로】▶ 선택 목록을 제외한 아무키\t┃");
+            }
+            else if (show == 2)
+            {
+                Console.WriteLine("┃\t\t【주의】【판매시 물건가격의 절반을 받습니다】【주의】\t\t┃\n┃\t【판매】▶ 판매할 아이템 번호 /【뒤로】▶ 선택 목록을 제외한 아무키\t┃");
+            }
+            else
+            {
+                Console.WriteLine("┃\t【선택】▶ 사용할 아이템 번호  【뒤로】▶ 선택 목록을 제외한 아무키\t┃");
+            }
+            Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
         } //ShowItemList
 
         //아이템사용
@@ -86,7 +123,7 @@ namespace TextRpgMake
             Console.Clear();
             for (int index = 0; index < 1; index++)
             {
-                ShowItemList(player.itemList, player);
+                ShowItemList(player.itemList, player, 0);
                 int itemInPut = -1;
                 int.TryParse(Console.ReadLine(), out itemInPut);
                 if (0 < itemInPut && itemInPut <= player.itemList.Count)
@@ -96,17 +133,17 @@ namespace TextRpgMake
                     {
                         if (player.findMonster == false)
                         {
-                            string putOnItem = "【장착중】";
-                            Console.WriteLine("【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
+                            Console.WriteLine("\t\t【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
                             string putOn = Console.ReadLine();
                             switch (putOn)
                             {
                                 case "y":
                                     if (player.itemPutOn == false)
                                     {
-                                        Console.WriteLine("【{0}】▶ 장착 완료 【데미지】+{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
+                                        player.useWeapon = true;
+                                        Console.WriteLine("\t\t【{0}】▶ 장착 완료 【데미지】+{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
                                         player.Damage += player.itemList[itemInPut].WeaponDamage;
-                                        player.itemList[itemInPut].Name += putOnItem;
+                                        player.itemList[itemInPut].ItemType = "장착중";
                                         player.putOnItem.Add(player.itemList[itemInPut]);
                                         player.itemPutOn = true;
                                         Console.ReadLine();
@@ -115,9 +152,10 @@ namespace TextRpgMake
                                 case "n":
                                     if (player.itemPutOn == true)
                                     {
+                                        player.useWeapon = false;
                                         player.Damage -= player.itemList[itemInPut].WeaponDamage;
-                                        Console.WriteLine("【{0}】▶ 장착해제 완료 【데미지】-{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
-                                        player.itemList[itemInPut].Name = player.itemList[itemInPut].Name.Substring(0, putOnItem.Length - 1);
+                                        Console.WriteLine("\t\t【{0}】▶ 장착해제 완료 【데미지】-{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
+                                        player.itemList[itemInPut].ItemType = "무기";
                                         player.putOnItem.Remove(player.itemList[itemInPut]);
                                         player.itemPutOn = false;
                                         Console.ReadLine();
@@ -127,7 +165,7 @@ namespace TextRpgMake
                         }
                         else
                         {
-                            Console.WriteLine("【전투 중 에는 사용할 수 없습니다】");
+                            Console.WriteLine("\t\t【전투 중 에는 사용할 수 없습니다】");
                             Console.ReadLine();
                         }
                         index--;
@@ -142,7 +180,7 @@ namespace TextRpgMake
                         }
                         else if (player.Hp < player.MaxHp)
                         {
-                            if(player.findMonster == true)
+                            if (player.findMonster == true)
                             {
                                 player.Hp += player.itemList[itemInPut].HpMpPlus;
                                 Console.Clear();
@@ -159,7 +197,9 @@ namespace TextRpgMake
                             }
                             else
                             {
+                                player.Hp += player.itemList[itemInPut].HpMpPlus;
                                 Console.WriteLine("\t\t【{0}】사용! 【HP】+ {1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                player.itemList.Remove(player.itemList[itemInPut]);
                                 Console.ReadLine();
                             }
                         }
@@ -174,14 +214,14 @@ namespace TextRpgMake
                         }
                         else if (player.Mp < player.MaxMp)
                         {
-                            if(player.findMonster == true)
+                            if (player.findMonster == true)
                             {
                                 player.Mp += player.itemList[itemInPut].HpMpPlus;
                                 Console.Clear();
                                 Console.SetCursorPosition(0, 5);
                                 Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
                                 Console.WriteLine("\t\t\t【사용】▶ 【{0}】\n", player.itemList[itemInPut].Name);
-                                Console.WriteLine("\t\t【{0}】▶ 【{1}】사용! 【MP】+ {2}",player.Name, player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                Console.WriteLine("\t\t【{0}】▶ 【{1}】사용! 【MP】+ {2}", player.Name, player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
                                 if (player.Mp >= player.MaxMp)
                                 {
                                     player.Mp = player.MaxMp;
@@ -191,7 +231,9 @@ namespace TextRpgMake
                             }
                             else
                             {
-                                Console.WriteLine("\t\t【{0}】사용! 【MP】+ {1}",player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                player.Mp += player.itemList[itemInPut].HpMpPlus;
+                                Console.WriteLine("\t\t【{0}】사용! 【MP】+ {1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].hpMpPlus);
+                                player.itemList.Remove(player.itemList[itemInPut]);
                                 Console.ReadLine();
                             }
                         }
@@ -204,7 +246,7 @@ namespace TextRpgMake
                             Console.SetCursorPosition(0, 5);
                             Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\t\t\t     【플레이어 턴】\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t┃");
                             Console.WriteLine("\t\t\t【사용】▶ 【{0}】\n", player.itemList[itemInPut].Name);
-                            Console.WriteLine("\t【{0}】▶ 【{1}】사용! 【{2}】에게 【{3}】고정피해!!", player.Name, player.itemList[itemInPut].Name,
+                            Console.WriteLine("\t\t【{0}】▶ 【{1}】사용!!\n\n\t\t【{0}】▶ 【{2}】에게 【{3}】고정피해!!", player.Name, player.itemList[itemInPut].Name,
                                 monster.Name, player.itemList[itemInPut].WeaponDamage);
                             monster.Hp -= player.itemList[itemInPut].WeaponDamage;
                             player.itemList.Remove(player.itemList[itemInPut]);
@@ -212,7 +254,7 @@ namespace TextRpgMake
                         }
                         else
                         {
-                            Console.WriteLine("【전투 중이 아닐 때는 사용할 수 없습니다】");
+                            Console.WriteLine("\t\t【전투 중이 아닐 때는 사용할 수 없습니다】");
                             index--;
                             Console.ReadLine();
                         }
@@ -224,8 +266,41 @@ namespace TextRpgMake
                 }
             }//for
         } //UseItem
-    } //Item
 
+
+        public void SellItem(List<Item> shopItemList, Player player)
+        {
+            if (player._class == "기사")
+            {
+                shopItemList.Add(KnightWeapon.SteelSword());
+                shopItemList.Add(KnightWeapon.MithrilSword());
+                shopItemList.Add(KnightWeapon.Excalibur());
+            }
+            else if (player._class == "궁수")
+            {
+                shopItemList.Add(ArcherWeapon.LongBow());
+                shopItemList.Add(ArcherWeapon.MithrilBow());
+                shopItemList.Add(ArcherWeapon.Windforce());
+            }
+            else if (player._class == "마법사")
+            {
+                shopItemList.Add(MageWeapon.JewelStaff());
+                shopItemList.Add(MageWeapon.WizardStaff());
+                shopItemList.Add(MageWeapon.ArchonStaff());
+            }
+        } //SellItem
+
+        public List<Item> SellNpc(Player player)
+        {
+            shopItemList.Add(Expendables.HpPotion());
+            shopItemList.Add(Expendables.MpPotion());
+            shopItemList.Add(Expendables.HighHpPotion());
+            shopItemList.Add(Expendables.HighMpPotion());
+            SellItem(shopItemList, player);
+            return shopItemList;
+        } //SellNpc
+
+    } //Item
 
     public class KnightWeapon : Item
     {
@@ -252,13 +327,13 @@ namespace TextRpgMake
 
         public static KnightWeapon MithrilSword()
         {
-            KnightWeapon sword = new KnightWeapon("무기", "미스릴 검", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 검\n\t\t생각보다 가벼우니 사용에 주의!", 2000, 20);
+            KnightWeapon sword = new KnightWeapon("무기", "미스릴 검", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 검\n\t\t\t생각보다 가벼우니 사용에 주의!", 2000, 20);
             return sword;
         } //MithrilSword
 
         public static KnightWeapon Excalibur()
         {
-            KnightWeapon sword = new KnightWeapon("무기", "엑스칼리버", "과거 전설의 용사가 마왕을 벨 때 사용했다고 알려진 검\n\t\t신비한 기운이 검신을 감돌고 있다.", 5000, 40);
+            KnightWeapon sword = new KnightWeapon("무기", "엑스칼리버", "과거 전설의 용사가 마왕을 벨 때 사용했다고 알려진 검\n\t\t\t신비한 기운이 검신을 감돌고 있다.", 5000, 40);
             return sword;
         } //Excalibur
     } //KnightWeapon
@@ -288,13 +363,13 @@ namespace TextRpgMake
 
         public static ArcherWeapon MithrilBow()
         {
-            ArcherWeapon bow = new ArcherWeapon("무기", "미스릴 보우", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 활\n\t\t화살이 없으면 이걸로 내려쳐라!", 2000, 20);
+            ArcherWeapon bow = new ArcherWeapon("무기", "미스릴 보우", "강철보다 가볍고 마력전도율이 뛰어난 미스릴로 만들어진 활\n\t\t\t화살이 없으면 이걸로 내려쳐라!", 2000, 20);
             return bow;
         } //MithrilBow
 
         public static ArcherWeapon Windforce()
         {
-            ArcherWeapon bow = new ArcherWeapon("무기", "윈드포스", "바람의 힘이 담긴 전설속의 활\n\t\t대충 쏴도 원하는 곳에 화살을 때려박을 수 있다.", 5000, 40);
+            ArcherWeapon bow = new ArcherWeapon("무기", "윈드포스", "바람의 힘이 담긴 전설속의 활\n\t\t\t대충 쏴도 원하는 곳에 화살을 때려박을 수 있다.", 5000, 40);
             return bow;
         } //Windforce
     } //ArcherWeapon
@@ -318,19 +393,19 @@ namespace TextRpgMake
 
         public static MageWeapon JewelStaff()
         {
-            MageWeapon staff = new MageWeapon("무기", "보석 스태프", "보석이 박힌 스태프\n\t\t박힌 보석이 마나운용을 수월하게 해 준다", 1000, 10);
+            MageWeapon staff = new MageWeapon("무기", "보석 스태프", "보석이 박힌 스태프\n\t\t\t박힌 보석이 마나운용을 수월하게 해 준다", 1000, 10);
             return staff;
         } //JewelStaff
 
         public static MageWeapon WizardStaff()
         {
-            MageWeapon staff = new MageWeapon("무기", "위자드 스태프", "마법아카데미 교수들이 즐겨 쓴다는 스태프\n\t\t사람들에게 아카데미 교수라고 구라 쳐보자!", 2000, 20);
+            MageWeapon staff = new MageWeapon("무기", "위자드 스태프", "마법아카데미 교수들이 즐겨 쓴다는 스태프\n\t\t\t사람들에게 아카데미 교수라고 구라 쳐보자!", 2000, 20);
             return staff;
         } //WizardStaff
 
         public static MageWeapon ArchonStaff()
         {
-            MageWeapon staff = new MageWeapon("무기", "아콘 스태프", "과거 대마법사가 사용했다고 알려진 전설속의 스태프\n\t\t무엇을 상상하든 그이상이 실현된다", 5000, 40);
+            MageWeapon staff = new MageWeapon("무기", "아콘 스태프", "과거 대마법사가 사용했다고 알려진 전설속의 스태프\n\t\t\t무엇을 상상하든 그이상이 실현된다", 5000, 40);
             return staff;
         } //ArchonStaff
     } //MageWeapon
@@ -383,8 +458,10 @@ namespace TextRpgMake
             Expendables throwing = new Expendables("투척소모품", "다이너마이트", "다이너마이트를 던져 300 고정데미지를 준다.", 1500, 300, 0);
             return throwing;
         } //Bomb
-
+        public static Expendables Ring()
+        {
+            Expendables proof = new Expendables("증표", "마왕의 증표", "마왕이 끼고 있던 반지 중 하나", 10000, 0, 0);
+            return proof;
+        }
     } //Expendables
-
-
 }

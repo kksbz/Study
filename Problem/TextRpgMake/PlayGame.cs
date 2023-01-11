@@ -18,6 +18,8 @@ namespace TextRpgMake
             Monster monster = new Monster();
             Item item = new Item();
             Map map = new Map();
+            List<Item> buyNpc = new List<Item>();
+            buyNpc = item.SellNpc(player);
             MapSet board = new MapSet();
             MapSet lobby = new MapSet();
             MapSet map1 = new MapSet();
@@ -25,6 +27,7 @@ namespace TextRpgMake
             MapSet map3 = new MapSet();
             MapSet bossMap = new MapSet();
             board = map.Lobby();
+            bossMap = map.BossMap();
 
             Console.Clear();
             while (board.end == false)
@@ -34,7 +37,6 @@ namespace TextRpgMake
                 map1 = map.Map1();
                 map2 = map.Map2();
                 map3 = map.Map3();
-                bossMap = map.BossMap();
                 //0.5초 멈춤
                 Thread.Sleep(50);
                 //콘솔창 커서위치 초기화
@@ -97,6 +99,13 @@ namespace TextRpgMake
                     board.bossCount = false;
                     player.findBoss = false;
                     player.findMonster = false;
+                    if (player.bossKill == true)
+                    {
+                        bossMap.map[9, 10] = board.potal;
+                        bossMap.map[9, 9] = board.mapMark;
+                        bossMap.map[10, 9] = board.mapMark;
+                        bossMap.map[10, 10] = board.mapMark;
+                    }
                 }
                 //플레이어 죽으면 로비로 이동
                 if (player.playerDead == true)
@@ -128,6 +137,7 @@ namespace TextRpgMake
 
                 if (board.shopCount == true)
                 {
+                    
                     for (int index = 0; index < 1; index++)
                     {
                         Console.Clear();
@@ -135,31 +145,28 @@ namespace TextRpgMake
                         Console.WriteLine();
                         Console.WriteLine("【1】▶오늘의 상품은 뭐가 있나 한번 볼까?\n【2】▶아이템을 팔러왔소\n【3】▶다음에 다시 온다");
                         string shopInPut = Console.ReadLine();
-                        Console.Clear();
                         switch (shopInPut)
                         {
                             case "1":
                                 for (int index2 = 0; index2 < 1; index2++)
                                 {
-                                    Console.Clear();
-                                    Npc npc = new Npc();
-                                    npc.ShopNpc(player);
-                                    Console.WriteLine("\t\t【보유 골드】{0}골드\n【구매】▶구매할 물건 번호 /【뒤로】▶상점 목록을 제외한 아무키", player.gold);
+                                    int show = 1;
+                                    item.ShowItemList(buyNpc, player, show);
                                     int buy = 0;
                                     int.TryParse(Console.ReadLine(), out buy);
-                                    if (0 < buy && buy <= npc.shopItemList.Count)
+                                    if (0 < buy && buy <= buyNpc.Count)
                                     {
-                                        if (player.gold >= npc.shopItemList[buy - 1].Price)
+                                        if (player.gold >= buyNpc[buy - 1].Price)
                                         {
-                                            Console.WriteLine("【구매 완료】▶【{0}】", npc.shopItemList[buy - 1].Name);
-                                            player.gold -= npc.shopItemList[buy - 1].Price;
-                                            player.itemList.Add(npc.shopItemList[buy - 1]);
+                                            Console.WriteLine("\t\t【구매 완료】▶【{0}】", buyNpc[buy - 1].Name);
+                                            player.gold -= buyNpc[buy - 1].Price;
+                                            player.itemList.Add(buyNpc[buy - 1]);
                                             Console.ReadLine();
                                             index2--;
                                         }
                                         else
                                         {
-                                            Console.WriteLine("【충분한 골드가 없습니다】");
+                                            Console.WriteLine("\t\t【충분한 골드가 없습니다】");
                                             Console.ReadLine();
                                             index2--;
                                         }
@@ -173,17 +180,15 @@ namespace TextRpgMake
                             case "2":
                                 for (int index3 = 0; index3 < 1; index3++)
                                 {
-                                    Console.Clear();
-                                    item.ShowItemList(player.itemList, player);
-                                    Console.WriteLine();
-                                    Console.WriteLine("【판매시 물건가격의 절반을 받습니다】【보유 골드】{0}\n\n【판매】▶판매할 물건 번호 /【뒤로】▶인벤토리 목록을 제외한 아무키", player.gold);
+                                    int showSell = 2;
+                                    item.ShowItemList(player.itemList, player, showSell);
                                     int sell = -1;
                                     int.TryParse(Console.ReadLine(), out sell);
                                     if (0 < sell && sell <= player.itemList.Count)
                                     {
                                         sell = sell - 1;
                                         player.gold += (player.itemList[sell].Price / 2);
-                                        Console.WriteLine("【판매 완료】▶【{0}】【{1}】골드 획득", player.itemList[sell].Name, player.itemList[sell].Price / 2);
+                                        Console.WriteLine("\t【판매 완료】▶【{0}】【{1}】골드 획득", player.itemList[sell].Name, player.itemList[sell].Price / 2);
                                         Console.ReadLine();
                                         player.itemList.Remove(player.itemList[sell]);
                                         index3--;
@@ -252,7 +257,7 @@ namespace TextRpgMake
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
-                        Console.WriteLine("\t 이동할 맵을 선택하세요\n\n\t【1】▶필드1\n\t【2】▶필드2【제한레벨 3】\n\t【3】▶필드3【제한레벨 5】\n\t【4】▶마지막 필드\n\t【0】▶마을");
+                        Console.WriteLine("\t\t【이동할 맵을 선택하세요】\n\n\t\t【1】▶필드1\n\t\t【2】▶필드2【제한레벨 3】\n\t\t【3】▶필드3【제한레벨 5】\n\t\t【4】▶마지막 필드\n\t\t【0】▶마을\n\t\t【9】▶뒤로");
                         string inPut = Console.ReadLine();
                         switch (inPut)
                         {
@@ -263,25 +268,25 @@ namespace TextRpgMake
                                 board = map1;
                                 break;
                             case "2":
-                                if(player.Level >= 0)
+                                if(player.Level >= 5)
                                 {
                                     board = map2;
                                 }
                                 else
                                 {
-                                    Console.WriteLine("【요구 레벨을 충족하지 못했습니다】\n【{0}의 제한레벨】▶ 5",map2.mapName);
+                                    Console.WriteLine("\t\t【요구 레벨을 충족하지 못했습니다】\n\n\t\t【{0}의 제한레벨】▶ 5",map2.mapName);
                                     index--;
                                     Console.ReadLine();
                                 }
                                 break;
                             case "3":
-                                if (player.Level >= 0)
+                                if (player.Level >= 7)
                                 {
                                     board = map3;
                                 }
                                 else
                                 {
-                                    Console.WriteLine("【요구 레벨을 충족하지 못했습니다】\n【{0}의 제한레벨】▶ 7", map3.mapName);
+                                    Console.WriteLine("\t\t【요구 레벨을 충족하지 못했습니다】\n\n\t\t【{0}의 제한레벨】▶ 7", map3.mapName);
                                     index--;
                                     Console.ReadLine();
                                 }
@@ -289,17 +294,26 @@ namespace TextRpgMake
                                 case "4":
                                 if (player.Level >= 0)
                                 {
+                                    if(player.bossKill == true)
+                                    {
+                                        bossMap.map[9, 9] = board.mapMark;
+                                        bossMap.map[10, 9] = board.mapMark;
+                                        bossMap.map[10, 10] = board.mapMark;
+                                        bossMap.map[18, 10] = board.mapMark;
+                                        bossMap.map[18, 1] = board.playerMark;
+                                    }
                                     board = bossMap;
                                 }
                                 else
                                 {
-                                    Console.WriteLine("【요구 레벨을 충족하지 못했습니다】\n【{0}의 제한레벨】▶ 10", map3.mapName);
+                                    Console.WriteLine("\t\t【요구 레벨을 충족하지 못했습니다】\n\n\t\t【{0}의 제한레벨】▶ 10", map3.mapName);
                                     index--;
                                     Console.ReadLine();
                                 }
                                 break;
+                            case "9":
+                                break;
                             default:
-                                Console.WriteLine("잘못 입력했습니다. 다시 입력하세요.");
                                 index--;
                                 break;
                         } //switch
