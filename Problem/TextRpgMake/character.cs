@@ -362,10 +362,7 @@ namespace TextRpgMake
         public void Mage(string inPut)
         {
             skillList.Add(MageSkill.Skill_1());
-            skillList.Add(MageSkill.Skill_2());
-            skillList.Add(MageSkill.Skill_3());
             itemList.Add(MageWeapon.BasicStaff());
-            itemList.Add(MageWeapon.ArchonStaff());
             itemList.Add(Expendables.ThrowingDagger());
             itemList.Add(Expendables.HpPotion());
             itemList.Add(Expendables.MpPotion());
@@ -374,8 +371,8 @@ namespace TextRpgMake
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.MaxHp = 2400;
-            this.MaxMp = 1700;
+            this.MaxHp = 240;
+            this.MaxMp = 170;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 50;

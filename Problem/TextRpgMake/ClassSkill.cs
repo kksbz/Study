@@ -73,7 +73,7 @@ namespace TextRpgMake
             switch (player._class)
             {
                 case "기사":
-                    if (player.Level == 3 && player.skillList.Count == 1)
+                    if (player.Level >= 3 && player.skillList.Count == 1)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -81,7 +81,7 @@ namespace TextRpgMake
                         Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, KnightSkill.Skill_2().SkillName);
                         Console.ReadLine();
                     }
-                    else if (player.Level == 5 && player.skillList.Count == 2)
+                    else if (player.Level >= 5 && player.skillList.Count == 2)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -92,7 +92,7 @@ namespace TextRpgMake
 
                     break;
                 case "궁수":
-                    if (player.Level == 3 && player.skillList.Count == 1)
+                    if (player.Level >= 3 && player.skillList.Count == 1)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -100,7 +100,7 @@ namespace TextRpgMake
                         Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, ArcherSkill.Skill_2().SkillName);
                         Console.ReadLine();
                     }
-                    else if (player.Level == 5 && player.skillList.Count == 2)
+                    else if (player.Level >= 5 && player.skillList.Count == 2)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
@@ -110,18 +110,15 @@ namespace TextRpgMake
                     }
                     break;
                 case "마법사":
-                    if (player.Level == 3)
+                    if (player.Level >= 3 && player.skillList.Count == 1)
                     {
-                        if (player.Level == 3 && player.skillList.Count == 1)
-                        {
-                            Console.Clear();
-                            Console.SetCursorPosition(0, 5);
-                            player.skillList.Add(MageSkill.Skill_2());
-                            Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_2().SkillName);
-                            Console.ReadLine();
-                        }
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
+                        player.skillList.Add(MageSkill.Skill_2());
+                        Console.WriteLine("\t\t【{0}】▶【{1}】을 습득했다!!", player.Name, MageSkill.Skill_2().SkillName);
+                        Console.ReadLine();
                     }
-                    else if (player.Level == 5 && player.skillList.Count == 2)
+                    else if (player.Level >= 5 && player.skillList.Count == 2)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);

@@ -157,6 +157,7 @@ namespace TextRpgMake
             lobby.mapName = "마 을";
             lobby.motelY = 4;
             lobby.motelX = 3;
+            lobby.map[3, 11] = "！";
             lobby.map[4, 11] = "⑻";
             lobby.map[lobby.motelY, lobby.motelX] = lobby.motel;
             lobby.shopY = 10;

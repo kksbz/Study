@@ -145,14 +145,14 @@ namespace TextRpgMake
                 {
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
-                    Console.WriteLine("\t\t【{0}】▶ 끄아악", monster.Name);
+                    Console.WriteLine("\t\t【{0}】▶ 아..안돼!!\n\n\t\t【{0}】▶ 온전히 소환만 되었어도!!!!\n\n\t\t【{0}】▶ 제엔자앙!!!!!", monster.Name);
                     Console.ReadLine();
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
 
                     //보스템 3개 랜덤얻음
                     Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★\n\n");
-                    Console.WriteLine("\t\t【{0}】을(를) 해치웠다!!\n\n\t\t【EXP】{1}【골드】{2}\n", monster.Name,
+                    Console.WriteLine("\t\t【{0}】을 해치웠다!!\n\n\t\t【EXP】{1}【골드】{2}\n", monster.Name,
                         monster.Exp, monster.monsterGold);
                     for (int index2 = 0; index2 < 3; index2++)
                     {

@@ -364,7 +364,7 @@ namespace TextRpgMake
             bossSkill.Add(BossSkill.Skill_2());
             bossSkill.Add(BossSkill.Skill_3());
             int bonus = 14;
-            this.name = "보스";
+            this.name = "마왕";
             this.level = random.Next(10, 13 + 1);
             this.exp = 1000 + bonus * this.level;
             this.MaxHp = 600 + bonus * this.level;

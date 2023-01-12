@@ -61,7 +61,7 @@ namespace TextRpgMake
                         }
                         Console.WriteLine("┃\t\t\t\t\t\t\t┃\n┃\t\t【정보보기】▶ 퀘스트 번호\t\t┃\n┃\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
                         int inPut2 = -1;
-                        int.TryParse(Console.ReadLine(), out inPut);
+                        int.TryParse(Console.ReadLine(), out inPut2);
                         if (0 < inPut2 && inPut2 <= player.questClearList.Count)
                         {
                             inPut2 = inPut2 - 1;
@@ -71,8 +71,8 @@ namespace TextRpgMake
                             Console.ReadLine();
                             index2--;
                         }
-
                     }
+                    index--;
                 }
             }
             Console.Clear();
