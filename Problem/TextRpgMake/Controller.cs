@@ -61,6 +61,7 @@ namespace TextRpgMake
             mapNumber.showItem = false;
             mapNumber.showSkill = false;
             mapNumber.showInfo = false;
+            mapNumber.showQuest = false;
             mapNumber.monsterCount = false;
             mapNumber.bossCount = false;
             mapNumber.potalCount = false;
@@ -241,10 +242,13 @@ namespace TextRpgMake
                 case ConsoleKey.K:
                     mapNumber.showSkill = true;
                     break;
+                case ConsoleKey.L:
+                    mapNumber.showQuest = true;
+                    break;
                 case ConsoleKey.X:
                     int num = 3;
                     Console.Clear();
-                    for(int index = 0; index < 4; index++)
+                    for (int index = 0; index < 4; index++)
                     {
                         Console.SetCursorPosition(0, 5);
                         Console.WriteLine("\t\t【{0}초 뒤 게임을 종료합니다】", num);

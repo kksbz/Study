@@ -70,11 +70,11 @@ namespace TextRpgMake
             int countNumber = 1;
             if (show == 1)
             {
-                Console.WriteLine("┃\t【판매 아이템 목록】\t【보유골드】{0}\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t┃", player.gold);
+                Console.WriteLine("┃\t【판매 아이템 목록】\t【보유골드】\t{0}\t\t\t\t┃", player.gold);
             }
             else
             {
-                Console.WriteLine("┃\t【보유 아이템 목록】\t【보유골드】{0}\t\t\t\t\t┃", player.gold);
+                Console.WriteLine("┃\t【보유 아이템 목록】\t【보유골드】\t{0}\t\t\t\t┃", player.gold);
             }
             Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃\n");
             foreach (var item in itemList)
@@ -104,7 +104,7 @@ namespace TextRpgMake
             Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃");
             if (show == 1)
             {
-                Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t┃\n┃\t【구매】▶ 구매할 아이템 번호  【뒤로】▶ 선택 목록을 제외한 아무키\t┃");
+                Console.WriteLine("┃\t【구매】▶ 구매할 아이템 번호  【뒤로】▶ 선택 목록을 제외한 아무키\t┃");
             }
             else if (show == 2)
             {
@@ -129,39 +129,50 @@ namespace TextRpgMake
                 if (0 < itemInPut && itemInPut <= player.itemList.Count)
                 {
                     itemInPut = itemInPut - 1;
-                    if (player.itemList[itemInPut].ItemType == "무기")
+                    if (player.itemList[itemInPut].ItemType == "무기" || player.itemList[itemInPut].ItemType == "장착중")
                     {
                         if (player.findMonster == false)
                         {
-                            Console.WriteLine("\t\t【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
-                            string putOn = Console.ReadLine();
-                            switch (putOn)
+                            if (player.itemList[itemInPut].ItemType == "무기" && player.itemPutOn == true)
                             {
-                                case "y":
-                                    if (player.itemPutOn == false)
-                                    {
-                                        player.useWeapon = true;
-                                        Console.WriteLine("\t\t【{0}】▶ 장착 완료 【데미지】+{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
-                                        player.Damage += player.itemList[itemInPut].WeaponDamage;
-                                        player.itemList[itemInPut].ItemType = "장착중";
-                                        player.putOnItem.Add(player.itemList[itemInPut]);
-                                        player.itemPutOn = true;
-                                        Console.ReadLine();
-                                    }
-                                    break;
-                                case "n":
-                                    if (player.itemPutOn == true)
-                                    {
-                                        player.useWeapon = false;
-                                        player.Damage -= player.itemList[itemInPut].WeaponDamage;
-                                        Console.WriteLine("\t\t【{0}】▶ 장착해제 완료 【데미지】-{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
-                                        player.itemList[itemInPut].ItemType = "무기";
-                                        player.putOnItem.Remove(player.itemList[itemInPut]);
-                                        player.itemPutOn = false;
-                                        Console.ReadLine();
-                                    }
-                                    break;
-                            } //switch
+                                Console.WriteLine("\t\t【이미 장착중인 무기가 있습니다】");
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                Console.WriteLine("\t\t【{0}】▶ 장착 / 장착해제 【y/n】", player.itemList[itemInPut].Name);
+                                string putOn = Console.ReadLine();
+                                switch (putOn)
+                                {
+                                    case "y":
+                                        if (player.itemPutOn == false)
+                                        {
+                                            player.useWeapon = true;
+                                            Console.WriteLine("\t\t【{0}】▶ 장착 완료 【데미지】+{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
+                                            player.Damage += player.itemList[itemInPut].WeaponDamage;
+                                            player.itemList[itemInPut].ItemType = "장착중";
+                                            player.putOnItem.Add(player.itemList[itemInPut]);
+                                            player.itemPutOn = true;
+                                            Console.ReadLine();
+                                        }
+                                        break;
+                                    case "n":
+                                        if (player.itemPutOn == true)
+                                        {
+                                            player.useWeapon = false;
+                                            player.Damage -= player.itemList[itemInPut].WeaponDamage;
+                                            Console.WriteLine("\t\t【{0}】▶ 장착해제 완료 【데미지】-{1}", player.itemList[itemInPut].Name, player.itemList[itemInPut].WeaponDamage);
+                                            player.itemList[itemInPut].ItemType = "무기";
+                                            player.putOnItem.Remove(player.itemList[itemInPut]);
+                                            player.itemPutOn = false;
+                                            Console.ReadLine();
+                                        }
+                                        break;
+                                } //switch
+                            }
+                            
+
+
                         }
                         else
                         {
@@ -464,6 +475,11 @@ namespace TextRpgMake
         {
             Expendables proof = new Expendables("증표", "마왕의 증표", "마왕이 끼고 있던 반지 중 하나", 10000, 0, 0);
             return proof;
+        }
+        public static Expendables Mail()
+        {
+            Expendables mail = new Expendables("증표", "마을사람들의 손편지", "마을사람들의 고마움이 느껴진다", 0, 0, 0);
+            return mail;
         }
     } //Expendables
 }

@@ -197,6 +197,8 @@ namespace TextRpgMake
         public List<ClassSkill> skillList = new List<ClassSkill>();
         public List<Item> itemList = new List<Item>();
         public List<Item> putOnItem = new List<Item>();
+        public List<Quest> questList = new List<Quest>();
+        public List<Quest> questClearList = new List<Quest>();
         public int gold;
         public string classMark;
         public bool itemPutOn = false;
@@ -273,7 +275,7 @@ namespace TextRpgMake
             Console.WriteLine("\t【스킬】  ▶ 더블 어택\t【스킬】  ▶ 더블 샷\t【스킬】  ▶ 파이어볼");
             Console.WriteLine("\t【아이템】▶ 기본 검\t【아이템】▶ 기본 활\t【아이템】▶ 기본 스태프");
             Console.WriteLine("┃\t\t\t\t\t\t\t\t\t\t\t┃\n┃\t\t【클래스를 선택하세요】\t\t【4번】▶ 이름 재설정\t\t\t┃\n┃\t\t\t\t\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-        }
+        } //ShowSelectClass
 
         public void ShowInfo(Player player)
         {
@@ -297,7 +299,10 @@ namespace TextRpgMake
             Console.WriteLine("┃\t\t\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t┃\n┃\t\t\t\t\t\t\t┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
             Console.ReadLine();
             Console.Clear();
-        }
+        } //ShowInfo
+
+        
+
         public void Knight(string inPut)
         {
             skillList.Add(KnightSkill.Skill_1());
@@ -357,7 +362,10 @@ namespace TextRpgMake
         public void Mage(string inPut)
         {
             skillList.Add(MageSkill.Skill_1());
+            skillList.Add(MageSkill.Skill_2());
+            skillList.Add(MageSkill.Skill_3());
             itemList.Add(MageWeapon.BasicStaff());
+            itemList.Add(MageWeapon.ArchonStaff());
             itemList.Add(Expendables.ThrowingDagger());
             itemList.Add(Expendables.HpPotion());
             itemList.Add(Expendables.MpPotion());
@@ -366,8 +374,8 @@ namespace TextRpgMake
             this.name = inPut;
             this.level = 1;
             this.exp = 0;
-            this.MaxHp = 240;
-            this.MaxMp = 170;
+            this.MaxHp = 2400;
+            this.MaxMp = 1700;
             this.hp = this.MaxHp;
             this.mp = this.MaxMp;
             this.damage = 50;

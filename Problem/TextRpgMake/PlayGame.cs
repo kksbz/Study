@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -17,8 +18,11 @@ namespace TextRpgMake
             player.SelectPlayer();
             ClassSkill classSkill = new ClassSkill();
             Character character = new Character();
+            Quest quest = new Quest();
+            List<Quest> tempQuest = new List<Quest>();
             Monster monster = new Monster();
             Item item = new Item();
+            Item item2 = new Item();
             Map map = new Map();
             List<Item> buyNpc = new List<Item>();
             buyNpc = item.SellNpc(player);
@@ -30,8 +34,14 @@ namespace TextRpgMake
             MapSet bossMap = new MapSet();
             board = map.Lobby(player);
             bossMap = map.BossMap(player);
+            quest = MainQuest.MainQ_1();
+            quest.questClear = false;
+            item2 = Expendables.Mail();
+
             while (board.end == false)
             {
+                List<Quest> questList = new List<Quest>();
+
                 //맵초기화
                 lobby = map.Lobby(player);
                 map1 = map.Map1(player);
@@ -106,6 +116,11 @@ namespace TextRpgMake
                         bossMap.map[10, 9] = board.mapMark;
                         bossMap.map[10, 10] = board.mapMark;
                     }
+                    else
+                    {
+                        bossMap.map[11, 9] = board.mapMark;
+                        bossMap.map[11, 10] = board.mapMark;
+                    }
                 }
                 //플레이어 죽으면 로비로 이동
                 if (player.playerDead == true)
@@ -134,13 +149,123 @@ namespace TextRpgMake
                     Console.ReadLine();
                     Console.Clear();
                 }
-
+                //퀘스트창 열기
+                if (board.showQuest == true)
+                {
+                    quest.ShowQuest(player);
+                }
+                //촌장
                 if (board.chiefCount == true)
                 {
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
-                    Console.WriteLine("\t\t【마을촌장】▶ 모험가양반 ");
-                    Console.ReadLine();
+                    if (player.questList.Contains(quest) == false && player.questClearList.Contains(quest) == false)
+                    {
+                        Console.WriteLine("\t\t【마을촌장】▶ 모험가양반\n\n\t\t【마을촌장】▶ 제발 우리마을좀 도와주게나\n\n" +
+                            "\t\t【마을촌장】▶ 최근들어 몬스터에게 당한 피해가 너무 크다네\n\n\t\t【마을촌장】▶ 몸성한 마을사람이 손에 꼽을 지경이야" +
+                            "\n\n\t\t【마을촌장】▶ 부디 우리마을을 외면하지 말아주게나\n");
+                        Console.WriteLine("\t\t【퀘스트】▶ {0}\n\n\t\t【1】▶ 수락\n\t\t【2】▶ 거절", quest.questName);
+                        string accept = Console.ReadLine();
+                        if (accept == "1")
+                        {
+                            Console.WriteLine("\t\t【{0}】▶ 수락하지", player.Name);
+                            Console.ReadLine();
+                            player.questList.Add(quest);
+                        }
+                        else if (accept == "2")
+                        {
+                            Console.WriteLine("\t\t【{0}】▶ 갈길이 멀어서 이만", player.Name);
+                            Console.ReadLine();
+                        }
+                    } //foreach 오류 퀘스트목록에서 지우면 목록이없어서 오류뜸 
+                    else if (player.questList.Contains(quest) == true)
+                    {
+                        tempQuest.Add(quest);
+                        
+                        foreach (var temp in tempQuest)
+                        {
+                            if (temp.questName == quest.questName)
+                            {
+                                if (temp.questClear == false)
+                                {
+                                    item = Expendables.Ring();
+                                    Console.WriteLine("\t\t【마을촌장】▶ 기다리고 있었다네\n\n\t\t【마을촌장】▶ 일은 어떻게 되었나?\n\n");
+                                    Console.WriteLine("\t\t【1】▶ {0}를 촌장에게 보여준다\n\t\t【2】▶ 진행중이오", item.Name);
+                                    int inPutNum = -1;
+                                    int.TryParse(Console.ReadLine(), out inPutNum);
+                                    bool checkItem = false;
+                                    foreach (var temp2 in player.itemList)
+                                    {
+                                        if (temp2.Name == "마왕의 증표")
+                                        {
+                                            checkItem = true;
+                                        }
+                                    }
+                                    if (inPutNum == 1)
+                                    {
+                                        Console.Clear();
+                                        Console.SetCursorPosition(0, 5);
+                                        if (checkItem == true)
+                                        {
+                                            Console.WriteLine("\t\t【마을촌장】▶ {0}!!!\n\n\t\t【마을촌장】▶ 몬스터들이 마왕을 소환하고 있었던겐가..." +
+                                                "\n\n\t\t【마을촌장】▶ 【{1}】 자네가 우리 마을을 살렸네\n\n\t\t【마을촌장】▶ 【{1}】 정말 고마우이 고마워" +
+                                                "\n\n\t\t【마을촌장】▶ 이건 약소하지만 부디 받게나\n\n\t\t【마을촌장】▶ 정말 고맙네 【{1}】", item.Name, player.Name);
+                                            Console.ReadLine();
+                                            Console.Clear();
+                                            Console.SetCursorPosition(0, 5);
+                                            Console.WriteLine("\t\t\t【{0} 완료】\n", quest.questName);
+                                            Console.WriteLine("\t\t【EXP】3000【골드】5000\n");
+                                            if (player._class == "기사")
+                                            {
+                                                item = KnightWeapon.Excalibur();
+                                                Console.WriteLine("\t\t【아이템】{0} 획득!!", item.Name);
+                                                player.itemList.Add(item);
+                                            }
+                                            else if (player._class == "궁수")
+                                            {
+                                                item = MageWeapon.ArchonStaff();
+                                                Console.WriteLine("\t\t【아이템】{0} 획득!!", item.Name);
+                                                player.itemList.Add(item);
+                                            }
+                                            else if (player._class == "마법사")
+                                            {
+                                                item = MageWeapon.ArchonStaff();
+                                                Console.WriteLine("\t\t【아이템】{0} 획득!!", item.Name);
+                                                player.itemList.Add(item);
+                                            }
+                                            Console.WriteLine("\n\t\t【아이템】{0} 획득!!", item2.Name);
+                                            player.itemList.Add(item2);
+                                            Console.ReadLine();
+                                            player.Exp += 3000;
+                                            player.gold += 5000;
+                                            temp.questClear = true;
+                                            player.questClearList.Add(temp);
+                                            player.questList.Remove(temp);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\t\t【마을촌장】▶ 자네 보여줄만한 증거 없나?\n\n\t\t【마을촌장】▶ 해결되고나면 다시 찾아주게나");
+                                            Console.ReadLine();
+                                        }
+                                    }
+                                    else if (inPutNum == 2)
+                                    {
+                                        Console.Clear();
+                                        Console.SetCursorPosition(0, 5);
+                                        Console.WriteLine("\t\t【{0}】▶ 아직 진행중이오", player.Name);
+                                        Console.ReadLine();
+                                    }
+                                }
+                                else
+                                {
+                                    Console.Clear();
+                                    Console.SetCursorPosition(0, 5);
+                                    Console.WriteLine("\t\t【마을촌장】▶ 자네덕에 마을이 활기를 되찾았네\n\n\t\t【마을촌장】▶ 【{0}】정말 고맙네 고마워", player.Name);
+                                    Console.ReadLine();
+                                }
+                            }
+                        }
+                    }
                     Console.Clear();
                     board.chiefCount = false;
                 }
@@ -347,9 +472,15 @@ namespace TextRpgMake
 
         public void Title()
         {
+            Console.CursorVisible = false;
             Console.SetCursorPosition(0, 5);
             Console.WriteLine("\t ,ggg, ,ggggggg,   ,ggg,         gg        ,gggg,         ,gggg,  \r\n\tdP\"\"Y8,8P\"\"\"\"\"Y8b dP\"\"Y8a        88       d8\" \"8I        d8\" \"8I  \r\n\tYb, `8dP'     `88 Yb, `88        88       88  ,dP        88  ,dP  \r\n\t `\"  88'       88  `\"  88        88    8888888P\"      8888888P\"   \r\n\t     88        88      88        88       88             88       \r\n\t     88        88      88        88       88             88       \r\n\t     88        88      88        88  ,aa,_88        ,aa,_88       \r\n\t     88        88      88        88 dP\" \"88P       dP\" \"88P       \r\n\t     88        Y8,     Y8b,____,d88,Yb,_,d88b,,_   Yb,_,d88b,,_   \r\n\t     88        `Y8      \"Y888888P\"Y8 \"Y8P\"  \"Y88888 \"Y8P\"  \"Y88888\r\n\t                                                                  \r\n\t                                                                  \r\n");
             Console.WriteLine("\t\t\t     아무키나 눌러 계속 진행");
+            Console.ReadLine();
+            Console.Clear();
+            Console.SetCursorPosition(0, 5);
+            Console.WriteLine("\t\t스토리\n\n");
+            Console.WriteLine("\t\t아무키나 눌러 계속 진행");
             Console.ReadLine();
         } //Title
     } //PlayGame

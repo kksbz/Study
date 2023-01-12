@@ -45,6 +45,7 @@ namespace TextRpgMake
             public bool showItem;
             public bool showSkill;
             public bool showInfo;
+            public bool showQuest;
         }
 
         MapSet mapSet = new MapSet();

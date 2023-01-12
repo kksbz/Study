@@ -24,7 +24,7 @@ namespace TextRpgMake
             if (player.findBoss)
             {
                 Console.WriteLine("\t\t【{0}】▶ 벌써 여기까지 오다니\n\n\t\t【{0}】▶ 제법이군 【{1}】\n\n" +
-                    "\t\t【{0}】▶ 완전한 강림후에 싸웠으면 좋았을텐데..\n\n\t\t【{0}】▶ 포탈이 내 힘을 버티지 못하는게 아쉽군\n\n" +
+                    "\t\t【{0}】▶ 완전한 강림까지 머지않았것만 쯧\n\n\t\t【{0}】▶ 포탈이 내 힘을 버티지 못하는게 아쉽군\n\n" +
                     "\t\t【{0}】▶ 잡설은 이쯤하지\n\n\t\t【{0}】▶ 【{1}】!! 어디 재롱 한번 부려봐라!!", monster.Name, player.Name); ;
                 Console.WriteLine("\n\n\t\t\t【 전    투    시    작 】\n");
                 Console.ReadLine();
@@ -145,6 +145,11 @@ namespace TextRpgMake
                 {
                     Console.Clear();
                     Console.SetCursorPosition(0, 5);
+                    Console.WriteLine("\t\t【{0}】▶ 끄아악", monster.Name);
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.SetCursorPosition(0, 5);
+
                     //보스템 3개 랜덤얻음
                     Console.WriteLine("\t★★★★★★★★★★★★★★★★★★★★★★\n\n");
                     Console.WriteLine("\t\t【{0}】을(를) 해치웠다!!\n\n\t\t【EXP】{1}【골드】{2}\n", monster.Name,
@@ -159,7 +164,6 @@ namespace TextRpgMake
                     }
                     Console.WriteLine("\t\t【아이템】{0} 획득!!\n", monster.dropItem[0].Name);
                     player.itemList.Add(monster.dropItem[0]);
-                    monster.dropItem.Remove(monster.dropItem[0]);
                     Console.WriteLine("\n\t★★★★★★★★★★★★★★★★★★★★★★");
                     Console.ReadLine();
                     player.Exp += monster.Exp;
@@ -169,7 +173,7 @@ namespace TextRpgMake
                     //보스잡은후 출력
                     Console.Clear();
                     Console.SetCursorPosition(0,10);
-                    Console.WriteLine("\t\t【{0}】▶ 【{1}】! 이거라면..\n\n\t\t\t【{1}】를 가지고\n\n\t\t\t【마을촌장】에게 가보자\n\n", player.Name, monster.dropItem[0].Name);
+                    Console.WriteLine("\t\t【{0}】▶  【{1}】! 이거라면..\n\n\t\t\t【{1}】를 가지고\n\n\t\t\t【마을촌장】에게 가보자\n\n", player.Name, monster.dropItem[0].Name);
                 }
                 else if (monster.Hp <= 0 && player.findMonster == true)
                 {
@@ -284,16 +288,23 @@ namespace TextRpgMake
                         monsterDefence = true;
                     }
                     Console.WriteLine("\n=================================================================");
-
+                    
+                    Console.ReadLine();
                     if (player.Hp <= 0)
                     {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 5);
+                        Console.WriteLine("\t\t【{0}】▶ 크하하하하\n\n\t\t【{0}】▶ 그따위 실력으로 도전하다니\n\n\t\t【{0}】▶ 가소롭구나 가소로워!!", monster.Name);
+                        Console.ReadLine();
                         Console.Clear();
                         Console.SetCursorPosition(0, 5);
                         Console.WriteLine("========================================================\n\n");
                         Console.WriteLine("\t\t\t【†】\n\n\t\t【{0}】에게 패배!!\n\n\t\t 마을로 돌아갑니다.\n\n", monster.Name);
                         Console.WriteLine("========================================================");
+                        Console.ReadLine();
                         player.playerDead = true;
                         battleWin = true;
+                        continue;
                     }
                 }
                 else
