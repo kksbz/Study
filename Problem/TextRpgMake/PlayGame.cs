@@ -502,7 +502,7 @@ namespace TextRpgMake
                                 }
                                 break;
                             case "4":
-                                if (player.Level >= 0)
+                                if (player.Level >= 7)
                                 {
                                     if (player.bossKill == true)
                                     {
