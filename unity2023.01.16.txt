@@ -21,3 +21,18 @@
 제네릭중요 수업때 따로 하진않을것
 노멀라이즈
 Time.deltaTime
+
+partial class
+같은클래스명을 사용할 수 있음 =>같은 클래스를 나누겠다는 소리임
+Dodge GFunc 스크립트에 주석달아놓음
+
+extend method
+static class static method
+제네릭
+
+rootObject
+
+갤러그 만들기(단, 팀별로 만들 것임. 모든 팀원들이 다른 형태의 갤러그를 제작하면 안됨. 같은 형태의 갤러그)
+오전시간동안 팀별로 오브젝트 풀링을 R&D해서 오후에 갤러그 제작시 적용해 볼 것
+오브젝트 풀링(매우 중요)
+
