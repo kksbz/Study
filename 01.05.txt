@@ -14,6 +14,9 @@ git barnch -r
 git checkout 브렌치이름 < 브렌치이름으로 이동
 git checkout -b 브렌치이름 <새로운 브렌치 만들기 push를해줘야 등록됨
 
+$ git branch --set-upstream-to=origin/브렌치이름 < 브렌치이름으로 셋업스트림하는거
+이제 git push origin 브렌치이름 이렇게 안써도됨
+
 git branch -d 브렌치이름< 브랜치이름 로컬에서 지우기
 git push origin --delete 브렌치이름 < 원격저장소에서 브렌치이름
 
